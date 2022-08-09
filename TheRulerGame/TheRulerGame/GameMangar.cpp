@@ -7,7 +7,7 @@ GameMangar::GameMangar()
 	m_Window = new sf::RenderWindow();
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 	
-	m_Window->create(m_VideoMode, "TheRulerGame");
+	m_Window->create(m_VideoMode, "TheRulerGame", sf::Style::Default);
 
 }
 
