@@ -3,8 +3,15 @@
 
 namespace Utils
 {
-    const int WinSizeX = 720;
-    const int WinSizeY = 480;
+    // Window Width
+    const int WinSizeX = 800;
+    // Window Height
+    const int WinSizeY = 800;
+    // Window Center (X Axis)
+    const int WinCenterX = WinSizeX / 2;
+    // Window Center (Y Axis)
+    const int WinCenterY = WinSizeY / 2;
+    // Maximum Frame Rate
     const int FrameLimit = 60;
 
     // Commonly used vector operations
