@@ -1,5 +1,10 @@
 #include "GameObject.h"
 
+GameObject::GameObject()
+{
+
+}
+
 GameObject::GameObject(sf::Shape* _shape, sf::Vector2f _position)
 {
 	SetShape(_shape);

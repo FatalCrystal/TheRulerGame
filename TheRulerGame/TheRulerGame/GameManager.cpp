@@ -5,7 +5,11 @@ GameManager::GameManager()
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
-    m_Objects.push_back(new GameObject(new sf::CircleShape(10), Utils::WinSizeX / 2, Utils::WinSizeY / 2));
+    m_PlayerOne = new Player(new sf::CircleShape(10), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
+    m_PlayerTwo = new Player(new sf::CircleShape(10), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
+
+    m_Objects.push_back(m_PlayerOne);
+    m_Objects.push_back(m_PlayerTwo);
 
 	GameLoop();
 }
@@ -33,6 +37,8 @@ void GameManager::GameLoop()
             }
         }
 
+        PlayerInput();
+
         Update();
 
         Render();
@@ -43,6 +49,45 @@ void GameManager::GameLoop()
 
 void GameManager::PlayerInput()
 {
+    sf::Vector2f PlayerOneVelocity = sf::Vector2f(0.0f, 0.0f);
+    sf::Vector2f PlayerTwoVelocity = sf::Vector2f(0.0f, 0.0f);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_PlayerOne->GetPosition().y > 0 + m_PlayerOne->GetMoveSpeed())
+    {
+        PlayerOneVelocity.y -= 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_PlayerOne->GetPosition().y < Utils::WinSizeY - m_PlayerOne->GetMoveSpeed())
+    {
+        PlayerOneVelocity.y += 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && m_PlayerOne->GetPosition().x > 0 + m_PlayerOne->GetMoveSpeed())
+    {
+        PlayerOneVelocity.x -= 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && m_PlayerOne->GetPosition().x < Utils::WinSizeX - m_PlayerOne->GetMoveSpeed())
+    {
+        PlayerOneVelocity.x += 1;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_PlayerTwo->GetPosition().y > 0 + m_PlayerTwo->GetMoveSpeed())
+    {
+        PlayerTwoVelocity.y -= 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_PlayerTwo->GetPosition().y < Utils::WinSizeY - m_PlayerTwo->GetMoveSpeed())
+    {
+        PlayerTwoVelocity.y += 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_PlayerTwo->GetPosition().x > 0 + m_PlayerTwo->GetMoveSpeed())
+    {
+        PlayerTwoVelocity.x -= 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_PlayerTwo->GetPosition().x < Utils::WinSizeX - m_PlayerTwo->GetMoveSpeed())
+    {
+        PlayerTwoVelocity.x += 1;
+    }
+
+    m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
+    m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
 
 }
 
