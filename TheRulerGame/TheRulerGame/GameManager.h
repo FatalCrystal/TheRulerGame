@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Player.h"
 #include <vector>
 
 class GameManager
@@ -10,6 +10,8 @@ private:
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
+	Player* m_PlayerOne = nullptr;
+	Player* m_PlayerTwo = nullptr;
 
 	// Time elapsed between each frame
 	float m_DeltaTime = 0.0f;
@@ -20,22 +22,18 @@ private:
 	sf::Clock m_FrameClock = sf::Clock();
 
 public:
-
 	// Constructor
 	GameManager();
-
 	// Destructor
 	~GameManager();
 
 	// Main SFML game loop
 	void GameLoop();
-
 	// Handles keyboard input for both players
 	void PlayerInput();
 
 	// Handles all game update function 
 	void Update();
-
 	// Handles all game redering
 	void Render();
 };

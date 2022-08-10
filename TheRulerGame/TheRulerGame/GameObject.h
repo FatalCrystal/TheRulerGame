@@ -4,7 +4,7 @@
 
 class GameObject
 {
-private:
+protected:
 	// Object position in screen space (affects position of shape)
 	sf::Vector2f m_Position = sf::Vector2f(0.0f, 0.0f);
 	// Object's visual representation on the screen
@@ -12,6 +12,7 @@ private:
 
 
 public:
+	GameObject();
 	// Constructor with vector position
 	GameObject(sf::Shape* _shape, sf::Vector2f _position);
 	// Constructor with X and Y positions

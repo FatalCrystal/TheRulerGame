@@ -15,6 +15,7 @@ namespace Utils
     const int FrameLimit = 60;
 
     // Commonly used vector operations
+    //--------------------------------
 
     // Return magnitude of the vector
     inline float Magnitude(sf::Vector2f _vector)
@@ -22,10 +23,20 @@ namespace Utils
         return sqrt(powf(_vector.x, 2) + powf(_vector.y, 2));
     }
 
-    // Return the normalized vector
+    // Return the normalized vector (allows for vectors of zero)
     inline sf::Vector2f Normalize(sf::Vector2f _vector)
     {
-        return _vector / Magnitude(_vector);
+        if (_vector.x != 0.0f)
+        {
+            _vector.x /= Magnitude(_vector);
+        }
+
+        if (_vector.y != 0.0f)
+        {
+            _vector.y /= Magnitude(_vector);
+        }
+
+        return _vector;
     }
 
     // Return the Dot Product of the two vectors
