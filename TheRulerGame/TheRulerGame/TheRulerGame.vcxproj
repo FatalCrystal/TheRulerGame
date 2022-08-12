@@ -151,11 +151,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameMangar.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameMangar.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

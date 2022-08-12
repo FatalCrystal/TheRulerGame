@@ -1,8 +1,8 @@
-#include "GameMangar.h"
+#include "GameManager.h"
 
 int main()
 {
-	GameMangar GM;
+	GameManager GM;
 
 	GM.GameLoop();
 }
