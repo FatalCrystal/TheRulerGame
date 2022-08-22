@@ -1,6 +1,7 @@
 #pragma once
 #include "Bullet.h"
 #include "Player.h"
+#include "UIManager.h"
 #include <vector>
 
 class GameManager
@@ -8,6 +9,8 @@ class GameManager
 private:
 	// Main render window
 	sf::RenderWindow* m_Window = nullptr;
+	// UI Manager
+	UIManager* m_UIManager = nullptr;
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
@@ -34,6 +37,8 @@ private:
 	bool m_CanAttackOne;
 	bool m_CanAttackTwo;
 
+	// Total duration of game timer
+	float m_TimerLength = 60;
 	// Measures time elapsed since game start
 	sf::Clock m_GameClock = sf::Clock();
 	// Measures time elapsed since last frame

@@ -5,6 +5,8 @@ GameManager::GameManager()
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
+    m_UIManager = new UIManager();
+
     m_PlayerOne = new Player(new sf::CircleShape(10), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
     m_PlayerTwo = new Player(new sf::CircleShape(10), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
 
@@ -36,13 +38,16 @@ void GameManager::GameLoop()
         sf::Event Event;
         while (m_Window->pollEvent(Event))
         {
+            if (Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Button::Left)
+            {
+                m_UIManager->PollButtons();
+            }
+
             if (Event.type == sf::Event::Closed)
             {
                 m_Window->close();
             }
         }
-
-        PlayerInput();
 
         Update();
 
@@ -56,7 +61,6 @@ void GameManager::PlayerInput()
 {
     sf::Vector2f PlayerOneVelocity = sf::Vector2f(0.0f, 0.0f);
     sf::Vector2f PlayerTwoVelocity = sf::Vector2f(0.0f, 0.0f);
-
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_PlayerOne->GetPosition().y > 0 + m_PlayerOne->GetMoveSpeed())
     {
@@ -126,6 +130,12 @@ void GameManager::PlayerInput()
 
 void GameManager::Update()
 {
+    // Update UI and pass in elapsed time
+    m_UIManager->Update((int)m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
+
+    // Process player input
+    PlayerInput();
+
     for (GameObject* Object : m_Objects)
     {
         Object->Update(m_DeltaTime);
@@ -234,6 +244,8 @@ void GameManager::Render()
     {
         bullet->Render(m_Window);
     }
+
+    m_UIManager->Render(m_Window);
 
 	m_Window->display();
 }
