@@ -11,6 +11,10 @@ GameManager::GameManager()
     m_Objects.push_back(m_PlayerOne);
     m_Objects.push_back(m_PlayerTwo);
 
+    m_AttackCDOne.restart();
+
+    m_AttackCDTwo.restart();
+
 	GameLoop();
 }
 
@@ -54,74 +58,66 @@ void GameManager::GameLoop()
 
 void GameManager::PlayerInput()
 {
+    float playerOneAngle = (3.1415926536 / 180) * (m_PlayerOne->GetShape()->getRotation());
+    float playerTwoAngle = (3.1415926536 / 180) * (m_PlayerTwo->GetShape()->getRotation());
+
     sf::Vector2f PlayerOneVelocity = sf::Vector2f(0.0f, 0.0f);
     sf::Vector2f PlayerTwoVelocity = sf::Vector2f(0.0f, 0.0f);
 
+    PlayerOneVelocity.y = 1.f * -sin(playerOneAngle);
+    PlayerOneVelocity.x = 1.f * cos(playerOneAngle);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && m_PlayerOne->GetPosition().y > 0 + m_PlayerOne->GetMoveSpeed())
+    PlayerTwoVelocity.y = 1.f * -sin(playerTwoAngle);
+    PlayerTwoVelocity.x = 1.f * cos(playerTwoAngle);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_AttackCDOne.getElapsedTime().asMilliseconds() >= m_AttackCDMaxOne)
     {
-        PlayerOneVelocity.y -= 1;
-        m_AttackDirOne.x = 0;
-        m_AttackDirOne.y = -1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && m_PlayerOne->GetPosition().y < Utils::WinSizeY - m_PlayerOne->GetMoveSpeed())
-    {
-        PlayerOneVelocity.y += 1;
-        m_AttackDirOne.x = 0;
-        m_AttackDirOne.y = 1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && m_PlayerOne->GetPosition().x > 0 + m_PlayerOne->GetMoveSpeed())
-    {
-        PlayerOneVelocity.x -= 1;
-        m_AttackDirOne.x = -1;
-        m_AttackDirOne.y = 0;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && m_PlayerOne->GetPosition().x < Utils::WinSizeX - m_PlayerOne->GetMoveSpeed())
-    {
-        PlayerOneVelocity.x += 1;
-        m_AttackDirOne.x = 1;
-        m_AttackDirOne.y = 0;
+        m_AttackCDOne.restart();
+        m_ProjectilesOne.push_back(new Bullet(m_PlayerOne->GetPosition().x, m_PlayerOne->GetPosition().y, PlayerOneVelocity.x, PlayerOneVelocity.y, m_BulletSpeed));
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_PlayerTwo->GetPosition().y > 0 + m_PlayerTwo->GetMoveSpeed())
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && m_AttackCDTwo.getElapsedTime().asMilliseconds() >= m_AttackCDMaxTwo)
     {
-        PlayerTwoVelocity.y -= 1;
-        m_AttackDirTwo.x = 0;
-        m_AttackDirTwo.y = -1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_PlayerTwo->GetPosition().y < Utils::WinSizeY - m_PlayerTwo->GetMoveSpeed())
-    {
-        PlayerTwoVelocity.y += 1;
-        m_AttackDirTwo.x = 0;
-        m_AttackDirTwo.y = 1;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_PlayerTwo->GetPosition().x > 0 + m_PlayerTwo->GetMoveSpeed())
-    {
-        PlayerTwoVelocity.x -= 1;
-        m_AttackDirTwo.x = -1;
-        m_AttackDirTwo.y = 0;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_PlayerTwo->GetPosition().x < Utils::WinSizeX - m_PlayerTwo->GetMoveSpeed())
-    {
-        PlayerTwoVelocity.x += 1;
-        m_AttackDirTwo.x = 1;
-        m_AttackDirTwo.y = 0;
+        m_AttackCDTwo.restart();
+        m_ProjectilesTwo.push_back(new Bullet(m_PlayerTwo->GetPosition().x, m_PlayerTwo->GetPosition().y, PlayerTwoVelocity.x, PlayerTwoVelocity.y, m_BulletSpeed));
     }
 
-    m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
-    m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_CanAttackOne == true)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        m_ProjectilesOne.push_back(new Bullet(m_PlayerOne->GetPosition().x, m_PlayerOne->GetPosition().y, m_AttackDirOne.x, m_AttackDirOne.y, m_BulletSpeed));
+        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(-PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        m_PlayerOne->GetShape()->rotate(playerRotationSpeed);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        m_PlayerOne->GetShape()->rotate(-playerRotationSpeed);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(-PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        m_PlayerTwo->GetShape()->rotate(playerRotationSpeed);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        m_PlayerTwo->GetShape()->rotate(-playerRotationSpeed);
     }
 
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && m_CanAttackTwo == true)
-    {
-        m_ProjectilesTwo.push_back(new Bullet(m_PlayerTwo->GetPosition().x, m_PlayerTwo->GetPosition().y, m_AttackDirTwo.x, m_AttackDirTwo.y, m_BulletSpeed));
-    }
-
+  
 }
 
 void GameManager::Update()
@@ -129,36 +125,6 @@ void GameManager::Update()
     for (GameObject* Object : m_Objects)
     {
         Object->Update(m_DeltaTime);
-    }
-
-    if (m_AttackCDOne < m_AttackCDMaxOne)
-    {
-        m_AttackCDOne += 0.5f;
-    }
-
-    if (m_AttackCDOne >= m_AttackCDMaxOne)
-    {
-        m_CanAttackOne = true;
-        m_AttackCDOne = 0.f;
-    }
-    else
-    {
-        m_CanAttackOne = false;
-    }
-
-    if (m_AttackCDTwo < m_AttackCDMaxTwo)
-    {
-        m_AttackCDTwo += 0.5f;
-    }
-
-    if (m_AttackCDTwo >= m_AttackCDMaxTwo)
-    {
-        m_CanAttackTwo = true;
-        m_AttackCDTwo = 0.f;
-    }
-    else
-    {
-        m_CanAttackTwo = false;
     }
 
     unsigned counterOne = 0;
