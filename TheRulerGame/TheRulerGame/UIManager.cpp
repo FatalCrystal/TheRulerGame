@@ -94,7 +94,7 @@ void UIManager::PollButtons()
 	for (Button* CurrentButton : m_Buttons)
 	{
 		// If button rect contains mouse position, activate button's OnClick and break the loop 
-		if (CurrentButton->GetSprite()->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition()))
+		if (CurrentButton->GetSprite() != nullptr && CurrentButton->GetSprite()->getGlobalBounds().contains((sf::Vector2f)sf::Mouse::getPosition()))
 		{
 			CurrentButton->ActivateOnClick();
 			break;

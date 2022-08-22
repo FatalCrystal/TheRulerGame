@@ -41,7 +41,11 @@ void Button::SetPosition(float _posX, float _posY)
 void Button::SetSprite(sf::Sprite* _sprite)
 {
 	m_Sprite = _sprite;
-	m_Sprite->setOrigin(m_Sprite->getGlobalBounds().width / 2, m_Sprite->getGlobalBounds().height / 2);
+
+	if (m_Sprite != nullptr)
+	{
+		m_Sprite->setOrigin(m_Sprite->getGlobalBounds().width / 2, m_Sprite->getGlobalBounds().height / 2);
+	}
 }
 
 sf::Vector2f Button::GetPosition() const
