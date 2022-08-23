@@ -11,6 +11,7 @@ protected:
 	sf::Shape* m_Shape = nullptr;
 
 public:
+	// Default constructor
 	GameObject();
 	// Constructor with vector position
 	GameObject(sf::Shape* _shape, sf::Vector2f _position);

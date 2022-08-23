@@ -14,9 +14,12 @@ private:
 	std::string m_Name = "Player";
 	// Shape color
 	sf::Color m_Color = sf::Color::White;
+	// The other player
 	Player* m_Enemy = nullptr;
 
+	// Clock to track attack cooldown
 	sf::Clock m_AttackCooldown = sf::Clock();
+	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 0.2f;
 
 	// Direction the player is facing
@@ -54,6 +57,7 @@ public:
 	// Set whether or not the player holds the crown
 	void SetCrown(bool _hasCrown);
 
+	// Return name
 	std::string GetName() const;
 	// Return direction
 	sf::Vector2f GetDirection() const;
@@ -66,7 +70,9 @@ public:
 	// Return whether or not the player holds the crown
 	bool HasCrown() const;
 
+	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);
+	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles);
 };
 

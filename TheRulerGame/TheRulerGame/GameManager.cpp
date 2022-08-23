@@ -6,7 +6,7 @@ GameManager::GameManager()
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
     m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
-    m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
+    m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
 
     m_PlayerOne->SetEnemy(m_PlayerTwo);
     m_PlayerTwo->SetEnemy(m_PlayerOne);

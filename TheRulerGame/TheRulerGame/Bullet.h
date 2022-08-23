@@ -8,13 +8,13 @@ class Bullet
 {
 private:
 	// Shape
-	sf::CircleShape* m_Shape;
+	sf::Shape* m_Shape = nullptr;
 	// Player that can be damaged by the bullet
-	Player* m_Target;
+	Player* m_Target = nullptr;
 	// Movement direction
-	sf::Vector2f m_Direction;
+	sf::Vector2f m_Direction = {};
 	// Movement Speed
-	float m_MoveSpeed;
+	float m_MoveSpeed = 0.0f;
 
 public:
 	// Constructor
@@ -24,6 +24,7 @@ public:
 
 	// Return Target
 	Player* GetTarget() const;
+	sf::Shape* GetShape();
 
 	// Per-frame processing, runs every frame
 	void Update();
