@@ -8,24 +8,18 @@ GameManager::GameManager()
     m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
     m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
 
+    m_PlayerOne->SetEnemy(m_PlayerTwo);
+    m_PlayerTwo->SetEnemy(m_PlayerOne);
+
     m_Objects.push_back(m_PlayerOne);
     m_Objects.push_back(m_PlayerTwo);
-
-    m_AttackCDOne.restart();
-
-    m_AttackCDTwo.restart();
 
 	GameLoop();
 }
 
 GameManager::~GameManager()
 {
-	delete m_Window;
-    
-    for (auto* i : m_ProjectilesOne)
-    {
-        delete i;
-    }
+
 }
 
 void GameManager::GameLoop()
@@ -35,7 +29,7 @@ void GameManager::GameLoop()
 
     while (m_Window->isOpen())
     {
-        m_DeltaTime = m_FrameClock.getElapsedTime().asMilliseconds();
+        m_DeltaTime = (float)m_FrameClock.getElapsedTime().asMilliseconds();
 
         sf::Event Event;
         while (m_Window->pollEvent(Event))
@@ -61,16 +55,14 @@ void GameManager::PlayerInput()
     float PlayerOneAngle = 0.0f;
     float PlayerTwoAngle = 0.0f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_AttackCDOne.getElapsedTime().asMilliseconds() >= m_AttackCDMaxOne)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        m_AttackCDOne.restart();
-        m_ProjectilesOne.push_back(new Bullet(m_PlayerOne->GetPosition().x, m_PlayerOne->GetPosition().y, m_PlayerOne->GetDirection().x, m_PlayerOne->GetDirection().y, m_BulletSpeed));
+        m_PlayerOne->Shoot(&m_Projectiles);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && m_AttackCDTwo.getElapsedTime().asMilliseconds() >= m_AttackCDMaxTwo)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
     {
-        m_AttackCDTwo.restart();
-        m_ProjectilesTwo.push_back(new Bullet(m_PlayerTwo->GetPosition().x, m_PlayerTwo->GetPosition().y, m_PlayerTwo->GetDirection().x, m_PlayerTwo->GetDirection().y, m_BulletSpeed));
+        m_PlayerTwo->Shoot(&m_Projectiles);
     }
     
     // PLAYER ONE ROTATION AND MOVEMENT
@@ -84,7 +76,7 @@ void GameManager::PlayerInput()
         PlayerOneAngle += m_PlayerOne->GetRotationSpeed();
     }
 
-    m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (3.1415926536 / 180)));
+    m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (float)(3.1415926536 / 180)));
     m_PlayerOne->GetShape()->rotate(PlayerOneAngle);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -107,7 +99,7 @@ void GameManager::PlayerInput()
         PlayerTwoAngle += m_PlayerTwo->GetRotationSpeed();
     }
 
-    m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (3.1415926536 / 180)));
+    m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (float)(3.1415926536 / 180)));
     m_PlayerTwo->GetShape()->rotate(PlayerTwoAngle);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -128,59 +120,13 @@ void GameManager::Update()
         Object->Update(m_DeltaTime);
     }
 
-    unsigned counterOne = 0;
-    for (auto* bullet : m_ProjectilesOne)
+    for (Bullet* Projectile : m_Projectiles)
     {
-        bullet->Update();
-
-        if (bullet->GetBounds().intersects(m_PlayerTwo->GetShape()->getGlobalBounds()))
-        {
-            m_PlayerTwo->SetCrown(false);
-            m_PlayerOne->SetCrown(true);
-
-            std::cout << "Player One Has Crown" << std::endl;
-
-            delete m_ProjectilesOne.at(counterOne);
-            m_ProjectilesOne.erase(m_ProjectilesOne.begin() + counterOne);
-            --counterOne;
-        }
-
-        if (bullet->GetBounds().top + bullet->GetBounds().height < 0)
-        {
-            delete m_ProjectilesOne.at(counterOne);
-            m_ProjectilesOne.erase(m_ProjectilesOne.begin() + counterOne);
-            --counterOne;
-        }
-
-        ++counterOne;
+        Projectile->Update();
     }
 
-    unsigned counterTwo = 0;
-    for (auto* bullet : m_ProjectilesTwo)
-    {
-        bullet->Update();
-
-        if (bullet->GetBounds().intersects(m_PlayerOne->GetShape()->getGlobalBounds()))
-        {
-            m_PlayerTwo->SetCrown(true);
-            m_PlayerOne->SetCrown(false);
-
-            std::cout << "Player Two Has Crown" << std::endl;
-
-            delete m_ProjectilesTwo.at(counterTwo);
-            m_ProjectilesTwo.erase(m_ProjectilesTwo.begin() + counterTwo);
-            --counterTwo;
-        }
-
-        if (bullet->GetBounds().top + bullet->GetBounds().height < 0)
-        {
-            delete m_ProjectilesTwo.at(counterTwo);
-            m_ProjectilesTwo.erase(m_ProjectilesTwo.begin() + counterTwo);
-            --counterTwo;
-        }
-
-        ++counterTwo;
-    }
+    m_PlayerOne->Update(&m_Projectiles);
+    m_PlayerTwo->Update(&m_Projectiles);
 }
 
 void GameManager::Render()
@@ -192,14 +138,9 @@ void GameManager::Render()
         Object->Render(m_Window);
     }
 
-    for (auto* bullet : m_ProjectilesOne)
+    for (Bullet* Projectile : m_Projectiles)
     {
-        bullet->Render(m_Window);
-    }
-
-    for (auto* bullet : m_ProjectilesTwo)
-    {
-        bullet->Render(m_Window);
+        Projectile->Render(m_Window);
     }
 
 	m_Window->display();

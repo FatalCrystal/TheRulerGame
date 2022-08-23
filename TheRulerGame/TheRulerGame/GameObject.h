@@ -10,7 +10,6 @@ protected:
 	// Object's visual representation on the screen
 	sf::Shape* m_Shape = nullptr;
 
-
 public:
 	GameObject();
 	// Constructor with vector position

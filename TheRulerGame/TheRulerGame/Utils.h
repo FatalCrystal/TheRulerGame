@@ -57,7 +57,7 @@ namespace Utils
         return sqrt(powf(_vectorB.x - _vectorA.x, 2) + powf(_vectorB.y - _vectorA.y, 2));
     }
 
-    // Return the rotated vector
+    // Return the rotated vector in radians
     inline sf::Vector2f Rotate(sf::Vector2f _vector, float _angle)
     {
         return sf::Vector2f(_vector.x * cos(_angle) - _vector.y * sin(_angle), _vector.x * sin(_angle) + _vector.y * cos(_angle));

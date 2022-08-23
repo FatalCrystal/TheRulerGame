@@ -14,25 +14,16 @@ private:
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
-	std::vector<Bullet*> m_ProjectilesOne;
-	std::vector<Bullet*> m_ProjectilesTwo;
+	// Contains all projectiles in the game
+	std::vector<Bullet*> m_Projectiles = {};
 
+	// Player One
 	Player* m_PlayerOne = nullptr;
+	// Player Two
 	Player* m_PlayerTwo = nullptr;
 
 	// Time elapsed between each frame
 	float m_DeltaTime = 0.0f;
-
-	sf::Clock m_AttackCDOne;
-	sf::Int32 m_AttackCDMaxOne = 200;
-
-	sf::Clock m_AttackCDTwo;
-	sf::Int32 m_AttackCDMaxTwo = 200;
-
-	float m_BulletSpeed = 10;
-
-	bool m_CanAttackOne;
-	bool m_CanAttackTwo;
 
 	// Total duration of game timer
 	float m_TimerLength = 60;
