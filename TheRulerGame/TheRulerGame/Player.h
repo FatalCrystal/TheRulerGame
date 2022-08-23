@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Bullet.h"
 
 enum class Pickup
 {
@@ -11,6 +12,12 @@ class Player : public GameObject
 private:
 	// Name of the player (for debug and UI)
 	std::string m_Name = "Player";
+	// Shape color
+	sf::Color m_Color = sf::Color::White;
+	Player* m_Enemy = nullptr;
+
+	sf::Clock m_AttackCooldown = sf::Clock();
+	float m_AttackCooldownDuration = 0.2f;
 
 	// Direction the player is facing
 	sf::Vector2f m_Direction = sf::Vector2f(0.0f, -1.0f);
@@ -32,6 +39,10 @@ public:
 	// Destructor
 	~Player();
 
+	// Set enemy
+	void SetEnemy(Player* _enemy);
+	// Set shape
+	void SetShape(sf::Shape* _shape);
 	// Set direction
 	void SetDirection(sf::Vector2f _direction);
 	// Set movement speed
@@ -43,6 +54,7 @@ public:
 	// Set whether or not the player holds the crown
 	void SetCrown(bool _hasCrown);
 
+	std::string GetName() const;
 	// Return direction
 	sf::Vector2f GetDirection() const;
 	// Return movement speed
@@ -53,5 +65,8 @@ public:
 	Pickup GetPickup() const;
 	// Return whether or not the player holds the crown
 	bool HasCrown() const;
+
+	void Shoot(std::vector<Bullet*>* _projectiles);
+	void Update(std::vector<Bullet*>* _projectiles);
 };
 
