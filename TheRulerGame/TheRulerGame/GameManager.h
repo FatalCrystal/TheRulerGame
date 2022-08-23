@@ -23,16 +23,15 @@ private:
 	// Time elapsed between each frame
 	float m_DeltaTime = 0.0f;
 
-	float m_AttackCDOne;
-	float m_AttackCDMaxOne = 10.f;
+	sf::Clock m_AttackCDOne;
+	sf::Int32 m_AttackCDMaxOne = 200;
 
-	float m_AttackCDTwo;
-	float m_AttackCDMaxTwo = 10.f;
+	sf::Clock m_AttackCDTwo;
+	sf::Int32 m_AttackCDMaxTwo = 200;
 
 	float m_BulletSpeed = 10;
 
-	sf::Vector2f m_AttackDirOne = sf::Vector2f(0.f, -1.f);
-	sf::Vector2f m_AttackDirTwo = sf::Vector2f(0.f, -1.f);
+	float playerRotationSpeed = 3.f;
 
 	bool m_CanAttackOne;
 	bool m_CanAttackTwo;
