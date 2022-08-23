@@ -103,7 +103,7 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 {
 	if (m_AttackCooldown.getElapsedTime().asSeconds() > m_AttackCooldownDuration)
 	{
-		_projectiles->push_back(new Bullet(m_Position.x, m_Position.y, m_Direction.x, m_Direction.y, 10.0f, m_Enemy));
+		_projectiles->push_back(new Bullet(m_Position, m_Direction, 10.0f, m_Enemy));
 		m_AttackCooldown.restart();
 	}
 }
@@ -113,10 +113,10 @@ void Player::Update(std::vector<Bullet*>* _projectiles)
 	int Counter = 0;
 	for (Bullet* Projectile : *_projectiles)
 	{
-		if (Projectile->GetTarget() == this && Projectile->GetBounds().intersects(m_Shape->getGlobalBounds()))
+		if (Projectile->GetTarget() == this && Projectile->GetShape()->getGlobalBounds().intersects(m_Shape->getGlobalBounds()))
 		{
-
-			if (m_HasCrown)
+			std::cout << "Hit " << m_Name << std::endl;
+			if (m_HasCrown || (!m_HasCrown && !m_Enemy->HasCrown()))
 			{
 				SetCrown(false);
 				m_Enemy->SetCrown(true);
