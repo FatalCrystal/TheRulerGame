@@ -31,8 +31,6 @@ private:
 
 	float m_BulletSpeed = 10;
 
-	float playerRotationSpeed = 3.f;
-
 	bool m_CanAttackOne;
 	bool m_CanAttackTwo;
 
