@@ -5,8 +5,8 @@ GameManager::GameManager()
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
-    m_PlayerOne = new Player(new sf::CircleShape(10), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
-    m_PlayerTwo = new Player(new sf::CircleShape(10), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
+    m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
+    m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player One", sf::Color::Blue);
 
     m_Objects.push_back(m_PlayerOne);
     m_Objects.push_back(m_PlayerTwo);
@@ -58,65 +58,66 @@ void GameManager::GameLoop()
 
 void GameManager::PlayerInput()
 {
-    float playerOneAngle = (3.1415926536 / 180) * (m_PlayerOne->GetShape()->getRotation());
-    float playerTwoAngle = (3.1415926536 / 180) * (m_PlayerTwo->GetShape()->getRotation());
-
-    sf::Vector2f PlayerOneVelocity = sf::Vector2f(0.0f, 0.0f);
-    sf::Vector2f PlayerTwoVelocity = sf::Vector2f(0.0f, 0.0f);
-
-    PlayerOneVelocity.y = 1.f * -sin(playerOneAngle);
-    PlayerOneVelocity.x = 1.f * cos(playerOneAngle);
-
-    PlayerTwoVelocity.y = 1.f * -sin(playerTwoAngle);
-    PlayerTwoVelocity.x = 1.f * cos(playerTwoAngle);
+    float PlayerOneAngle = 0.0f;
+    float PlayerTwoAngle = 0.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_AttackCDOne.getElapsedTime().asMilliseconds() >= m_AttackCDMaxOne)
     {
         m_AttackCDOne.restart();
-        m_ProjectilesOne.push_back(new Bullet(m_PlayerOne->GetPosition().x, m_PlayerOne->GetPosition().y, PlayerOneVelocity.x, PlayerOneVelocity.y, m_BulletSpeed));
+        m_ProjectilesOne.push_back(new Bullet(m_PlayerOne->GetPosition().x, m_PlayerOne->GetPosition().y, m_PlayerOne->GetDirection().x, m_PlayerOne->GetDirection().y, m_BulletSpeed));
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && m_AttackCDTwo.getElapsedTime().asMilliseconds() >= m_AttackCDMaxTwo)
     {
         m_AttackCDTwo.restart();
-        m_ProjectilesTwo.push_back(new Bullet(m_PlayerTwo->GetPosition().x, m_PlayerTwo->GetPosition().y, PlayerTwoVelocity.x, PlayerTwoVelocity.y, m_BulletSpeed));
+        m_ProjectilesTwo.push_back(new Bullet(m_PlayerTwo->GetPosition().x, m_PlayerTwo->GetPosition().y, m_PlayerTwo->GetDirection().x, m_PlayerTwo->GetDirection().y, m_BulletSpeed));
     }
+    
+    // PLAYER ONE ROTATION AND MOVEMENT
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(-PlayerOneVelocity) * m_PlayerOne->GetMoveSpeed()));
-    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        m_PlayerOne->GetShape()->rotate(playerRotationSpeed);
+        PlayerOneAngle -= m_PlayerOne->GetRotationSpeed();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        m_PlayerOne->GetShape()->rotate(-playerRotationSpeed);
+        PlayerOneAngle += m_PlayerOne->GetRotationSpeed();
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (3.1415926536 / 180)));
+    m_PlayerOne->GetShape()->rotate(PlayerOneAngle);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
+        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(-PlayerTwoVelocity) * m_PlayerTwo->GetMoveSpeed()));
+        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed()));
     }
+
+    // PLAYER TWO ROTATION AND MOVEMENT
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        m_PlayerTwo->GetShape()->rotate(playerRotationSpeed);
+        PlayerTwoAngle -= m_PlayerTwo->GetRotationSpeed();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        m_PlayerTwo->GetShape()->rotate(-playerRotationSpeed);
+        PlayerTwoAngle += m_PlayerTwo->GetRotationSpeed();
     }
 
+    m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (3.1415926536 / 180)));
+    m_PlayerTwo->GetShape()->rotate(PlayerTwoAngle);
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * m_PlayerTwo->GetMoveSpeed()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed()));
+    }
   
 }
 
