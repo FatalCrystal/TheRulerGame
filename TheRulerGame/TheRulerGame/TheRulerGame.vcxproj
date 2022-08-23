@@ -156,6 +156,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PickUps.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PickUps.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils.h" />
