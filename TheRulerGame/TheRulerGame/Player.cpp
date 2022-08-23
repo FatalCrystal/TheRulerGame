@@ -33,6 +33,7 @@ void Player::SetPickup(Pickup _pickup)
 void Player::SetCrown(bool _hasCrown)
 {
 	m_HasCrown = _hasCrown;
+	//m_Shape->setFillColor(sf::Color::Green);
 }
 
 float Player::GetMoveSpeed() const

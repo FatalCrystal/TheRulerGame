@@ -1,5 +1,6 @@
 #include "GameManager.h"
 
+
 GameManager::GameManager()
 {
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
@@ -16,6 +17,8 @@ GameManager::GameManager()
     m_AttackCDTwo.restart();
 
 	GameLoop();
+
+
 }
 
 GameManager::~GameManager()
@@ -36,6 +39,8 @@ void GameManager::GameLoop()
     while (m_Window->isOpen())
     {
         m_DeltaTime = m_FrameClock.getElapsedTime().asMilliseconds();
+        
+
 
         sf::Event Event;
         while (m_Window->pollEvent(Event))
@@ -47,6 +52,8 @@ void GameManager::GameLoop()
         }
 
         PlayerInput();
+
+      
 
         Update();
 
@@ -122,6 +129,9 @@ void GameManager::PlayerInput()
 
 void GameManager::Update()
 {
+    
+    
+
     for (GameObject* Object : m_Objects)
     {
         Object->Update(m_DeltaTime);
@@ -138,6 +148,7 @@ void GameManager::Update()
             m_PlayerOne->SetCrown(true);
 
             std::cout << "Player One Has Crown" << std::endl;
+            
 
             delete m_ProjectilesOne.at(counterOne);
             m_ProjectilesOne.erase(m_ProjectilesOne.begin() + counterOne);
@@ -179,7 +190,10 @@ void GameManager::Update()
         }
 
         ++counterTwo;
+
+
     }
+
 }
 
 void GameManager::Render()

@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "PickUps.h"
 #include <vector>
 
 class GameManager
@@ -43,6 +44,8 @@ private:
 	// Measures time elapsed since last frame
 	sf::Clock m_FrameClock = sf::Clock();
 
+	
+
 public:
 	// Constructor
 	GameManager();
@@ -53,6 +56,8 @@ public:
 	void GameLoop();
 	// Handles keyboard input for both players
 	void PlayerInput();
+
+
 
 	// Handles all game update function 
 	void Update();
