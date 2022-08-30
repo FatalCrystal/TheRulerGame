@@ -5,6 +5,8 @@ GameManager::GameManager()
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
+    m_UIManager = new UIManager();
+
     m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
     m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
 
@@ -127,6 +129,8 @@ void GameManager::Update()
 
     m_PlayerOne->Update(&m_Projectiles);
     m_PlayerTwo->Update(&m_Projectiles);
+
+    m_UIManager->Update(m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
 }
 
 void GameManager::Render()
@@ -142,6 +146,8 @@ void GameManager::Render()
     {
         Projectile->Render(m_Window);
     }
+
+    m_UIManager->Render(m_Window);
 
 	m_Window->display();
 }
