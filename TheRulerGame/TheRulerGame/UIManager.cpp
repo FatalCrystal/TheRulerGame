@@ -1,11 +1,12 @@
 #include "UIManager.h"
 #include "Utils.h"
+#include <iostream>
 
 UIManager::UIManager()
 {
-	// m_Font.loadFromFile(".ttf");
+	m_Font.loadFromFile("arial.ttf");
 
-	SetCurrentDisplay(UIDisplay::MainMenu, UIManager::GameData());
+	SetCurrentDisplay(UIDisplay::Gameplay, UIManager::GameData());
 }
 
 UIManager::~UIManager()
@@ -107,7 +108,9 @@ void UIManager::Update(float _timeRemaining)
 	// In gameplay display mode, update the timer text based on the remaining time
 	if (m_CurrentDisplay == UIDisplay::Gameplay)
 	{
-		m_TextLabels[0]->setString(std::to_string(_timeRemaining));
+		m_TextLabels[0]->setString(std::to_string((int)_timeRemaining));
+		m_TextLabels[0]->setOrigin(m_TextLabels[0]->getGlobalBounds().width / 2, m_TextLabels[0]->getGlobalBounds().height / 2);
+		m_TextLabels[0]->setPosition(Utils::WinCenterX, 50);
 	}
 }
 
