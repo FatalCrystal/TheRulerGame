@@ -29,6 +29,8 @@ void GameManager::GameLoop()
 	m_GameClock.restart();
 	m_FrameClock.restart();
 
+  
+
     while (m_Window->isOpen())
     {
         m_DeltaTime = (float)m_FrameClock.getElapsedTime().asMilliseconds();
@@ -48,8 +50,14 @@ void GameManager::GameLoop()
 
         Render();
 
+        m_GameClock.getElapsedTime();
+        std::cout << m_GameClock.getElapsedTime().asSeconds() << std::endl;
+
+        
+
         m_FrameClock.restart();
     }
+    
 }
 
 void GameManager::PlayerInput()
