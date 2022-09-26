@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "SceneManager.h"
 #include <vector>
 
 class GameManager
@@ -14,6 +15,7 @@ private:
 
 	GameState m_GameState = GameState::MainMenu;
 	GameState m_PreviousGameState = GameState::None;
+	SceneManager sceneManager;
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};

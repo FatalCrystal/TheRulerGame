@@ -1,11 +1,14 @@
 #include "GameManager.h"
 
+
 GameManager::GameManager()
 {
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
     m_UIManager = new UIManager();
+    
+    sceneManager.LoadRandomScene();
 
 	GameLoop();
 }
@@ -171,6 +174,8 @@ void GameManager::Update()
 void GameManager::Render()
 {
 	m_Window->clear();
+    
+    sceneManager.RenderLevel(m_Window);
 
     for (GameObject* Object : m_Objects)
     {
