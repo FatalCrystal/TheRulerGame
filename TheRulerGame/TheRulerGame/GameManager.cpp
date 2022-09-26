@@ -7,15 +7,6 @@ GameManager::GameManager()
 
     m_UIManager = new UIManager();
 
-    m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
-    m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
-
-    m_PlayerOne->SetEnemy(m_PlayerTwo);
-    m_PlayerTwo->SetEnemy(m_PlayerOne);
-
-    m_Objects.push_back(m_PlayerOne);
-    m_Objects.push_back(m_PlayerTwo);
-
 	GameLoop();
 }
 
@@ -36,13 +27,21 @@ void GameManager::GameLoop()
         sf::Event Event;
         while (m_Window->pollEvent(Event))
         {
-            if (Event.type == sf::Event::Closed)
+            if (Event.type == sf::Event::Closed || m_GameState == GameState::Exiting)
             {
                 m_Window->close();
             }
+
+            if (Event.type == sf::Event::MouseButtonPressed && Event.mouseButton.button == sf::Mouse::Button::Left)
+            {
+                m_UIManager->PollButtons(m_Window);
+            }
         }
 
-        PlayerInput();
+        if (m_GameState != m_PreviousGameState)
+        {
+            ChangeGameState();
+        }
 
         Update();
 
@@ -115,22 +114,58 @@ void GameManager::PlayerInput()
   
 }
 
+void GameManager::ChangeGameState()
+{
+    if (m_GameState == GameState::Gameplay)
+    {
+        m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
+        m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
+
+        m_PlayerOne->SetEnemy(m_PlayerTwo);
+        m_PlayerTwo->SetEnemy(m_PlayerOne);
+
+        m_Objects.push_back(m_PlayerOne);
+        m_Objects.push_back(m_PlayerTwo);
+
+        m_GameClock.restart();
+    }
+    else if (m_PreviousGameState == GameState::Gameplay)
+    {
+        for (GameObject* CurrentObject : m_Objects)
+        {
+            delete CurrentObject;
+            CurrentObject = nullptr;
+        }
+
+        m_Objects.clear();
+        m_PlayerOne = nullptr;
+        m_PlayerTwo = nullptr;
+    }
+
+    m_PreviousGameState = m_GameState;
+}
+
 void GameManager::Update()
 {
-    for (GameObject* Object : m_Objects)
+    if (m_GameState == GameState::Gameplay)
     {
-        Object->Update(m_DeltaTime);
+        PlayerInput();
+
+        for (GameObject* Object : m_Objects)
+        {
+            Object->Update(m_DeltaTime);
+        }
+
+        for (Bullet* Projectile : m_Projectiles)
+        {
+            Projectile->Update();
+        }
+
+        m_PlayerOne->Update(&m_Projectiles);
+        m_PlayerTwo->Update(&m_Projectiles);
     }
 
-    for (Bullet* Projectile : m_Projectiles)
-    {
-        Projectile->Update();
-    }
-
-    m_PlayerOne->Update(&m_Projectiles);
-    m_PlayerTwo->Update(&m_Projectiles);
-
-    m_UIManager->Update(m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
+    m_UIManager->Update(&m_GameState, m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
 }
 
 void GameManager::Render()

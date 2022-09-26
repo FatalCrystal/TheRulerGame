@@ -165,6 +165,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="PickUps.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="UIManager.h" />

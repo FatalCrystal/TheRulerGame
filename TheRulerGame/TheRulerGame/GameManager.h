@@ -12,6 +12,9 @@ private:
 	// UI Manager
 	UIManager* m_UIManager = nullptr;
 
+	GameState m_GameState = GameState::MainMenu;
+	GameState m_PreviousGameState = GameState::None;
+
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
 	// Contains all projectiles in the game
@@ -42,6 +45,8 @@ public:
 	void GameLoop();
 	// Handles keyboard input for both players
 	void PlayerInput();
+
+	void ChangeGameState();
 
 	// Handles all game update function 
 	void Update();

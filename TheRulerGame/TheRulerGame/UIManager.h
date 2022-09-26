@@ -1,16 +1,7 @@
 #pragma once
 #include <vector>
+#include "GameState.h"
 #include "Button.h"
-
-// UI display modes
-enum class UIDisplay
-{
-	MainMenu,
-	Gameplay,
-	EndScreen,
-	Options,
-	None,
-};
 
 class UIManager
 {
@@ -35,8 +26,8 @@ private:
 	// Vector containing textures used for button sprites
 	std::vector<sf::Texture> m_Textures = {};
 
-	// Current UI display mode
-	UIDisplay m_CurrentDisplay = UIDisplay::MainMenu;
+	// Game state as of the previous frame
+	GameState m_PreviousState = GameState::None;
 
 public:
 	// Constructor
@@ -45,17 +36,14 @@ public:
 	~UIManager();
 
 	// Set current UI display mode
-	void SetCurrentDisplay(UIDisplay _display, UIManager::GameData _gameData);
-
-	// Return current UI display mode
-	UIDisplay GetCurrentDisplay() const;
+	void UpdateDisplayState(GameState* _state, UIManager::GameData _gameData);
 
 	// Populate m_Textures with textures loaded from image files
 	void LoadTextures();
 	// On mouse click, check mouse position against button rects and activate clicked button
-	void PollButtons();
+	void PollButtons(sf::RenderWindow *_window);
 	// Per-frame processes, runs every frame
-	void Update(float _timeRemaining);
+	void Update(GameState* _state, float _timeRemaining);
 	// Draw all UI elements to the screen, runs every frame
 	void Render(sf::RenderWindow* _window);
 };
