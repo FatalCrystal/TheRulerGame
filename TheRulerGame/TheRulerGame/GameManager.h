@@ -2,6 +2,7 @@
 #include "Bullet.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "SceneManager.h"
 #include <vector>
 
 class GameManager
@@ -11,6 +12,8 @@ private:
 	sf::RenderWindow* m_Window = nullptr;
 	// UI Manager
 	UIManager* m_UIManager = nullptr;
+
+	SceneManager sceneManager;
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};

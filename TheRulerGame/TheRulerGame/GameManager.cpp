@@ -1,11 +1,14 @@
 #include "GameManager.h"
 
+
 GameManager::GameManager()
 {
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
     m_UIManager = new UIManager();
+    
+    sceneManager.LoadRandomScene();
 
     m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
     m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
@@ -144,6 +147,8 @@ void GameManager::Update()
 void GameManager::Render()
 {
 	m_Window->clear();
+    
+    sceneManager.RenderLevel(m_Window);
 
     for (GameObject* Object : m_Objects)
     {
