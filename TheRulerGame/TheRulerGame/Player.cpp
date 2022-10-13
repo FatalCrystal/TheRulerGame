@@ -5,6 +5,7 @@ Player::Player(sf::Shape* _shape, sf::Vector2f _position, std::string _name, sf:
 
 	m_Color = _color;
 	SetShape(_shape);
+	SetAudio();
 	SetPosition(_position);
 	m_Name = _name;
 }
@@ -13,6 +14,7 @@ Player::Player(sf::Shape* _shape, float _posX, float _posY, std::string _name, s
 {
 	m_Color = _color;
 	SetShape(_shape);
+	SetAudio();
 	SetPosition(_posX, _posY);
 	m_Name = _name;
 }
@@ -69,6 +71,34 @@ void Player::SetCrown(bool _hasCrown)
 	}
 }
 
+void Player::SetAudio()
+{
+	if (!m_PlayerShootSB.loadFromFile("Resources/Sounds/Shoot.wav"))
+	{
+		std::cout << "Error Shoot.wav not loaded" << std::endl;
+	}
+
+	if (!m_PlayerHitSB.loadFromFile("Resources/Sounds/Hit.wav"))
+	{
+		std::cout << "Error Hit.wav not loaded" << std::endl;
+	}
+	
+	if (!m_PlayerCrownSwitchSB.loadFromFile("Resources/Sounds/Crown_Switch.wav"))
+	{
+		std::cout << "Error Crown_Switch.wav not loaded" << std::endl;
+	}
+	
+	if (!m_PlayerPickUpSB.loadFromFile("Resources/Sounds/Powerup.wav"))
+	{
+		std::cout << "Error Powerup.wav not loaded" << std::endl;
+	}
+
+	m_PlayerShootSound.setBuffer(m_PlayerShootSB);
+	m_PlayerHitSound.setBuffer(m_PlayerHitSB);
+	m_PlayerCrownSwitchSound.setBuffer(m_PlayerCrownSwitchSB);
+	m_PlayerPickUpSound.setBuffer(m_PlayerPickUpSB);
+}
+
 std::string Player::GetName() const
 {
 	return m_Name;
@@ -77,6 +107,16 @@ std::string Player::GetName() const
 sf::Vector2f Player::GetDirection() const
 {
 	return m_Direction;
+}
+
+sf::Sound Player::GetPickUpSound() const
+{
+	return m_PlayerPickUpSound;
+}
+
+sf::Sound Player::GetHitSound() const
+{
+	return m_PlayerHitSound;
 }
 
 float Player::GetMoveSpeed() const
@@ -103,6 +143,7 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 {
 	if (m_AttackCooldown.getElapsedTime().asSeconds() > m_AttackCooldownDuration)
 	{
+		m_PlayerShootSound.play();
 		_projectiles->push_back(new Bullet(m_Position, m_Direction, 10.0f, m_Enemy));
 		m_AttackCooldown.restart();
 	}
@@ -115,9 +156,11 @@ void Player::Update(std::vector<Bullet*>* _projectiles)
 	{
 		if (Projectile->GetTarget() == this && Projectile->GetShape()->getGlobalBounds().intersects(m_Shape->getGlobalBounds()))
 		{
+			m_PlayerHitSound.play();
 			std::cout << "Hit " << m_Name << std::endl;
 			if (m_HasCrown || (!m_HasCrown && !m_Enemy->HasCrown()))
 			{
+				m_PlayerCrownSwitchSound.play();
 				SetCrown(false);
 				m_Enemy->SetCrown(true);
 
