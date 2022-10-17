@@ -120,6 +120,8 @@ void GameManager::PlayerInput()
 
 void GameManager::Update()
 {
+    PickUps.SpawnPickUps(); 
+
     for (GameObject* Object : m_Objects)
     {
         Object->Update(m_DeltaTime);
@@ -141,6 +143,8 @@ void GameManager::Render()
 	m_Window->clear();
     
     sceneManager.RenderLevel(m_Window);
+
+    PickUps.RenderPickUps(m_Window); 
 
     for (GameObject* Object : m_Objects)
     {

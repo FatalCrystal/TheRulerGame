@@ -156,7 +156,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PickUps.cpp" />
+    <ClCompile Include="PickUpSpawn.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Tile.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="PickUps.h" />
+    <ClInclude Include="PickUpSpawn.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Tile.h" />

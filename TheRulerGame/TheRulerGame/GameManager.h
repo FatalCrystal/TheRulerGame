@@ -3,7 +3,8 @@
 #include "Player.h"
 #include "UIManager.h"
 #include "SceneManager.h"
-#include <vector>
+#include "PickUpSpawn.h"
+
 
 class GameManager
 {
@@ -14,6 +15,9 @@ private:
 	UIManager* m_UIManager = nullptr;
 
 	SceneManager sceneManager;
+
+	PickUpSpawn PickUps; 
+
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
