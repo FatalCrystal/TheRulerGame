@@ -1,9 +1,9 @@
 #include "GameManager.h"
 
+GameManager GM;
+
 int main()
 {
-	GameManager GM;
-
 	GM.GameLoop();
 
 	return 0;
