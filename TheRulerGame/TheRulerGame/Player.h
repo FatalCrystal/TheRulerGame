@@ -14,7 +14,8 @@ private:
 	// Name of the player (for debug and UI)
 	std::string m_Name = "Player";
 	// Shape color
-	sf::Color m_Color = sf::Color::White;
+	sf::Texture m_Texture;
+	sf::Sprite* m_Sprite;
 	// The other player
 	Player* m_Enemy = nullptr;
 
@@ -48,20 +49,22 @@ private:
 
 public:
 	// Constructor with vector position
-	Player(sf::Shape* _shape, sf::Vector2f _position, std::string _name, sf::Color _color);
-	// Constructor with X and Y positions
-	Player(sf::Shape* _shape, float _posX, float _posY, std::string _name, sf::Color _color);
+	Player(std::string _spritePath, sf::Vector2f _position, std::string _name);
 	// Destructor
 	~Player();
 
 	// Set enemy
 	void SetEnemy(Player* _enemy);
 	// Set shape
-	void SetShape(sf::Shape* _shape);
+	void SetSprite(sf::Sprite* _sprite);
+	// Set position
+	void SetPosition(sf::Vector2f _position);
 	// Set direction
 	void SetDirection(sf::Vector2f _direction);
 	// Set movement speed
 	void SetMoveSpeed(float _moveSpeed);
+	// Set attack cooldown duration
+	void SetAttackCooldown(float _attackCooldown);
 	// Set rotation speed
 	void SetRotationSpeed(float _rotationSpeed);
 	// Set the current pickup held by the player (can be none)
@@ -71,6 +74,8 @@ public:
 	// Initializes audio data
 	void SetAudio();
 
+	// Return sprite pointer
+	sf::Sprite* GetSprite() const;
 	// Return name
 	std::string GetName() const;
 	// Return direction
@@ -92,5 +97,7 @@ public:
 	void Shoot(std::vector<Bullet*>* _projectiles);
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles);
+	// Renders the object to the window, runs every frame
+	void Render(sf::RenderWindow* _window);
 };
 

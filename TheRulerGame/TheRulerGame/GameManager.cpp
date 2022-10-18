@@ -1,14 +1,11 @@
 #include "GameManager.h"
 
-
 GameManager::GameManager()
 {
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
 	m_Window->setFramerateLimit(Utils::FrameLimit);
 
     m_UIManager = new UIManager();
-    
-    sceneManager.LoadRandomScene();
 
 	GameLoop();
 }
@@ -81,15 +78,15 @@ void GameManager::PlayerInput()
     }
 
     m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (float)(3.1415926536 / 180)));
-    m_PlayerOne->GetShape()->rotate(PlayerOneAngle);
+    m_PlayerOne->GetSprite()->rotate(PlayerOneAngle);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed()));
+        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed())));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed()));
+        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed())));
     }
 
     // PLAYER TWO ROTATION AND MOVEMENT
@@ -104,15 +101,15 @@ void GameManager::PlayerInput()
     }
 
     m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (float)(3.1415926536 / 180)));
-    m_PlayerTwo->GetShape()->rotate(PlayerTwoAngle);
+    m_PlayerTwo->GetSprite()->rotate(PlayerTwoAngle);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * m_PlayerTwo->GetMoveSpeed()));
+        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * m_PlayerTwo->GetMoveSpeed())));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed()));
+        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed())));
     }
   
 }
@@ -121,14 +118,23 @@ void GameManager::ChangeGameState()
 {
     if (m_GameState == GameState::Gameplay)
     {
-        m_PlayerOne = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX - 100, Utils::WinCenterY, "Player One", sf::Color::Red);
-        m_PlayerTwo = new Player(new sf::CircleShape(10, 3), Utils::WinCenterX + 100, Utils::WinCenterY, "Player Two", sf::Color::Blue);
+
+        m_SceneManager.LoadRandomScene();
+
+        m_PlayerOne = new Player("RedTank.png", sf::Vector2f(Utils::WinCenterX - 100, Utils::WinCenterY), "Player One");
+        m_PlayerTwo = new Player("BlueTank.png", sf::Vector2f(Utils::WinCenterX + 100, Utils::WinCenterY), "Player Two");
 
         m_PlayerOne->SetEnemy(m_PlayerTwo);
         m_PlayerTwo->SetEnemy(m_PlayerOne);
 
         m_Objects.push_back(m_PlayerOne);
         m_Objects.push_back(m_PlayerTwo);
+
+        for (int i = m_Objects.size() - 2; i < m_Objects.size(); i++)
+        {
+            ((Player*)m_Objects[i])->SetMoveSpeed(m_BaseMoveSpeed);
+            ((Player*)m_Objects[i])->SetAttackCooldown(m_BaseFireDelay);
+        }
 
         m_GameClock.restart();
     }
@@ -139,8 +145,14 @@ void GameManager::ChangeGameState()
             delete CurrentObject;
             CurrentObject = nullptr;
         }
+        for (Bullet* CurrentBullet : m_Projectiles)
+        {
+            delete CurrentBullet;
+            CurrentBullet = nullptr;
+        }
 
         m_Objects.clear();
+        m_Projectiles.clear();
         m_PlayerOne = nullptr;
         m_PlayerTwo = nullptr;
     }
@@ -150,6 +162,7 @@ void GameManager::ChangeGameState()
 
 void GameManager::Update()
 {
+    std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
         PlayerInput();
@@ -166,20 +179,47 @@ void GameManager::Update()
 
         m_PlayerOne->Update(&m_Projectiles);
         m_PlayerTwo->Update(&m_Projectiles);
+        
+        if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
+        {
+            if (m_PlayerOne->HasCrown())
+            {
+                WinnerText = "THE WINNER IS PLAYER ONE (RED)!";
+            }
+            else if (m_PlayerTwo->HasCrown())
+            {
+                WinnerText = "THE WINNER IS PLAYER TWO (BLUE)!";
+            }
+            else
+            {
+                WinnerText = "IT'S A TIE!";
+            }
+
+            m_GameState = GameState::EndScreen;
+            ChangeGameState();
+        }
     }
 
-    m_UIManager->Update(&m_GameState, m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
+    float TimeRemaining = m_TimerLength - m_GameClock.getElapsedTime().asSeconds();
+    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, WinnerText), TimeRemaining);
 }
 
 void GameManager::Render()
 {
 	m_Window->clear();
     
-    sceneManager.RenderLevel(m_Window);
+    m_SceneManager.RenderLevel(m_Window);
 
     for (GameObject* Object : m_Objects)
     {
-        Object->Render(m_Window);
+        if (Object == m_PlayerOne || Object == m_PlayerTwo)
+        {
+            ((Player*)Object)->Render(m_Window);
+        }
+        else
+        {
+            Object->Render(m_Window);
+        }
     }
 
     for (Bullet* Projectile : m_Projectiles)

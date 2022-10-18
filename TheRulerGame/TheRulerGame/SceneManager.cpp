@@ -12,6 +12,8 @@ SceneManager::~SceneManager()
 
 void SceneManager::LoadRandomScene()
 {
+	ClearTiles();
+
 	srand((unsigned)time(0));
 
 	int loadedLevel = std::rand() % 2;
@@ -77,6 +79,8 @@ void SceneManager::LoadRandomScene()
 
 void SceneManager::LoadScene(std::string _filePath)
 {
+	ClearTiles();
+
 	std::fstream loadFileStream;
 	std::string loadFileString;
 
@@ -133,7 +137,33 @@ void SceneManager::RenderLevel(sf::RenderTarget* _window)
 	}
 }
 
-std::vector<Tile*> SceneManager::GetWalls()
+void SceneManager::ClearTiles()
+{
+	// Delete all wall tiles
+	for (Tile* CurrentTile : levelWallTiles)
+	{
+		delete CurrentTile;
+		CurrentTile = nullptr;
+	}
+
+	// Delete all ground tiles
+	for (Tile* CurrentTile : levelGroundTiles)
+	{
+		delete CurrentTile;
+		CurrentTile = nullptr;
+	}
+
+	// Empty vectors
+	levelWallTiles.clear();
+	levelGroundTiles.clear();
+}
+
+std::vector<Tile*> SceneManager::GetWalls() const
 {
 	return levelWallTiles;
+}
+
+std::vector<Tile*> SceneManager::GetGround() const
+{
+	return levelGroundTiles;
 }

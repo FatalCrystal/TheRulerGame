@@ -1,18 +1,33 @@
 #pragma once
 #include <vector>
+#include "Player.h"
 #include "GameState.h"
 #include "Button.h"
 
 class UIManager
 {
+public:
 	// GameData struct holds data necessary to pass into button lambdas
 	// GameManager will construct one from the relevant variables and pass it into SetCurrentDisplay() to give the function access to their values
 	struct GameData
 	{
-		// Data needed for button lambdas goes here
+		float* BaseMoveSpeed;
+		float* BaseFireDelay;
+		float* PickupSpawnRate;
+		float* TimerLength;
+		float* Volume;
+		std::string WinnerText;
 
-		//Constructor
-		GameData() {};
+		// Constructor
+		GameData(float* _baseMoveSpeed, float* _baseFireDelay, float* _pickupSpawnRate, float* _timerLength, float* _volume, std::string _winnerText)
+		{
+			BaseMoveSpeed = _baseMoveSpeed;
+			BaseFireDelay = _baseFireDelay;
+			PickupSpawnRate = _pickupSpawnRate;
+			TimerLength = _timerLength;
+			Volume = _volume;
+			WinnerText = _winnerText;
+		};
 	};
 
 private:
@@ -43,7 +58,7 @@ public:
 	// On mouse click, check mouse position against button rects and activate clicked button
 	void PollButtons(sf::RenderWindow *_window);
 	// Per-frame processes, runs every frame
-	void Update(GameState* _state, float _timeRemaining);
+	void Update(GameState* _state, UIManager::GameData _gameData, float _timeRemaining);
 	// Draw all UI elements to the screen, runs every frame
 	void Render(sf::RenderWindow* _window);
 };

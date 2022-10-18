@@ -1,6 +1,4 @@
 #pragma once
-#include "Bullet.h"
-#include "Player.h"
 #include "UIManager.h"
 #include "SceneManager.h"
 #include <vector>
@@ -15,7 +13,7 @@ private:
 
 	GameState m_GameState = GameState::MainMenu;
 	GameState m_PreviousGameState = GameState::None;
-	SceneManager sceneManager;
+	SceneManager m_SceneManager;
 
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
@@ -26,6 +24,11 @@ private:
 	Player* m_PlayerOne = nullptr;
 	// Player Two
 	Player* m_PlayerTwo = nullptr;
+
+	float m_BaseMoveSpeed = 5.0f;
+	float m_BaseFireDelay = 0.2f;
+	// float m_PickupSpawnRate;
+	float m_Volume = 100.0f;
 
 	// Time elapsed between each frame
 	float m_DeltaTime = 0.0f;
