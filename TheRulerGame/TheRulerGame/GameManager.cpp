@@ -1,6 +1,7 @@
 #include "GameManager.h"
 
 
+
 GameManager::GameManager()
 {
 	m_Window = new sf::RenderWindow(sf::VideoMode(Utils::WinSizeX, Utils::WinSizeY), "The Ruler Game");
@@ -18,6 +19,7 @@ GameManager::GameManager()
 
     m_Objects.push_back(m_PlayerOne);
     m_Objects.push_back(m_PlayerTwo);
+
 
 	GameLoop();
 }
@@ -121,6 +123,7 @@ void GameManager::PlayerInput()
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
+        sceneManager.GetWalls();
         m_PlayerTwo->SetPosition(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed()));
     }
   
@@ -140,6 +143,25 @@ void GameManager::Update()
 
     m_PlayerOne->Update(&m_Projectiles);
     m_PlayerTwo->Update(&m_Projectiles);
+
+    //collision for window boarders
+
+    //Player 1 window collision
+    if (m_PlayerOne->GetPosition().x < 0.f)
+        m_PlayerOne->SetPosition(0.f, m_PlayerOne->GetPosition().y);
+
+    if (m_PlayerOne->GetPosition().y < 0.f)
+        m_PlayerOne->SetPosition(m_PlayerOne->GetPosition().x, 0.f);
+
+
+    //Player 2 window collision
+    if (m_PlayerOne->GetPosition().x < 0.f)
+        m_PlayerOne->SetPosition(0.f, m_PlayerTwo->GetPosition().y);
+
+    if (m_PlayerOne->GetPosition().y < 0.f)
+        m_PlayerOne->SetPosition(m_PlayerTwo->GetPosition().x, 0.f);
+
+
 
     m_UIManager->Update(m_TimerLength - m_GameClock.getElapsedTime().asSeconds());
 }
