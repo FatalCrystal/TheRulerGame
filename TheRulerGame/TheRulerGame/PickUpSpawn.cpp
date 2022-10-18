@@ -8,12 +8,12 @@
 void PickUpSpawn::SpawnPickUps() {
 
 
-	if (SpawnClock.getElapsedTime().asSeconds() > 10 && PickUpVector.size() < 5) { //if 10 seconds have paased and less than 5 pickups on screen
-		PickUp* NewPickUp = new PickUp;     //make a new pickup 
+	if (SpawnClock.getElapsedTime().asSeconds() > 10 && PickUpVector.size() < 5) {
+		PickUp* NewPickUp = new PickUp;
 		srand(time(NULL)); 
-		NewPickUp->Type = (PickupType)(rand() % 2);      //randomize the pickup 
-		std::cout << "it works fart";  // check 
-		SpawnClock.restart();     //restart clock 
+		NewPickUp->Type = (PickupType)(rand() % 2);
+		std::cout << "hgi"; 
+		SpawnClock.restart(); 
 
 		switch (NewPickUp->Type)
 		{
@@ -37,18 +37,8 @@ void PickUpSpawn::SpawnPickUps() {
 
 
 			break;
-
-		case type_AOE:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color(255, 0, 0)); //green 
-
-
-
-
-
-			break;
 		}
-		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);  //ON The screen m ap 
+		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
 		PickUpVector.push_back(NewPickUp);
 
 
@@ -59,7 +49,7 @@ void PickUpSpawn::SpawnPickUps() {
 	
 void PickUpSpawn::RenderPickUps(sf::RenderWindow* window)
 {
-	for (PickUp* CurrentPickUp : PickUpVector) {     
+	for (PickUp* CurrentPickUp : PickUpVector) {
 		window->draw(CurrentPickUp->Shape);
 
 	}

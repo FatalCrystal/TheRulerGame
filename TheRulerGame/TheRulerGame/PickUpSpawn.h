@@ -3,7 +3,7 @@
 
 enum PickupType
  {
-	type_Laser, type_Knockback, type_AOE, type_None
+	type_Laser, type_Knockback, type_None
 };
 
 struct PickUp //instance 
@@ -18,7 +18,7 @@ public:
 	sf::Clock SpawnClock; 
 	void SpawnPickUps(); 
 	  int MaxPickUps = 5; 
-	 // PickupType Type = type_None; //declared 
+	  PickupType Type = type_None; //declared 
 	  void RenderPickUps(sf::RenderWindow* Window); 
 	  std::vector<PickUp*> PickUpVector; 
 
