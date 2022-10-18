@@ -1,6 +1,4 @@
 #pragma once
-#include "Bullet.h"
-#include "Player.h"
 #include "UIManager.h"
 #include "SceneManager.h"
 #include "PickUpSpawn.h"
@@ -14,7 +12,9 @@ private:
 	// UI Manager
 	UIManager* m_UIManager = nullptr;
 
-	SceneManager sceneManager;
+	GameState m_GameState = GameState::MainMenu;
+	GameState m_PreviousGameState = GameState::None;
+	SceneManager m_SceneManager;
 
 	PickUpSpawn PickUps; 
 
@@ -28,6 +28,11 @@ private:
 	Player* m_PlayerOne = nullptr;
 	// Player Two
 	Player* m_PlayerTwo = nullptr;
+
+	float m_BaseMoveSpeed = 5.0f;
+	float m_BaseFireDelay = 0.2f;
+	// float m_PickupSpawnRate;
+	float m_Volume = 100.0f;
 
 	// Time elapsed between each frame
 	float m_DeltaTime = 0.0f;
@@ -49,6 +54,8 @@ public:
 	void GameLoop();
 	// Handles keyboard input for both players
 	void PlayerInput();
+
+	void ChangeGameState();
 
 	// Handles all game update function 
 	void Update();
