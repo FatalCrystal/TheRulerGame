@@ -7,7 +7,7 @@ class SceneManager
 {
 private:
 	// Level array to determine level size 
-	char levelArray[Utils::WinSizeX][Utils::WinSizeY];
+	char levelArray[41][41];
 
 	// Game tiles Stored in vectors to build level
 	std::vector<Tile*> levelGroundTiles;
