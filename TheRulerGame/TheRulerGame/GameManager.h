@@ -53,6 +53,8 @@ public:
 
 	void ChangeGameState();
 
+	void UpdateWallColisions();
+
 	// Handles all game update function 
 	void Update();
 	// Handles all game redering

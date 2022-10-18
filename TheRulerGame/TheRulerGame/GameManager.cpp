@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "Collision.h"
 
 GameManager::GameManager()
 {
@@ -40,7 +41,7 @@ void GameManager::GameLoop()
 
         if (m_GameState != m_PreviousGameState)
         {
-            ChangeGameState();
+            ChangeGameState();         
         }
 
         Update();
@@ -80,22 +81,6 @@ void GameManager::PlayerInput()
     m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (float)(3.1415926536 / 180)));
     m_PlayerOne->GetSprite()->rotate(PlayerOneAngle);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        if (m_PlayerOne->m_ObjGridPosition.y - 1 <= 0)
-        {
-            if (Tile* m_impassble = false)
-            
-            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed())));
-
-            m_PlayerOne->m_ObjGridPosition.y--;
-            std::cout << m_PlayerOne->m_ObjGridPosition.x;
-            std::cout << "\n";
-            std::cout << m_PlayerOne->m_ObjGridPosition.y;
-            std::cout << "\n";
-
-        }
-    }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed())));
@@ -172,6 +157,25 @@ void GameManager::ChangeGameState()
     m_PreviousGameState = m_GameState;
 }
 
+void GameManager::UpdateWallColisions()
+{
+    for (auto i = 0; i < m_SceneManager.GetWalls().size(); i++)
+    {
+        if (m_PlayerOne->GetShape()->getGlobalBounds().intersects(m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds()))
+        {
+            Collision::XCollision(m_PlayerOne->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
+            Collision::YCollision(m_PlayerOne->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
+        }
+        if (m_PlayerTwo->GetShape()->getGlobalBounds().intersects(m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds()))
+        {
+            Collision::XCollision(m_PlayerTwo->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
+            Collision::YCollision(m_PlayerTwo->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
+        }
+       
+        
+    }
+}
+
 void GameManager::Update()
 {
     std::string WinnerText;
@@ -192,9 +196,8 @@ void GameManager::Update()
         m_PlayerOne->Update(&m_Projectiles);
         m_PlayerTwo->Update(&m_Projectiles);
 
-
         //collision for window boarders
-
+   
 //Player 1 window collision
         if (m_PlayerOne->GetPosition().x < 0.f)
             m_PlayerOne->SetPosition(sf::Vector2f(0.f, m_PlayerOne->GetPosition().y));
@@ -209,16 +212,6 @@ void GameManager::Update()
 
         if (m_PlayerOne->GetPosition().y < 0.f)
             m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition().x, 0.f));
-
-
-
-
-       
-
-
-
-
-
 
         
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
@@ -247,11 +240,14 @@ void GameManager::Update()
     m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, WinnerText), TimeRemaining);
 }
 
+
+
 void GameManager::Render()
 {
 	m_Window->clear();
     
     m_SceneManager.RenderLevel(m_Window);
+
 
     for (GameObject* Object : m_Objects)
     {

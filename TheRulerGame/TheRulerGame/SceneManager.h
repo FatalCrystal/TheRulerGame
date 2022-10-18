@@ -25,8 +25,8 @@ public:
 	// Function to render level tiles
 	void RenderLevel(sf::RenderTarget* _window);
 	// Getters
-	std::vector<Tile*> GetWalls() const;
-	std::vector<Tile*> GetGround() const;
+	std::vector<Tile*> GetWalls();
+	std::vector<Tile*> GetGround();
 	void ClearTiles();
 };
 

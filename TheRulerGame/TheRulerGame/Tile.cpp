@@ -56,4 +56,3 @@ sf::Vector2f Tile::GetTileRectSize()
 {
 	return m_TileRectSize;
 }
-

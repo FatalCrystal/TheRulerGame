@@ -88,9 +88,7 @@ void SceneManager::LoadScene(std::string _filePath)
 				Tile* newTile = new Tile(TileType::TILE_WALL);
 				// Set tile position
 				newTile->GetTile()->setPosition(sf::Vector2f(x * newTile->GetTileRectSize().x, y * newTile->GetTileRectSize().y));
-				// Add tiles to vector for rendering and collisions
-
-				 m_impassable = 
+				// Add tiles to vector for rendering and collision
 
 				levelWallTiles.push_back(newTile);
 			}
@@ -139,12 +137,12 @@ void SceneManager::ClearTiles()
 	levelGroundTiles.clear();
 }
 
-std::vector<Tile*> SceneManager::GetWalls() const
+std::vector<Tile*> SceneManager::GetWalls()
 {
 	return levelWallTiles;
 }
 
-std::vector<Tile*> SceneManager::GetGround() const
+std::vector<Tile*> SceneManager::GetGround()
 {
 	return levelGroundTiles;
 }

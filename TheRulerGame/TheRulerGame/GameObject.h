@@ -34,12 +34,5 @@ public:
 	void Update(float _deltaTime);
 	// Renders the object to the window, runs every frame
 	void Render(sf::RenderWindow* _window);
-
-
-	
-
-	sf::Vector2i m_ObjGridPosition;
-
-
 };
 
