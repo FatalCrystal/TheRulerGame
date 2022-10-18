@@ -16,7 +16,7 @@ private:
 	GameState m_PreviousGameState = GameState::None;
 	SceneManager m_SceneManager;
 
-	PickUpSpawn PickUps; 
+	PickupSpawner PickUps;
 
 
 	// Contains all objects in the game

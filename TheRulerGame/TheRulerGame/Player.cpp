@@ -4,6 +4,11 @@ Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _nam
 {
 	m_Texture.loadFromFile("Resources/Textures/" + _spritePath);
 	SetSprite(new sf::Sprite(m_Texture));
+
+	m_CrownTexture.loadFromFile("Resources/Textures/Crown.png");
+	m_CrownSprite = new sf::Sprite(m_CrownTexture);
+	m_CrownSprite->setOrigin(m_CrownSprite->getGlobalBounds().width / 2, m_CrownSprite->getGlobalBounds().height / 2);
+
 	SetAudio();
 	SetPosition(_position);
 	m_Name = _name;
@@ -57,6 +62,7 @@ void Player::SetRotationSpeed(float _rotationSpeed)
 void Player::SetPickup(PickupType _pickup)
 {
 	m_CurrentPickup = _pickup;
+	m_PickupTimer.restart();
 }
 
 void Player::SetCrown(bool _hasCrown)
@@ -137,8 +143,7 @@ float Player::GetRotationSpeed() const
 }
 
 PickupType Player::GetPickup() const
-{
-	
+{	
 	return m_CurrentPickup;
 }
 
@@ -157,21 +162,44 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 	}
 }
 
-void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<PickUp*>* _pickups)
+void Player::SpecialAttack()
 {
-	for (int i = 0; i < _pickups->size(); i++) {
+	switch (m_CurrentPickup)
+	{
+	case type_Laser:
+		// Laser attack code goes here
+		std::cout << m_Name << " used Laser!" << std::endl;
+		break;
+
+	case type_Knockback:
+		// Knockback attack code goes here
+		std::cout << m_Name << " used Knockback!" << std::endl;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups)
+{
+	if (m_CurrentPickup != type_None && m_PickupTimer.getElapsedTime().asSeconds() >= m_PickupTimerDuration)
+	{
+		SetPickup(type_None);
+	}
+
+	for (int i = 0; i < _pickups->size(); i++)
+	{
 		if (m_Sprite->getGlobalBounds().intersects(_pickups->at(i)->Shape.getGlobalBounds()))
 		{
-			m_CurrentPickup = _pickups->at(i)->Type;
+			SetPickup(_pickups->at(i)->Type);
 			std::cout << _pickups->at(i)->Type; 
 
 			delete _pickups->at(i);
 			_pickups->erase(_pickups->begin() + i);
 			i -= 1;
 
-			
-			break; 
-
+			break;
 		}
 	}
 	
@@ -204,6 +232,11 @@ void Player::Render(sf::RenderWindow* _window)
 {
 	if (m_Sprite != nullptr)
 	{
+		if (m_HasCrown)
+		{
+			m_CrownSprite->setPosition(m_Position);
+			_window->draw(*m_CrownSprite);
+		}
 		_window->draw(*m_Sprite);
 	}
 }

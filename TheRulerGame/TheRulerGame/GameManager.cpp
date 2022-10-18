@@ -65,6 +65,16 @@ void GameManager::PlayerInput()
     {
         m_PlayerTwo->Shoot(&m_Projectiles);
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    {
+        m_PlayerOne->SpecialAttack();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+    {
+        m_PlayerTwo->SpecialAttack();
+    }
     
     // PLAYER ONE ROTATION AND MOVEMENT
 
@@ -167,7 +177,7 @@ void GameManager::Update()
     {
         PlayerInput();
 
-        PickUps.SpawnPickUps(); 
+        PickUps.SpawnPickups(); 
 
 
         for (GameObject* Object : m_Objects)
@@ -180,8 +190,8 @@ void GameManager::Update()
             Projectile->Update();
         }
 
-        m_PlayerOne->Update(&m_Projectiles, &PickUps.PickUpVector);
-        m_PlayerTwo->Update(&m_Projectiles, &PickUps.PickUpVector); 
+        m_PlayerOne->Update(&m_Projectiles, &PickUps.m_PickUpVector);
+        m_PlayerTwo->Update(&m_Projectiles, &PickUps.m_PickUpVector); 
         
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
         {
@@ -204,7 +214,7 @@ void GameManager::Update()
     }
 
     float TimeRemaining = m_TimerLength - m_GameClock.getElapsedTime().asSeconds();
-    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, WinnerText), TimeRemaining);
+    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, &PickUps.m_PickupSpawnDelay, WinnerText), TimeRemaining);
 }
 
 void GameManager::Render()
@@ -214,7 +224,7 @@ void GameManager::Render()
     
     m_SceneManager.RenderLevel(m_Window);
 
-    PickUps.RenderPickUps(m_Window); 
+    PickUps.RenderPickups(m_Window); 
 
     for (GameObject* Object : m_Objects)
     {
