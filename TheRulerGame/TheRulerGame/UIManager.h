@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Button.h"
+#include "GameManager.h"
 
 // UI display modes
 enum class UIDisplay

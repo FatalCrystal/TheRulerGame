@@ -1,5 +1,7 @@
 #include "Player.h"
 
+
+
 Player::Player(sf::Shape* _shape, sf::Vector2f _position, std::string _name, sf::Color _color)
 {
 
@@ -131,6 +133,12 @@ float Player::GetRotationSpeed() const
 
 Pickup Player::GetPickup() const
 {
+	
+	//sf::CircleShape NewPickUp = NewPickUp.getGlobalBounds(); 
+  //  if (NewPickUp.getGlobalBounds().intersects(m_Shape->getGlobalBounds(); 
+
+
+	//if (Player.getGlobalBounds().intersects 
 	return m_CurrentPickup;
 }
 

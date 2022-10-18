@@ -1,7 +1,11 @@
 #pragma once
 #include "GameObject.h"
 #include "Bullet.h"
+<<<<<<< Updated upstream
 #include "SFML/Audio.hpp"
+=======
+#include "PickUpSpawn.h"
+>>>>>>> Stashed changes
 
 enum class Pickup
 {
