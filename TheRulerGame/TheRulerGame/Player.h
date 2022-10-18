@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Bullet.h"
 #include "SFML/Audio.hpp"
-#include "PickUpSpawn.h"
+#include "PickupSpawner.h"
 
 
 class Player : public GameObject
@@ -12,11 +12,11 @@ private:
 	std::string m_Name = "Player";
 	// Shape color
 	sf::Texture m_Texture;
+	sf::Texture m_CrownTexture;
 	sf::Sprite* m_Sprite;
+	sf::Sprite* m_CrownSprite;
 	// The other player
 	Player* m_Enemy = nullptr;
-
-
 	
 	// Clock to track attack cooldown
 	sf::Clock m_AttackCooldown = sf::Clock();
@@ -32,6 +32,10 @@ private:
 
 	// Pickup currently held by the player (can be none)
 	PickupType m_CurrentPickup = type_None; 
+	// Timer which counts down to pickup disappearing
+	sf::Clock m_PickupTimer = sf::Clock();
+	// Duration of Pickup Timer
+	float m_PickupTimerDuration = 10.0f;
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
 
@@ -94,8 +98,10 @@ public:
 
 	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);
+	// Use special attack
+	void SpecialAttack();
 	// Per-frame processing, runs every frame (after object update)
-	void Update(std::vector<Bullet*>* _projectiles, std::vector<PickUp*>* _pickups);
+	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame
 	void Render(sf::RenderWindow* _window);
 };

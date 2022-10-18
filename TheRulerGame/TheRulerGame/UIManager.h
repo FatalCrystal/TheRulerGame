@@ -16,16 +16,18 @@ public:
 		float* PickupSpawnRate;
 		float* TimerLength;
 		float* Volume;
+		float* PickupSpawnDelay;
 		std::string WinnerText;
 
 		// Constructor
-		GameData(float* _baseMoveSpeed, float* _baseFireDelay, float* _pickupSpawnRate, float* _timerLength, float* _volume, std::string _winnerText)
+		GameData(float* _baseMoveSpeed, float* _baseFireDelay, float* _pickupSpawnRate, float* _timerLength, float* _volume, float* _pickupSpawnDelay, std::string _winnerText)
 		{
 			BaseMoveSpeed = _baseMoveSpeed;
 			BaseFireDelay = _baseFireDelay;
 			PickupSpawnRate = _pickupSpawnRate;
 			TimerLength = _timerLength;
 			Volume = _volume;
+			PickupSpawnDelay = _pickupSpawnDelay;
 			WinnerText = _winnerText;
 		};
 	};
