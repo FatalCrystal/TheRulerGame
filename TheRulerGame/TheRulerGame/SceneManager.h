@@ -7,7 +7,7 @@ class SceneManager
 {
 private:
 	// Level array to determine level size 
-	char levelArray[Utils::WinSizeX][Utils::WinSizeY];
+	char levelArray[41][41];
 
 	// Game tiles Stored in vectors to build level
 	std::vector<Tile*> levelGroundTiles;
@@ -25,6 +25,8 @@ public:
 	// Function to render level tiles
 	void RenderLevel(sf::RenderTarget* _window);
 	// Getters
-	std::vector<Tile*> GetWalls();
+	std::vector<Tile*> GetWalls() const;
+	std::vector<Tile*> GetGround() const;
+	void ClearTiles();
 };
 

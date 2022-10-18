@@ -14,7 +14,7 @@ GameObject::GameObject(sf::Shape* _shape, sf::Vector2f _position)
 GameObject::GameObject(sf::Shape* _shape, float _posX, float _posY)
 {
 	SetShape(_shape);
-	SetPosition(_posX, _posY);
+	SetPosition(sf::Vector2f(_posX, _posY));
 }
 
 GameObject::~GameObject()
@@ -25,16 +25,6 @@ GameObject::~GameObject()
 void GameObject::SetPosition(sf::Vector2f _position)
 {
 	m_Position = _position;
-
-	if (m_Shape != nullptr)
-	{
-		m_Shape->setPosition(m_Position);
-	}
-}
-
-void GameObject::SetPosition(float _posX, float _posY)
-{
-	m_Position = sf::Vector2f(_posX, _posY);
 
 	if (m_Shape != nullptr)
 	{
