@@ -2,6 +2,8 @@
 #include <ctime>
 #include <iostream>
 
+
+
 SceneManager::SceneManager()
 {
 }
@@ -87,6 +89,9 @@ void SceneManager::LoadScene(std::string _filePath)
 				// Set tile position
 				newTile->GetTile()->setPosition(sf::Vector2f(x * newTile->GetTileRectSize().x, y * newTile->GetTileRectSize().y));
 				// Add tiles to vector for rendering and collisions
+
+				 m_impassable = 
+
 				levelWallTiles.push_back(newTile);
 			}
 			if (levelArray[y][x] == 'O')

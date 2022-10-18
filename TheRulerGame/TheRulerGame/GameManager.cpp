@@ -82,7 +82,19 @@ void GameManager::PlayerInput()
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed())));
+        if (m_PlayerOne->m_ObjGridPosition.y - 1 <= 0)
+        {
+            if (Tile* m_impassble = false)
+            
+            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed())));
+
+            m_PlayerOne->m_ObjGridPosition.y--;
+            std::cout << m_PlayerOne->m_ObjGridPosition.x;
+            std::cout << "\n";
+            std::cout << m_PlayerOne->m_ObjGridPosition.y;
+            std::cout << "\n";
+
+        }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
@@ -179,6 +191,35 @@ void GameManager::Update()
 
         m_PlayerOne->Update(&m_Projectiles);
         m_PlayerTwo->Update(&m_Projectiles);
+
+
+        //collision for window boarders
+
+//Player 1 window collision
+        if (m_PlayerOne->GetPosition().x < 0.f)
+            m_PlayerOne->SetPosition(sf::Vector2f(0.f, m_PlayerOne->GetPosition().y));
+
+        if (m_PlayerOne->GetPosition().y < 0.f)
+            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition().x, 0.f));
+
+
+        //Player 2 window collision
+        if (m_PlayerOne->GetPosition().x < 0.f)
+            m_PlayerOne->SetPosition(sf::Vector2f(0.f, m_PlayerTwo->GetPosition().y));
+
+        if (m_PlayerOne->GetPosition().y < 0.f)
+            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition().x, 0.f));
+
+
+
+
+       
+
+
+
+
+
+
         
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
         {
@@ -197,6 +238,8 @@ void GameManager::Update()
 
             m_GameState = GameState::EndScreen;
             ChangeGameState();
+
+
         }
     }
 

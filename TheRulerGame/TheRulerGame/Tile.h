@@ -33,5 +33,8 @@ public:
 	// Getters
 	sf::RectangleShape* GetTile();
 	sf::Vector2f GetTileRectSize();
+
+	bool m_impassable = false;
+
 };
 

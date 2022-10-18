@@ -60,3 +60,5 @@ void GameObject::Render(sf::RenderWindow* _window)
 		_window->draw(*m_Shape);
 	}
 }
+
+
