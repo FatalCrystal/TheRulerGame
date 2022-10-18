@@ -167,6 +167,9 @@ void GameManager::Update()
     {
         PlayerInput();
 
+        PickUps.SpawnPickUps(); 
+
+
         for (GameObject* Object : m_Objects)
         {
             Object->Update(m_DeltaTime);
@@ -177,8 +180,8 @@ void GameManager::Update()
             Projectile->Update();
         }
 
-        m_PlayerOne->Update(&m_Projectiles);
-        m_PlayerTwo->Update(&m_Projectiles);
+        m_PlayerOne->Update(&m_Projectiles, &PickUps.PickUpVector);
+        m_PlayerTwo->Update(&m_Projectiles, &PickUps.PickUpVector); 
         
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
         {
@@ -206,9 +209,12 @@ void GameManager::Update()
 
 void GameManager::Render()
 {
+
 	m_Window->clear();
     
     m_SceneManager.RenderLevel(m_Window);
+
+    PickUps.RenderPickUps(m_Window); 
 
     for (GameObject* Object : m_Objects)
     {

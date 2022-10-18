@@ -12,7 +12,7 @@ void PickUpSpawn::SpawnPickUps() {
 		PickUp* NewPickUp = new PickUp;
 		srand(time(NULL)); 
 		NewPickUp->Type = (PickupType)(rand() % 2);
-		std::cout << "hgi"; 
+		std::cout << "FARTS"; 
 		SpawnClock.restart(); 
 
 		switch (NewPickUp->Type)

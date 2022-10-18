@@ -1,7 +1,7 @@
 #pragma once
 #include "UIManager.h"
 #include "SceneManager.h"
-#include "PickUpSpawn.h"
+
 
 
 class GameManager

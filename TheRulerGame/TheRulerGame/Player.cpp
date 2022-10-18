@@ -54,7 +54,7 @@ void Player::SetRotationSpeed(float _rotationSpeed)
 	m_RotationSpeed = _rotationSpeed;
 }
 
-void Player::SetPickup(Pickup _pickup)
+void Player::SetPickup(PickupType _pickup)
 {
 	m_CurrentPickup = _pickup;
 }
@@ -136,8 +136,9 @@ float Player::GetRotationSpeed() const
 	return m_RotationSpeed;
 }
 
-Pickup Player::GetPickup() const
+PickupType Player::GetPickup() const
 {
+	
 	return m_CurrentPickup;
 }
 
@@ -156,8 +157,24 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 	}
 }
 
-void Player::Update(std::vector<Bullet*>* _projectiles)
+void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<PickUp*>* _pickups)
 {
+	for (int i = 0; i < _pickups->size(); i++) {
+		if (m_Sprite->getGlobalBounds().intersects(_pickups->at(i)->Shape.getGlobalBounds()))
+		{
+			m_CurrentPickup = _pickups->at(i)->Type;
+			std::cout << _pickups->at(i)->Type; 
+
+			delete _pickups->at(i);
+			_pickups->erase(_pickups->begin() + i);
+			i -= 1;
+
+			
+			break; 
+
+		}
+	}
+	
 	int Counter = 0;
 	for (Bullet* Projectile : *_projectiles)
 	{
