@@ -45,6 +45,8 @@ void SceneManager::LoadRandomScene()
 // Handles loading of level taking in a string for level file location
 void SceneManager::LoadScene(std::string _filePath)
 {
+	ClearTiles();
+
 	// Fstream to read from file
 	std::fstream loadFileStream;
 
@@ -111,8 +113,33 @@ void SceneManager::RenderLevel(sf::RenderTarget* _window)
 	}
 }
 
-// Wall getter 
-std::vector<Tile*> SceneManager::GetWalls()
+void SceneManager::ClearTiles()
+{
+	// Delete all wall tiles
+	for (Tile* CurrentTile : levelWallTiles)
+	{
+		delete CurrentTile;
+		CurrentTile = nullptr;
+	}
+
+	// Delete all ground tiles
+	for (Tile* CurrentTile : levelGroundTiles)
+	{
+		delete CurrentTile;
+		CurrentTile = nullptr;
+	}
+
+	// Empty vectors
+	levelWallTiles.clear();
+	levelGroundTiles.clear();
+}
+
+std::vector<Tile*> SceneManager::GetWalls() const
 {
 	return levelWallTiles;
+}
+
+std::vector<Tile*> SceneManager::GetGround() const
+{
+	return levelGroundTiles;
 }

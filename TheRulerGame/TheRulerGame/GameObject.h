@@ -22,8 +22,6 @@ public:
 
 	// Set position with vector, also affects shape position
 	void SetPosition(sf::Vector2f _position);
-	// Set position with floats, also affects shape position
-	void SetPosition(float _posX, float _posY);
 	// Set Shape by pointer, origin is automatically centered
 	void SetShape(sf::Shape* _shape);
 
