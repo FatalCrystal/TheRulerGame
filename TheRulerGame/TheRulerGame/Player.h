@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 #include "Bullet.h"
-#include "SFML/Audio.hpp"
 
 enum class Pickup
 {
@@ -35,17 +34,6 @@ private:
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
 
-	// Load sound data for shooting
-	sf::Sound m_PlayerShootSound;
-	sf::Sound m_PlayerHitSound;
-	sf::Sound m_PlayerCrownSwitchSound;
-	sf::Sound m_PlayerPickUpSound;
-
-	sf::SoundBuffer m_PlayerShootSB;
-	sf::SoundBuffer m_PlayerHitSB;
-	sf::SoundBuffer m_PlayerCrownSwitchSB;
-	sf::SoundBuffer m_PlayerPickUpSB;
-
 public:
 	// Constructor with vector position
 	Player(sf::Shape* _shape, sf::Vector2f _position, std::string _name, sf::Color _color);
@@ -68,17 +56,11 @@ public:
 	void SetPickup(Pickup _pickup);
 	// Set whether or not the player holds the crown
 	void SetCrown(bool _hasCrown);
-	// Initializes audio data
-	void SetAudio();
 
 	// Return name
 	std::string GetName() const;
 	// Return direction
 	sf::Vector2f GetDirection() const;
-	// Return item pickup sound
-	sf::Sound GetPickUpSound() const;
-	// Return Hit sound
-	sf::Sound GetHitSound() const;
 	// Return movement speed
 	float GetMoveSpeed() const;
 	// Return rotation speed
