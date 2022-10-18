@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "Collision.h"
 #include <ctime>
 #include <iostream>
 
@@ -115,6 +116,18 @@ void SceneManager::RenderLevel(sf::RenderTarget* _window)
 		_window->draw(*levelWallTiles[i]->GetTile());
 	}
 }
+
+//void SceneManager::UpdateWallColisions(Player* _player)
+//{
+//	for (auto i = 0; i < levelWallTiles.size(); i++)
+//	{
+//		if (_player->GetSprite()->getGlobalBounds().intersects(levelWallTiles[i]->GetTile()->getGlobalBounds()))
+//		{
+//			Collision::XCollision(_player->GetSprite(), levelWallTiles[i]->GetTile()->getGlobalBounds());
+//			Collision::YCollision(_player->GetSprite(), levelWallTiles[i]->GetTile()->getGlobalBounds());
+//		}
+//	}
+//}
 
 void SceneManager::ClearTiles()
 {

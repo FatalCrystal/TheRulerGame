@@ -13,6 +13,7 @@ private:
 
 	GameState m_GameState = GameState::MainMenu;
 	GameState m_PreviousGameState = GameState::None;
+	
 	SceneManager m_SceneManager;
 
 	// Contains all objects in the game
@@ -53,7 +54,7 @@ public:
 
 	void ChangeGameState();
 
-	void UpdateWallColisions();
+	//void UpdateWallColisions();
 
 	// Handles all game update function 
 	void Update();

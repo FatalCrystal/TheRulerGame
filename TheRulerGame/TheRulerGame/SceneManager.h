@@ -1,6 +1,7 @@
 #pragma once
 #include "Utils.h"
 #include "Tile.h"
+#include "Player.h"
 #include <fstream>
 
 class SceneManager
@@ -24,6 +25,9 @@ public:
 	void LoadScene(std::string _filePath);
 	// Function to render level tiles
 	void RenderLevel(sf::RenderTarget* _window);
+
+	/*void UpdateWallColisions(Player *_player);*/
+
 	// Getters
 	std::vector<Tile*> GetWalls();
 	std::vector<Tile*> GetGround();

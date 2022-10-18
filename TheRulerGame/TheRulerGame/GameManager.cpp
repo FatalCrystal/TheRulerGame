@@ -54,6 +54,7 @@ void GameManager::GameLoop()
 
 void GameManager::PlayerInput()
 {
+    
     float PlayerOneAngle = 0.0f;
     float PlayerTwoAngle = 0.0f;
 
@@ -83,7 +84,11 @@ void GameManager::PlayerInput()
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed())));
+        m_PlayerOne->MovePlayer(Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed(), m_SceneManager.GetWalls());
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        m_PlayerOne->MovePlayer(Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed(), m_SceneManager.GetWalls());
     }
 
     // PLAYER TWO ROTATION AND MOVEMENT
@@ -108,14 +113,12 @@ void GameManager::PlayerInput()
     {
         m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed())));
     }
-  
 }
 
 void GameManager::ChangeGameState()
 {
     if (m_GameState == GameState::Gameplay)
     {
-
         m_SceneManager.LoadRandomScene();
 
         m_PlayerOne = new Player("RedTank.png", sf::Vector2f(Utils::WinCenterX - 100, Utils::WinCenterY), "Player One");
@@ -132,8 +135,10 @@ void GameManager::ChangeGameState()
             ((Player*)m_Objects[i])->SetMoveSpeed(m_BaseMoveSpeed);
             ((Player*)m_Objects[i])->SetAttackCooldown(m_BaseFireDelay);
         }
-
         m_GameClock.restart();
+
+        //collision for window boarders
+     
     }
     else if (m_PreviousGameState == GameState::Gameplay)
     {
@@ -157,25 +162,6 @@ void GameManager::ChangeGameState()
     m_PreviousGameState = m_GameState;
 }
 
-void GameManager::UpdateWallColisions()
-{
-    for (auto i = 0; i < m_SceneManager.GetWalls().size(); i++)
-    {
-        if (m_PlayerOne->GetShape()->getGlobalBounds().intersects(m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds()))
-        {
-            Collision::XCollision(m_PlayerOne->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
-            Collision::YCollision(m_PlayerOne->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
-        }
-        if (m_PlayerTwo->GetShape()->getGlobalBounds().intersects(m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds()))
-        {
-            Collision::XCollision(m_PlayerTwo->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
-            Collision::YCollision(m_PlayerTwo->GetShape(), m_SceneManager.GetWalls()[i]->GetTile()->getGlobalBounds());
-        }
-       
-        
-    }
-}
-
 void GameManager::Update()
 {
     std::string WinnerText;
@@ -195,25 +181,7 @@ void GameManager::Update()
 
         m_PlayerOne->Update(&m_Projectiles);
         m_PlayerTwo->Update(&m_Projectiles);
-
-        //collision for window boarders
-   
-//Player 1 window collision
-        if (m_PlayerOne->GetPosition().x < 0.f)
-            m_PlayerOne->SetPosition(sf::Vector2f(0.f, m_PlayerOne->GetPosition().y));
-
-        if (m_PlayerOne->GetPosition().y < 0.f)
-            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition().x, 0.f));
-
-
-        //Player 2 window collision
-        if (m_PlayerOne->GetPosition().x < 0.f)
-            m_PlayerOne->SetPosition(sf::Vector2f(0.f, m_PlayerTwo->GetPosition().y));
-
-        if (m_PlayerOne->GetPosition().y < 0.f)
-            m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition().x, 0.f));
-
-        
+ 
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
         {
             if (m_PlayerOne->HasCrown())
@@ -231,8 +199,6 @@ void GameManager::Update()
 
             m_GameState = GameState::EndScreen;
             ChangeGameState();
-
-
         }
     }
 

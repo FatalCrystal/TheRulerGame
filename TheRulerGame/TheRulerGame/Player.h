@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Bullet.h"
+#include "SceneManager.h"
 #include "SFML/Audio.hpp"
 
 enum class Pickup
@@ -33,6 +34,7 @@ private:
 
 	// Pickup currently held by the player (can be none)
 	Pickup m_CurrentPickup = Pickup::None;
+
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
 
@@ -95,6 +97,15 @@ public:
 
 	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);
+
+	void MovePlayer(sf::Vector2f _velocity, std::vector<Tile*> _wallColl);
+
+	bool CheckCollisionsPredictive(sf::FloatRect _objA, std::vector<Tile*> _wallColl);
+
+	void XCollision(sf::FloatRect _objA, sf::FloatRect _objB);
+
+	void YCollision(sf::FloatRect _objA, sf::FloatRect _objB);
+
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles);
 	// Renders the object to the window, runs every frame

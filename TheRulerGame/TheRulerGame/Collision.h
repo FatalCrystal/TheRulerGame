@@ -7,7 +7,7 @@ static class Collision
 private:
 
 public:
-	static void XCollision(sf::Shape* _objA, sf::FloatRect _objB)
+	static void XCollision(sf::Sprite* _objA, sf::FloatRect _objB)
 	{
 		sf::Vector2f entityACenter = {
 			(_objA->getGlobalBounds().left + _objA->getGlobalBounds().width / 2.f),
@@ -33,7 +33,7 @@ public:
 	}
 
 
-	static void YCollision(sf::Shape* _objA, sf::FloatRect _objB)
+	static void YCollision(sf::Sprite* _objA, sf::FloatRect _objB)
 	{
 		sf::Vector2f entityACenter = {
 			(_objA->getGlobalBounds().left + _objA->getGlobalBounds().width / 2.f),
