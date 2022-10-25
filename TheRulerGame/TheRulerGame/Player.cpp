@@ -13,7 +13,7 @@ Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _nam
 	SetPosition(_position);
 	m_Name = _name;
 
-	
+	m_BoundingBoxShape = new sf::RectangleShape();
 }
 
 Player::~Player()
@@ -111,49 +111,109 @@ void Player::SetAudio()
 
 void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 {
+	bool collRight = false;
+	bool collLeft = false;
+	bool collTop = false;
+	bool collBot = false;
+
+	playerBoundingBox = m_Sprite->getGlobalBounds();
+	
+	nextPos = playerBoundingBox;
+	nextPos.left += m_Direction.x;
+	nextPos.top += m_Direction.y;
+
+	m_BoundingBoxShape->setSize(sf::Vector2f(nextPos.width, nextPos.height));
+	m_BoundingBoxShape->setFillColor(sf::Color::Transparent);
+	m_BoundingBoxShape->setOutlineColor(sf::Color::Black);
+	m_BoundingBoxShape->setPosition(nextPos.left, nextPos.top);
+	m_BoundingBoxShape->setOutlineThickness(1);
+
 	for (auto &wall : _scene.GetWalls())
 	{
-		playerBoundingBox = m_Sprite->getGlobalBounds();
 		sf::FloatRect wallBounds = wall->GetTile()->getGlobalBounds();
 
-		nextPos = playerBoundingBox;
-		nextPos.left += m_Direction.x;
-		nextPos.top += m_Direction.y;
+		if (collBot == false && collLeft == false && collRight == false && collTop == false)
+		{
+			m_CanMoveForward = true;
+			m_CanMoveBack = true;
+		}
 
 		if (wallBounds.intersects(nextPos))
 		{
+			// bot
+			if (playerBoundingBox.top > wallBounds.top
+				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top + wallBounds.height
+				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			{
+				collBot = true;
+				if (m_Sprite->getRotation() >= 270.5f || m_Sprite->getRotation() >= 0.f && m_Sprite->getRotation() <= 89.5f)
+				{
+					m_CanMoveForward = false;
+					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveForward = true;
+					m_CanMoveBack = false;
+				}
+			}
+			// top
 			if (playerBoundingBox.top < wallBounds.top
 				&& playerBoundingBox.top + playerBoundingBox.height < wallBounds.top + wallBounds.height
 				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
 				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
 			{
-				std::cout << "collision Top" << std::endl;
+				collTop = true;
+				if (m_Sprite->getRotation() <= 269.5f && m_Sprite->getRotation() <= 90.5f)
+				{
+					m_CanMoveForward = false;
+					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveForward = true;
+					m_CanMoveBack = false;
+				}
 			}
-
-			else if (playerBoundingBox.top > wallBounds.top
-				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top + wallBounds.height
-				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			// right
+			if (playerBoundingBox.left > wallBounds.left
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width
+				&& playerBoundingBox.top < wallBounds.top + wallBounds.height
+				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-				std::cout << "collision Bot" << std::endl;
-			}
 
+				collRight = true;
+				if (m_Sprite->getRotation() <= 359.5f && m_Sprite->getRotation() >= 191.f)
+				{
+					m_CanMoveForward = false;
+					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveForward = true;
+					m_CanMoveBack = false;
+				}
+			}
+			// left
 			if (playerBoundingBox.left < wallBounds.left 
 				&& playerBoundingBox.left + playerBoundingBox.width < wallBounds.left + wallBounds.width 
 				&& playerBoundingBox.top < wallBounds.top + wallBounds.height 
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-				std::cout << "collision left" << std::endl;
+				collLeft = true;
+				if (m_Sprite->getRotation() <= 191.f && m_Sprite->getRotation() >= 0.f)
+				{
+					m_CanMoveForward = false;
+					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveForward = true;
+					m_CanMoveBack = false;
+				}
 			}
-
-			else if (playerBoundingBox.left > wallBounds.left
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width
-				&& playerBoundingBox.top < wallBounds.top + wallBounds.height
-				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
-			{
-				std::cout << "collision right" << std::endl;
-			}
-
+			
 		}
 	}
 }
@@ -256,11 +316,11 @@ void Player::InputPlayerOne(std::vector<Bullet*>* _projectiles)
 	SetDirection(Utils::Rotate(m_Direction, PlayerOneAngle * (float)(3.1415926536 / 180)));
 	m_Sprite->rotate(PlayerOneAngle);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(sf::Keyboard::W) )
 	{
 		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * m_MoveSpeed)));
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if (m_CanMoveBack == true && sf::Keyboard::isKeyPressed(sf::Keyboard::S) )
 	{
 		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
 	}
@@ -320,6 +380,8 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 			break;
 		}
 	}
+
+	std::cout << m_Sprite->getRotation() << std::endl;
 	
 	int Counter = 0;
 	for (Bullet* Projectile : *_projectiles)
@@ -357,4 +419,6 @@ void Player::Render(sf::RenderWindow* _window)
 		}
 		_window->draw(*m_Sprite);
 	}
+
+	_window->draw(*m_BoundingBoxShape);
 }

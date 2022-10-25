@@ -15,6 +15,7 @@ private:
 	sf::Texture m_CrownTexture;
 	sf::Sprite* m_Sprite;
 	sf::Sprite* m_CrownSprite;
+	sf::RectangleShape* m_BoundingBoxShape;
 	// The other player
 	Player* m_Enemy = nullptr;
 	
@@ -41,6 +42,8 @@ private:
 	float m_PickupTimerDuration = 10.0f;
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
+	bool m_CanMoveForward = true;
+	bool m_CanMoveBack = true;
 
 	// Load sound data for shooting
 	sf::Sound m_PlayerShootSound;
