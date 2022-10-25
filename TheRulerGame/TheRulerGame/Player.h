@@ -109,8 +109,7 @@ public:
 	
 	// Use special attack
 	void SpecialAttack();
-	void InputPlayerOne(std::vector<Bullet*>* _projectiles);
-	void InputPlayerTwo(std::vector<Bullet*>* _projectiles);
+	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame

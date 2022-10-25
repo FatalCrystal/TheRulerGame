@@ -292,70 +292,37 @@ void Player::SpecialAttack()
 	}
 }
 
-void Player::InputPlayerOne(std::vector<Bullet*>* _projectiles)
+void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
 {
-	float PlayerOneAngle = 0.0f;
+	float PlayerAngle = 0.0f;
 
 	// Player one Shoot
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
 		Shoot(_projectiles);
 	}
 
 	// PLAYER ONE ROTATION AND MOVEMENT
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (sf::Keyboard::isKeyPressed(_left))
 	{
-		PlayerOneAngle -= m_RotationSpeed;
+		PlayerAngle -= m_RotationSpeed;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(_right))
 	{
-		PlayerOneAngle += m_RotationSpeed;
-	}
-
-	SetDirection(Utils::Rotate(m_Direction, PlayerOneAngle * (float)(3.1415926536 / 180)));
-	m_Sprite->rotate(PlayerOneAngle);
-
-	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(sf::Keyboard::W) )
-	{
-		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * m_MoveSpeed)));
-	}
-	if (m_CanMoveBack == true && sf::Keyboard::isKeyPressed(sf::Keyboard::S) )
-	{
-		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
-	}
-}
-
-void Player::InputPlayerTwo(std::vector<Bullet*>* _projectiles)
-{
-	float PlayerTwoAngle = 0.0f;
-
-	// Player Two Shoot
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
-	{
-		Shoot(_projectiles);
+		PlayerAngle += m_RotationSpeed;
 	}
 
-	// PLAYER TWO ROTATION AND MOVEMENT
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		PlayerTwoAngle -= m_RotationSpeed;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		PlayerTwoAngle += m_RotationSpeed;
-	}
+	SetDirection(Utils::Rotate(m_Direction, PlayerAngle * (float)(3.1415926536 / 180)));
+	m_Sprite->rotate(PlayerAngle);
 
-	SetDirection(Utils::Rotate(m_Direction, PlayerTwoAngle * (float)(3.1415926536 / 180)));
-	m_Sprite->rotate(PlayerTwoAngle);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(_up))
 	{
-		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * m_MoveSpeed)));
+		SetPosition(sf::Vector2f(m_Position + m_Direction * m_MoveSpeed));
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (m_CanMoveBack == true && sf::Keyboard::isKeyPressed(_down))
 	{
-		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
+		SetPosition(sf::Vector2f(m_Position + m_Direction * -m_MoveSpeed));
 	}
 }
 

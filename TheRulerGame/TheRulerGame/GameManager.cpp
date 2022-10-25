@@ -99,11 +99,14 @@ void GameManager::ChangeGameState()
 
 void GameManager::Update()
 {
+    dt = deltaClock.restart();
+    deltaTimeFloat = dt.asSeconds();
+
     std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
-        m_PlayerOne->InputPlayerOne(&m_Projectiles);
-        m_PlayerTwo->InputPlayerTwo(&m_Projectiles);
+        m_PlayerOne->PlayerInput(&m_Projectiles, sf::Keyboard::Space, sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D);
+        m_PlayerTwo->PlayerInput(&m_Projectiles, sf::Keyboard::RControl, sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right);
 
         PickUps.SpawnPickups(); 
 

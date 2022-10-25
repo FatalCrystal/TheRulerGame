@@ -22,6 +22,10 @@ private:
 	// Contains all projectiles in the game
 	std::vector<Bullet*> m_Projectiles = {};
 
+	sf::Clock deltaClock;
+	sf::Time dt;
+	float deltaTimeFloat;
+
 	// Player One
 	Player* m_PlayerOne = nullptr;
 	// Player Two
