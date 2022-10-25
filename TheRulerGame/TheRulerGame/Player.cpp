@@ -213,6 +213,10 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 	}
 }
 
+void Player::SpecialAttack()
+{
+}
+
 void Player::InputPlayerOne(std::vector<Bullet*>* _projectiles)
 {
 	float PlayerOneAngle = 0.0f;
