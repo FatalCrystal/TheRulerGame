@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Bullet.h"
 #include "SFML/Audio.hpp"
+#include "SceneManager.h"
 
 enum class Pickup
 {
@@ -23,6 +24,9 @@ private:
 	sf::Clock m_AttackCooldown = sf::Clock();
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 0.2f;
+
+	sf::FloatRect nextPos;
+	sf::FloatRect playerBoundingBox;
 
 	// Direction the player is facing
 	sf::Vector2f m_Direction = sf::Vector2f(0.0f, -1.0f);
@@ -73,6 +77,8 @@ public:
 	void SetCrown(bool _hasCrown);
 	// Initializes audio data
 	void SetAudio();
+	// Wall collisions
+	void WallCollisions(SceneManager _scene, sf::RenderWindow* _window);
 
 	// Return sprite pointer
 	sf::Sprite* GetSprite() const;
@@ -95,6 +101,8 @@ public:
 
 	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);
+	void InputPlayerOne(std::vector<Bullet*>* _projectiles);
+	void InputPlayerTwo(std::vector<Bullet*>* _projectiles);
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles);
 	// Renders the object to the window, runs every frame
