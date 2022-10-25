@@ -127,7 +127,7 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
 				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
 			{
-				std::cout << "collision" << std::endl;
+				std::cout << "collision Top" << std::endl;
 			}
 
 			else if (playerBoundingBox.top > wallBounds.top
@@ -135,7 +135,7 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
 				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
 			{
-				std::cout << "collision" << std::endl;
+				std::cout << "collision Bot" << std::endl;
 			}
 
 			if (playerBoundingBox.left < wallBounds.left 
@@ -143,7 +143,7 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 				&& playerBoundingBox.top < wallBounds.top + wallBounds.height 
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-				std::cout << "collision" << std::endl;
+				std::cout << "collision left" << std::endl;
 			}
 
 			else if (playerBoundingBox.left > wallBounds.left
@@ -151,7 +151,7 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 				&& playerBoundingBox.top < wallBounds.top + wallBounds.height
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-				std::cout << "collision" << std::endl;
+				std::cout << "collision right" << std::endl;
 			}
 
 		}
@@ -215,6 +215,21 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 
 void Player::SpecialAttack()
 {
+	switch (m_CurrentPickup)
+	{
+	case type_Laser:
+		// Laser attack code goes here
+		std::cout << m_Name << " used Laser!" << std::endl;
+		break;
+
+	case type_Knockback:
+		// Knockback attack code goes here
+		std::cout << m_Name << " used Knockback!" << std::endl;
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Player::InputPlayerOne(std::vector<Bullet*>* _projectiles)
@@ -281,25 +296,6 @@ void Player::InputPlayerTwo(std::vector<Bullet*>* _projectiles)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
-	}
-}
-
-void Player::Update(std::vector<Bullet*>* _projectiles)
-{
-	switch (m_CurrentPickup)
-	{
-	case type_Laser:
-		// Laser attack code goes here
-		std::cout << m_Name << " used Laser!" << std::endl;
-		break;
-
-	case type_Knockback:
-		// Knockback attack code goes here
-		std::cout << m_Name << " used Knockback!" << std::endl;
-		break;
-
-	default:
-		break;
 	}
 }
 
