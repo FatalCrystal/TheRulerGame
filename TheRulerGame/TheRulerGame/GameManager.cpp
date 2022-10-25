@@ -51,79 +51,6 @@ void GameManager::GameLoop()
     }
 }
 
-void GameManager::PlayerInput()
-{
-    float PlayerOneAngle = 0.0f;
-    float PlayerTwoAngle = 0.0f;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        m_PlayerOne->Shoot(&m_Projectiles);
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
-    {
-        m_PlayerTwo->Shoot(&m_Projectiles);
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-    {
-        m_PlayerOne->SpecialAttack();
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
-    {
-        m_PlayerTwo->SpecialAttack();
-    }
-    
-    // PLAYER ONE ROTATION AND MOVEMENT
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        PlayerOneAngle -= m_PlayerOne->GetRotationSpeed();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        PlayerOneAngle += m_PlayerOne->GetRotationSpeed();
-    }
-
-    m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (float)(3.1415926536 / 180)));
-    m_PlayerOne->GetSprite()->rotate(PlayerOneAngle);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed())));
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        m_PlayerOne->SetPosition(sf::Vector2f(m_PlayerOne->GetPosition() + (Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed())));
-    }
-
-    // PLAYER TWO ROTATION AND MOVEMENT
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        PlayerTwoAngle -= m_PlayerTwo->GetRotationSpeed();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        PlayerTwoAngle += m_PlayerTwo->GetRotationSpeed();
-    }
-
-    m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (float)(3.1415926536 / 180)));
-    m_PlayerTwo->GetSprite()->rotate(PlayerTwoAngle);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * m_PlayerTwo->GetMoveSpeed())));
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed())));
-    }
-  
-}
-
 void GameManager::ChangeGameState()
 {
     if (m_GameState == GameState::Gameplay)
@@ -175,11 +102,14 @@ void GameManager::Update()
     std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
-        PlayerInput();
+        m_PlayerOne->InputPlayerOne(&m_Projectiles);
+        m_PlayerTwo->InputPlayerTwo(&m_Projectiles);
 
         PickUps.SpawnPickups(); 
 
-
+        m_PlayerOne->WallCollisions(m_SceneManager, m_Window);
+        m_PlayerTwo->WallCollisions(m_SceneManager, m_Window);
+      
         for (GameObject* Object : m_Objects)
         {
             Object->Update(m_DeltaTime);
@@ -222,6 +152,7 @@ void GameManager::Render()
 
 	m_Window->clear();
     
+
     m_SceneManager.RenderLevel(m_Window);
 
     PickUps.RenderPickups(m_Window); 

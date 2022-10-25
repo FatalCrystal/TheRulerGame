@@ -1,8 +1,6 @@
 #pragma once
 #include "UIManager.h"
-#include "SceneManager.h"
-
-
+#include <vector>
 
 class GameManager
 {

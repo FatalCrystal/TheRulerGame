@@ -12,6 +12,8 @@ Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _nam
 	SetAudio();
 	SetPosition(_position);
 	m_Name = _name;
+
+	
 }
 
 Player::~Player()
@@ -107,6 +109,55 @@ void Player::SetAudio()
 	m_PlayerPickUpSound.setBuffer(m_PlayerPickUpSB);
 }
 
+void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
+{
+	for (auto &wall : _scene.GetWalls())
+	{
+		playerBoundingBox = m_Sprite->getGlobalBounds();
+		sf::FloatRect wallBounds = wall->GetTile()->getGlobalBounds();
+
+		nextPos = playerBoundingBox;
+		nextPos.left += m_Direction.x;
+		nextPos.top += m_Direction.y;
+
+		if (wallBounds.intersects(nextPos))
+		{
+			if (playerBoundingBox.top < wallBounds.top
+				&& playerBoundingBox.top + playerBoundingBox.height < wallBounds.top + wallBounds.height
+				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			{
+				std::cout << "collision" << std::endl;
+			}
+
+			else if (playerBoundingBox.top > wallBounds.top
+				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top + wallBounds.height
+				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			{
+				std::cout << "collision" << std::endl;
+			}
+
+			if (playerBoundingBox.left < wallBounds.left 
+				&& playerBoundingBox.left + playerBoundingBox.width < wallBounds.left + wallBounds.width 
+				&& playerBoundingBox.top < wallBounds.top + wallBounds.height 
+				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
+			{
+				std::cout << "collision" << std::endl;
+			}
+
+			else if (playerBoundingBox.left > wallBounds.left
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width
+				&& playerBoundingBox.top < wallBounds.top + wallBounds.height
+				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
+			{
+				std::cout << "collision" << std::endl;
+			}
+
+		}
+	}
+}
+
 sf::Sprite* Player::GetSprite() const
 {
 	return m_Sprite;
@@ -162,7 +213,74 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 	}
 }
 
-void Player::SpecialAttack()
+void Player::InputPlayerOne(std::vector<Bullet*>* _projectiles)
+{
+	float PlayerOneAngle = 0.0f;
+
+	// Player one Shoot
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		Shoot(_projectiles);
+	}
+
+	// PLAYER ONE ROTATION AND MOVEMENT
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		PlayerOneAngle -= m_RotationSpeed;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		PlayerOneAngle += m_RotationSpeed;
+	}
+
+	SetDirection(Utils::Rotate(m_Direction, PlayerOneAngle * (float)(3.1415926536 / 180)));
+	m_Sprite->rotate(PlayerOneAngle);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * m_MoveSpeed)));
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
+	}
+}
+
+void Player::InputPlayerTwo(std::vector<Bullet*>* _projectiles)
+{
+	float PlayerTwoAngle = 0.0f;
+
+	// Player Two Shoot
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
+	{
+		Shoot(_projectiles);
+	}
+
+	// PLAYER TWO ROTATION AND MOVEMENT
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		PlayerTwoAngle -= m_RotationSpeed;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		PlayerTwoAngle += m_RotationSpeed;
+	}
+
+	SetDirection(Utils::Rotate(m_Direction, PlayerTwoAngle * (float)(3.1415926536 / 180)));
+	m_Sprite->rotate(PlayerTwoAngle);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * m_MoveSpeed)));
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		SetPosition(sf::Vector2f(m_Position + (Utils::Normalize(m_Direction) * -m_MoveSpeed)));
+	}
+}
+
+void Player::Update(std::vector<Bullet*>* _projectiles)
 {
 	switch (m_CurrentPickup)
 	{
