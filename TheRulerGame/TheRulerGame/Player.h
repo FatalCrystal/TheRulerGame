@@ -24,8 +24,8 @@ private:
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 0.2f;
 
-	sf::FloatRect nextPos;
-	sf::FloatRect playerBoundingBox;
+	sf::FloatRect m_PlayerNextPos;
+	sf::FloatRect m_PlayerBoundingBox;
 
 	// Direction the player is facing
 	sf::Vector2f m_Direction = sf::Vector2f(0.0f, -1.0f);

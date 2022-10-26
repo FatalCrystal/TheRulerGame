@@ -11,8 +11,6 @@ void Tile::InitializeTileRect(TileType _type)
 	m_TileRect = new sf::RectangleShape();
 	m_TileRect->setSize(m_TileRectSize);
 	m_TileRect->setOrigin(m_TileRectOrigin);
-	m_TileRect->setOutlineColor(sf::Color::Red);
-	m_TileRect->setOutlineThickness(1);
 
 	sf::Color tempColor;
 

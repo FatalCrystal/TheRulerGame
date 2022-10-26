@@ -113,17 +113,16 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 {
 	bool colliding = false;
 
-	playerBoundingBox = m_Sprite->getGlobalBounds();
+	m_PlayerBoundingBox = m_Sprite->getGlobalBounds();
 
 	m_BoundingBoxShape->setSize(sf::Vector2f(25, 25));
 	m_BoundingBoxShape->setFillColor(sf::Color::Transparent);
-	m_BoundingBoxShape->setOutlineColor(sf::Color::Black);
 	m_BoundingBoxShape->setPosition(GetPosition().x - m_Sprite->getTextureRect().width / 2, GetPosition().y - m_Sprite->getTextureRect().height / 2);
-	m_BoundingBoxShape->setOutlineThickness(1);
+
 	
-	nextPos = m_BoundingBoxShape->getGlobalBounds();
-	nextPos.left += m_Direction.x;
-	nextPos.top += m_Direction.y;
+	m_PlayerNextPos = m_BoundingBoxShape->getGlobalBounds();
+	m_PlayerNextPos.left += m_Direction.x;
+	m_PlayerNextPos.top += m_Direction.y;
 
 	
 
@@ -137,13 +136,13 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 			m_CanMoveBack = true;
 		}
 
-		if (wallBounds.intersects(nextPos))
+		if (wallBounds.intersects(m_PlayerNextPos))
 		{
-			// Bot
-			if (playerBoundingBox.top < wallBounds.top + wallBounds.height
-				&& playerBoundingBox.top + playerBoundingBox.height < wallBounds.top + wallBounds.height
-				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			// Bottom Player collision with Top wall collision
+			if (m_PlayerBoundingBox.top < wallBounds.top + wallBounds.height
+				&& m_PlayerBoundingBox.top + m_PlayerBoundingBox.height < wallBounds.top + wallBounds.height
+				&& m_PlayerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& m_PlayerBoundingBox.left + m_PlayerBoundingBox.width > wallBounds.left)
 			{
 				colliding = true;
 				if (m_Sprite->getRotation() > 90.f && m_Sprite->getRotation() < 270.f)
@@ -152,11 +151,11 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 					m_CanMoveBack = true;
 				}
 			}
-			//Top
-			if (playerBoundingBox.top > wallBounds.top
-				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top + wallBounds.height
-				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			// Top Player collision with Bottom wall collision
+			if (m_PlayerBoundingBox.top > wallBounds.top
+				&& m_PlayerBoundingBox.top + m_PlayerBoundingBox.height > wallBounds.top + wallBounds.height
+				&& m_PlayerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& m_PlayerBoundingBox.left + m_PlayerBoundingBox.width > wallBounds.left)
 			{
 				colliding = true;
 				if (m_Sprite->getRotation() < 90.f || m_Sprite->getRotation() > 270.f)
@@ -165,11 +164,11 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 					m_CanMoveBack = true;
 				}
 			}
-			//right
-			if (playerBoundingBox.left < wallBounds.left
-				&& playerBoundingBox.left + playerBoundingBox.width < wallBounds.left + wallBounds.width
-				&& playerBoundingBox.top > wallBounds.top + wallBounds.height
-				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
+			// Left Player collision with Right wall collision
+			if (m_PlayerBoundingBox.left < wallBounds.left
+				&& m_PlayerBoundingBox.left + m_PlayerBoundingBox.width < wallBounds.left + wallBounds.width
+				&& m_PlayerBoundingBox.top > wallBounds.top + wallBounds.height
+				&& m_PlayerBoundingBox.top + m_PlayerBoundingBox.height > wallBounds.top)
 			{
 				colliding = true;
 				if (m_Sprite->getRotation() < 180.f && m_Sprite->getRotation() > 0.f)
@@ -178,11 +177,11 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 					m_CanMoveBack = true;
 				}
 			}
-			//left
-			if (playerBoundingBox.left > wallBounds.left 
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width 
-				&& playerBoundingBox.top < wallBounds.top + wallBounds.height 
-				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
+			// Right Player collision with Left wall collision
+			if (m_PlayerBoundingBox.left > wallBounds.left
+				&& m_PlayerBoundingBox.left + m_PlayerBoundingBox.width > wallBounds.left + wallBounds.width
+				&& m_PlayerBoundingBox.top < wallBounds.top + wallBounds.height
+				&& m_PlayerBoundingBox.top + m_PlayerBoundingBox.height > wallBounds.top)
 			{
 				colliding = true;
 				if (m_Sprite->getRotation() < 360.f && m_Sprite->getRotation() > 180.f)
