@@ -18,6 +18,7 @@ Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _nam
 
 Player::~Player()
 {
+	delete m_BoundingBoxShape;
 }
 
 void Player::SetEnemy(Player* _enemy)
@@ -109,7 +110,7 @@ void Player::SetAudio()
 	m_PlayerPickUpSound.setBuffer(m_PlayerPickUpSB);
 }
 
-void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
+void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std::vector<Bullet*>* _projectiles)
 {
 	bool colliding = false;
 
@@ -190,6 +191,20 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 					m_CanMoveBack = true;
 				}
 			}
+		}
+
+		int Counter = 0;
+		for (Bullet* Projectile : *_projectiles)
+		{
+			if (Projectile->GetShape()->getGlobalBounds().intersects(wallBounds))
+			{
+				m_PlayerHitSound.play();
+
+				delete _projectiles->at(Counter);
+				_projectiles->erase(_projectiles->begin() + Counter);
+				Counter -= 1;
+			}
+			Counter += 1;
 		}
 	}
 }
@@ -323,8 +338,6 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 			break;
 		}
 	}
-
-	std::cout << m_Sprite->getRotation() << std::endl;
 	
 	int Counter = 0;
 	for (Bullet* Projectile : *_projectiles)
@@ -346,7 +359,6 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 			_projectiles->erase(_projectiles->begin() + Counter);
 			Counter -= 1;
 		}
-
 		Counter += 1;
 	}
 }

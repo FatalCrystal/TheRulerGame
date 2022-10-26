@@ -83,7 +83,7 @@ public:
 	// Initializes audio data
 	void SetAudio();
 	// Wall collisions
-	void WallCollisions(SceneManager _scene, sf::RenderWindow* _window);
+	void WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std::vector<Bullet*>* _projectiles);
 
 	// Return sprite pointer
 	sf::Sprite* GetSprite() const;

@@ -105,8 +105,8 @@ void GameManager::Update()
     std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
-        m_PlayerOne->WallCollisions(m_SceneManager, m_Window);
-        m_PlayerTwo->WallCollisions(m_SceneManager, m_Window);
+        m_PlayerOne->WallCollisions(m_SceneManager, m_Window, &m_Projectiles);
+        m_PlayerTwo->WallCollisions(m_SceneManager, m_Window, &m_Projectiles);
 
         m_PlayerOne->PlayerInput(&m_Projectiles, sf::Keyboard::Space, sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D);
         m_PlayerTwo->PlayerInput(&m_Projectiles, sf::Keyboard::RControl, sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right);
