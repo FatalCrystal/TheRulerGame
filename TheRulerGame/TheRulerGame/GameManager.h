@@ -54,8 +54,6 @@ public:
 
 	// Main SFML game loop
 	void GameLoop();
-	// Handles keyboard input for both players
-	void PlayerInput();
 
 	void ChangeGameState();
 

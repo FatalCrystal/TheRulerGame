@@ -12,7 +12,7 @@ Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _nam
 	SetAudio();
 	SetPosition(_position);
 	m_Name = _name;
-
+	
 	m_BoundingBoxShape = new sf::RectangleShape();
 }
 
@@ -111,28 +111,27 @@ void Player::SetAudio()
 
 void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 {
-	bool collRight = false;
-	bool collLeft = false;
-	bool collTop = false;
-	bool collBot = false;
+	bool colliding = false;
 
 	playerBoundingBox = m_Sprite->getGlobalBounds();
+
+	m_BoundingBoxShape->setSize(sf::Vector2f(25, 25));
+	m_BoundingBoxShape->setFillColor(sf::Color::Transparent);
+	m_BoundingBoxShape->setOutlineColor(sf::Color::Black);
+	m_BoundingBoxShape->setPosition(GetPosition().x - m_Sprite->getTextureRect().width / 2, GetPosition().y - m_Sprite->getTextureRect().height / 2);
+	m_BoundingBoxShape->setOutlineThickness(1);
 	
-	nextPos = playerBoundingBox;
+	nextPos = m_BoundingBoxShape->getGlobalBounds();
 	nextPos.left += m_Direction.x;
 	nextPos.top += m_Direction.y;
 
-	m_BoundingBoxShape->setSize(sf::Vector2f(nextPos.width, nextPos.height));
-	m_BoundingBoxShape->setFillColor(sf::Color::Transparent);
-	m_BoundingBoxShape->setOutlineColor(sf::Color::Black);
-	m_BoundingBoxShape->setPosition(nextPos.left, nextPos.top);
-	m_BoundingBoxShape->setOutlineThickness(1);
+	
 
 	for (auto &wall : _scene.GetWalls())
 	{
 		sf::FloatRect wallBounds = wall->GetTile()->getGlobalBounds();
 
-		if (collBot == false && collLeft == false && collRight == false && collTop == false)
+		if (!colliding)
 		{
 			m_CanMoveForward = true;
 			m_CanMoveBack = true;
@@ -140,80 +139,58 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window)
 
 		if (wallBounds.intersects(nextPos))
 		{
-			// bot
+			// Bot
+			if (playerBoundingBox.top < wallBounds.top + wallBounds.height
+				&& playerBoundingBox.top + playerBoundingBox.height < wallBounds.top + wallBounds.height
+				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
+			{
+				colliding = true;
+				if (m_Sprite->getRotation() > 90.f && m_Sprite->getRotation() < 270.f)
+				{
+					m_CanMoveForward = false;
+					m_CanMoveBack = true;
+				}
+			}
+			//Top
 			if (playerBoundingBox.top > wallBounds.top
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top + wallBounds.height
 				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
 				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
 			{
-				collBot = true;
-				if (m_Sprite->getRotation() >= 270.5f || m_Sprite->getRotation() >= 0.f && m_Sprite->getRotation() <= 89.5f)
+				colliding = true;
+				if (m_Sprite->getRotation() < 90.f || m_Sprite->getRotation() > 270.f)
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
-				else
-				{
-					m_CanMoveForward = true;
-					m_CanMoveBack = false;
-				}
 			}
-			// top
-			if (playerBoundingBox.top < wallBounds.top
-				&& playerBoundingBox.top + playerBoundingBox.height < wallBounds.top + wallBounds.height
-				&& playerBoundingBox.left < wallBounds.left + wallBounds.width
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left)
-			{
-				collTop = true;
-				if (m_Sprite->getRotation() <= 269.5f && m_Sprite->getRotation() <= 90.5f)
-				{
-					m_CanMoveForward = false;
-					m_CanMoveBack = true;
-				}
-				else
-				{
-					m_CanMoveForward = true;
-					m_CanMoveBack = false;
-				}
-			}
-			// right
-			if (playerBoundingBox.left > wallBounds.left
-				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width
-				&& playerBoundingBox.top < wallBounds.top + wallBounds.height
+			//right
+			if (playerBoundingBox.left < wallBounds.left
+				&& playerBoundingBox.left + playerBoundingBox.width < wallBounds.left + wallBounds.width
+				&& playerBoundingBox.top > wallBounds.top + wallBounds.height
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-
-				collRight = true;
-				if (m_Sprite->getRotation() <= 359.5f && m_Sprite->getRotation() >= 191.f)
+				colliding = true;
+				if (m_Sprite->getRotation() < 180.f && m_Sprite->getRotation() > 0.f)
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
-				else
-				{
-					m_CanMoveForward = true;
-					m_CanMoveBack = false;
-				}
 			}
-			// left
-			if (playerBoundingBox.left < wallBounds.left 
-				&& playerBoundingBox.left + playerBoundingBox.width < wallBounds.left + wallBounds.width 
+			//left
+			if (playerBoundingBox.left > wallBounds.left 
+				&& playerBoundingBox.left + playerBoundingBox.width > wallBounds.left + wallBounds.width 
 				&& playerBoundingBox.top < wallBounds.top + wallBounds.height 
 				&& playerBoundingBox.top + playerBoundingBox.height > wallBounds.top)
 			{
-				collLeft = true;
-				if (m_Sprite->getRotation() <= 191.f && m_Sprite->getRotation() >= 0.f)
+				colliding = true;
+				if (m_Sprite->getRotation() < 360.f && m_Sprite->getRotation() > 180.f)
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
-				else
-				{
-					m_CanMoveForward = true;
-					m_CanMoveBack = false;
-				}
 			}
-			
 		}
 	}
 }
