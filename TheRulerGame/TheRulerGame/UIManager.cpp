@@ -111,11 +111,22 @@ void UIManager::UpdateDisplayState(GameState* _state, UIManager::GameData _gameD
 		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 300, [=]()
 			{
 				*_gameData.BaseFireDelay += 0.05f;
-				std::cout << "Increased base fire rate from " << 1.0f / (*_gameData.BaseFireDelay - 0.5f) << " to " << 1.0f / *_gameData.BaseFireDelay << std::endl;
+				std::cout << "Decreased base fire rate from " << 1.0f / (*_gameData.BaseFireDelay - 0.5f) << " to " << 1.0f / *_gameData.BaseFireDelay << std::endl;
 			}));
 
-		// Pickup Spawn Rate
-		// Will be added when pickup system is finished
+		// Increase Spawn Rate (Decrease Spawn Delay)
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 400, [=]()
+			{
+				*_gameData.PickupSpawnDelay -= 1.0f;
+				std::cout << "Increased pickup spawn rate" << std::endl;
+			}));
+
+		// Decrease Spawn Rate (Increase Spawn Delay)
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 400, [=]()
+			{
+				*_gameData.PickupSpawnDelay += 1.0f;
+				std::cout << "Decreased pickup spawn rate" << std::endl;
+			}));
 
 		// Increase Timer Duration
 		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 500, [=]()
@@ -163,27 +174,29 @@ void UIManager::UpdateDisplayState(GameState* _state, UIManager::GameData _gameD
 		m_TextLabels[1]->setPosition(Utils::WinCenterX, 300);
 
 		// Pickup Spawn Rate Text
-		// Will be added when pickup system is finished
+		m_TextLabels.push_back(new sf::Text("Pickup Spawn Rate", m_Font, 30));
+		m_TextLabels[2]->setOrigin(m_TextLabels[2]->getGlobalBounds().width / 2, m_TextLabels[2]->getGlobalBounds().height / 2);
+		m_TextLabels[2]->setPosition(Utils::WinCenterX, 400);
 
 		// Timer Length Text
 		m_TextLabels.push_back(new sf::Text("Timer Duration", m_Font, 30));
-		m_TextLabels[2]->setOrigin(m_TextLabels[2]->getGlobalBounds().width / 2, m_TextLabels[2]->getGlobalBounds().height / 2);
-		m_TextLabels[2]->setPosition(Utils::WinCenterX, 500);
+		m_TextLabels[3]->setOrigin(m_TextLabels[3]->getGlobalBounds().width / 2, m_TextLabels[3]->getGlobalBounds().height / 2);
+		m_TextLabels[3]->setPosition(Utils::WinCenterX, 500);
 
 		// Volume Text
 		m_TextLabels.push_back(new sf::Text("Audio Volume", m_Font, 30));
-		m_TextLabels[3]->setOrigin(m_TextLabels[3]->getGlobalBounds().width / 2, m_TextLabels[3]->getGlobalBounds().height / 2);
-		m_TextLabels[3]->setPosition(Utils::WinCenterX, 600);
+		m_TextLabels[4]->setOrigin(m_TextLabels[4]->getGlobalBounds().width / 2, m_TextLabels[4]->getGlobalBounds().height / 2);
+		m_TextLabels[4]->setPosition(Utils::WinCenterX, 600);
 
 		// Options Text
 		m_TextLabels.push_back(new sf::Text("OPTIONS", m_Font, 50));
-		m_TextLabels[4]->setOrigin(m_TextLabels[4]->getGlobalBounds().width / 2, m_TextLabels[4]->getGlobalBounds().height / 2);
-		m_TextLabels[4]->setPosition(Utils::WinCenterX, 70);
+		m_TextLabels[5]->setOrigin(m_TextLabels[5]->getGlobalBounds().width / 2, m_TextLabels[5]->getGlobalBounds().height / 2);
+		m_TextLabels[5]->setPosition(Utils::WinCenterX, 70);
 
 		// Return Text
 		m_TextLabels.push_back(new sf::Text("RETURN", m_Font, 30));
-		m_TextLabels[5]->setOrigin(m_TextLabels[5]->getGlobalBounds().width / 2, m_TextLabels[5]->getGlobalBounds().height / 2);
-		m_TextLabels[5]->setPosition(Utils::WinCenterX, 720);
+		m_TextLabels[6]->setOrigin(m_TextLabels[6]->getGlobalBounds().width / 2, m_TextLabels[6]->getGlobalBounds().height / 2);
+		m_TextLabels[6]->setPosition(Utils::WinCenterX, 720);
 	}
 	else if (*_state == GameState::Gameplay)
 	{

@@ -1,10 +1,8 @@
 #include "GameManager.h"
 
-GameManager GM;
-
 int main()
 {
-	GM.GameLoop();
+	GameManager GM;
 
-	return 0;
+	GM.GameLoop();
 }

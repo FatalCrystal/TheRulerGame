@@ -1,5 +1,4 @@
 #include "GameManager.h"
-#include "Collision.h"
 
 GameManager::GameManager()
 {
@@ -41,7 +40,7 @@ void GameManager::GameLoop()
 
         if (m_GameState != m_PreviousGameState)
         {
-            ChangeGameState();         
+            ChangeGameState();
         }
 
         Update();
@@ -52,73 +51,11 @@ void GameManager::GameLoop()
     }
 }
 
-void GameManager::PlayerInput()
-{
-    
-    float PlayerOneAngle = 0.0f;
-    float PlayerTwoAngle = 0.0f;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-        m_PlayerOne->Shoot(&m_Projectiles);
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
-    {
-        m_PlayerTwo->Shoot(&m_Projectiles);
-    }
-    
-    // PLAYER ONE ROTATION AND MOVEMENT
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        PlayerOneAngle -= m_PlayerOne->GetRotationSpeed();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        PlayerOneAngle += m_PlayerOne->GetRotationSpeed();
-    }
-
-    m_PlayerOne->SetDirection(Utils::Rotate(m_PlayerOne->GetDirection(), PlayerOneAngle * (float)(3.1415926536 / 180)));
-    m_PlayerOne->GetSprite()->rotate(PlayerOneAngle);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        m_PlayerOne->MovePlayer(Utils::Normalize(m_PlayerOne->GetDirection()) * -m_PlayerOne->GetMoveSpeed(), m_SceneManager.GetWalls());
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        m_PlayerOne->MovePlayer(Utils::Normalize(m_PlayerOne->GetDirection()) * m_PlayerOne->GetMoveSpeed(), m_SceneManager.GetWalls());
-    }
-
-    // PLAYER TWO ROTATION AND MOVEMENT
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        PlayerTwoAngle -= m_PlayerTwo->GetRotationSpeed();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        PlayerTwoAngle += m_PlayerTwo->GetRotationSpeed();
-    }
-
-    m_PlayerTwo->SetDirection(Utils::Rotate(m_PlayerTwo->GetDirection(), PlayerTwoAngle * (float)(3.1415926536 / 180)));
-    m_PlayerTwo->GetSprite()->rotate(PlayerTwoAngle);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * m_PlayerTwo->GetMoveSpeed())));
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        m_PlayerTwo->SetPosition(sf::Vector2f(m_PlayerTwo->GetPosition() + (Utils::Normalize(m_PlayerTwo->GetDirection()) * -m_PlayerTwo->GetMoveSpeed())));
-    }
-}
-
 void GameManager::ChangeGameState()
 {
     if (m_GameState == GameState::Gameplay)
     {
+
         m_SceneManager.LoadRandomScene();
 
         m_PlayerOne = new Player("RedTank.png", sf::Vector2f(Utils::WinCenterX - 100, Utils::WinCenterY), "Player One");
@@ -135,10 +72,8 @@ void GameManager::ChangeGameState()
             ((Player*)m_Objects[i])->SetMoveSpeed(m_BaseMoveSpeed);
             ((Player*)m_Objects[i])->SetAttackCooldown(m_BaseFireDelay);
         }
-        m_GameClock.restart();
 
-        //collision for window boarders
-     
+        m_GameClock.restart();
     }
     else if (m_PreviousGameState == GameState::Gameplay)
     {
@@ -164,10 +99,19 @@ void GameManager::ChangeGameState()
 
 void GameManager::Update()
 {
+    dt = deltaClock.restart();
+    deltaTimeFloat = dt.asSeconds();
+
     std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
-        PlayerInput();
+        m_PlayerOne->WallCollisions(m_SceneManager, m_Window, &m_Projectiles);
+        m_PlayerTwo->WallCollisions(m_SceneManager, m_Window, &m_Projectiles);
+
+        m_PlayerOne->PlayerInput(&m_Projectiles, sf::Keyboard::Space, sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D);
+        m_PlayerTwo->PlayerInput(&m_Projectiles, sf::Keyboard::RControl, sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right);
+
+        PickUps.SpawnPickups(); 
 
         for (GameObject* Object : m_Objects)
         {
@@ -179,9 +123,9 @@ void GameManager::Update()
             Projectile->Update();
         }
 
-        m_PlayerOne->Update(&m_Projectiles);
-        m_PlayerTwo->Update(&m_Projectiles);
- 
+        m_PlayerOne->Update(&m_Projectiles, &PickUps.m_PickUpVector);
+        m_PlayerTwo->Update(&m_Projectiles, &PickUps.m_PickUpVector); 
+        
         if (m_GameClock.getElapsedTime().asSeconds() >= m_TimerLength)
         {
             if (m_PlayerOne->HasCrown())
@@ -203,17 +147,18 @@ void GameManager::Update()
     }
 
     float TimeRemaining = m_TimerLength - m_GameClock.getElapsedTime().asSeconds();
-    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, WinnerText), TimeRemaining);
+    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, &PickUps.m_PickupSpawnDelay, WinnerText), TimeRemaining);
 }
-
-
 
 void GameManager::Render()
 {
+
 	m_Window->clear();
     
+
     m_SceneManager.RenderLevel(m_Window);
 
+    PickUps.RenderPickups(m_Window); 
 
     for (GameObject* Object : m_Objects)
     {

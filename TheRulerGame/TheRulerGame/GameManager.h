@@ -1,6 +1,5 @@
 #pragma once
 #include "UIManager.h"
-#include "SceneManager.h"
 #include <vector>
 
 class GameManager
@@ -16,10 +15,17 @@ private:
 	
 	SceneManager m_SceneManager;
 
+	PickupSpawner PickUps;
+
+
 	// Contains all objects in the game
 	std::vector<GameObject*> m_Objects = {};
 	// Contains all projectiles in the game
 	std::vector<Bullet*> m_Projectiles = {};
+
+	sf::Clock deltaClock;
+	sf::Time dt;
+	float deltaTimeFloat;
 
 	// Player One
 	Player* m_PlayerOne = nullptr;
@@ -49,8 +55,6 @@ public:
 
 	// Main SFML game loop
 	void GameLoop();
-	// Handles keyboard input for both players
-	void PlayerInput();
 
 	void ChangeGameState();
 

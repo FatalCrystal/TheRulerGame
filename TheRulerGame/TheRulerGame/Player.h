@@ -1,13 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Bullet.h"
-#include "SceneManager.h"
 #include "SFML/Audio.hpp"
-
-enum class Pickup
-{
-	None,
-};
+#include "PickupSpawner.h"
+#include "SceneManager.h"
 
 class Player : public GameObject
 {
@@ -16,14 +12,20 @@ private:
 	std::string m_Name = "Player";
 	// Shape color
 	sf::Texture m_Texture;
+	sf::Texture m_CrownTexture;
 	sf::Sprite* m_Sprite;
+	sf::Sprite* m_CrownSprite;
+	sf::RectangleShape* m_BoundingBoxShape;
 	// The other player
 	Player* m_Enemy = nullptr;
-
+	
 	// Clock to track attack cooldown
 	sf::Clock m_AttackCooldown = sf::Clock();
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 0.2f;
+
+	sf::FloatRect m_PlayerNextPos;
+	sf::FloatRect m_PlayerBoundingBox;
 
 	// Direction the player is facing
 	sf::Vector2f m_Direction = sf::Vector2f(0.0f, -1.0f);
@@ -33,10 +35,15 @@ private:
 	float m_RotationSpeed = 3.0f;
 
 	// Pickup currently held by the player (can be none)
-	Pickup m_CurrentPickup = Pickup::None;
-
+	PickupType m_CurrentPickup = type_None; 
+	// Timer which counts down to pickup disappearing
+	sf::Clock m_PickupTimer = sf::Clock();
+	// Duration of Pickup Timer
+	float m_PickupTimerDuration = 10.0f;
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
+	bool m_CanMoveForward = true;
+	bool m_CanMoveBack = true;
 
 	// Load sound data for shooting
 	sf::Sound m_PlayerShootSound;
@@ -70,11 +77,13 @@ public:
 	// Set rotation speed
 	void SetRotationSpeed(float _rotationSpeed);
 	// Set the current pickup held by the player (can be none)
-	void SetPickup(Pickup _pickup);
+	void SetPickup(PickupType _pickup);
 	// Set whether or not the player holds the crown
 	void SetCrown(bool _hasCrown);
 	// Initializes audio data
 	void SetAudio();
+	// Wall collisions
+	void WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std::vector<Bullet*>* _projectiles);
 
 	// Return sprite pointer
 	sf::Sprite* GetSprite() const;
@@ -91,23 +100,18 @@ public:
 	// Return rotation speed
 	float GetRotationSpeed() const;
 	// Return current pickup (can be none)
-	Pickup GetPickup() const;
+	PickupType GetPickup() const;
 	// Return whether or not the player holds the crown
 	bool HasCrown() const;
 
 	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);
-
-	void MovePlayer(sf::Vector2f _velocity, std::vector<Tile*> _wallColl);
-
-	bool CheckCollisionsPredictive(sf::FloatRect _objA, std::vector<Tile*> _wallColl);
-
-	void XCollision(sf::FloatRect _objA, sf::FloatRect _objB);
-
-	void YCollision(sf::FloatRect _objA, sf::FloatRect _objB);
-
+	
+	// Use special attack
+	void SpecialAttack();
+	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
 	// Per-frame processing, runs every frame (after object update)
-	void Update(std::vector<Bullet*>* _projectiles);
+	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame
 	void Render(sf::RenderWindow* _window);
 };
