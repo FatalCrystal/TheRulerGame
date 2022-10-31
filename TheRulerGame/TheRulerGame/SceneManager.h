@@ -1,7 +1,6 @@
 #pragma once
 #include "Utils.h"
 #include "Tile.h"
-#include "Player.h"
 #include <fstream>
 
 class SceneManager
@@ -16,21 +15,19 @@ private:
 
 public:
 	// Constructor
-	SceneManager();
+	SceneManager() {};
 	// Destructor
-	~SceneManager();
+	~SceneManager() {};
 	// Function to load a randomly selected level
 	void LoadRandomScene();
 	// Function to load a selected level
 	void LoadScene(std::string _filePath);
 	// Function to render level tiles
 	void RenderLevel(sf::RenderTarget* _window);
-
-	/*void UpdateWallColisions(Player *_player);*/
-
 	// Getters
-	std::vector<Tile*> GetWalls();
-	std::vector<Tile*> GetGround();
+	std::vector<Tile*> GetWalls() const { return levelWallTiles; };
+	std::vector<Tile*> GetGround() const { return levelGroundTiles; };
+	// Tile cleanup
 	void ClearTiles();
 };
 

@@ -1,17 +1,6 @@
 #include "SceneManager.h"
-#include "Collision.h"
 #include <ctime>
 #include <iostream>
-
-
-
-SceneManager::SceneManager()
-{
-}
-
-SceneManager::~SceneManager()
-{
-}
 
 // Handles random scene assignment
 void SceneManager::LoadRandomScene()
@@ -89,8 +78,7 @@ void SceneManager::LoadScene(std::string _filePath)
 				Tile* newTile = new Tile(TileType::TILE_WALL);
 				// Set tile position
 				newTile->GetTile()->setPosition(sf::Vector2f(x * newTile->GetTileRectSize().x, y * newTile->GetTileRectSize().y));
-				// Add tiles to vector for rendering and collision
-
+				// Add tiles to vector for rendering and collisions
 				levelWallTiles.push_back(newTile);
 			}
 			if (levelArray[y][x] == 'O')
@@ -117,18 +105,6 @@ void SceneManager::RenderLevel(sf::RenderTarget* _window)
 	}
 }
 
-//void SceneManager::UpdateWallColisions(Player* _player)
-//{
-//	for (auto i = 0; i < levelWallTiles.size(); i++)
-//	{
-//		if (_player->GetSprite()->getGlobalBounds().intersects(levelWallTiles[i]->GetTile()->getGlobalBounds()))
-//		{
-//			Collision::XCollision(_player->GetSprite(), levelWallTiles[i]->GetTile()->getGlobalBounds());
-//			Collision::YCollision(_player->GetSprite(), levelWallTiles[i]->GetTile()->getGlobalBounds());
-//		}
-//	}
-//}
-
 void SceneManager::ClearTiles()
 {
 	// Delete all wall tiles
@@ -148,14 +124,4 @@ void SceneManager::ClearTiles()
 	// Empty vectors
 	levelWallTiles.clear();
 	levelGroundTiles.clear();
-}
-
-std::vector<Tile*> SceneManager::GetWalls()
-{
-	return levelWallTiles;
-}
-
-std::vector<Tile*> SceneManager::GetGround()
-{
-	return levelGroundTiles;
 }

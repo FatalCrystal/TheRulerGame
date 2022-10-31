@@ -1,8 +1,10 @@
 #include "GameManager.h"
 
+// Initialize game manager
+GameManager GM;
+
 int main()
 {
-	GameManager GM;
-
+	// Run Game
 	GM.GameLoop();
 }

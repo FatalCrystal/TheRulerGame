@@ -1,30 +1,26 @@
-#include "Bullet.h"
+ #include "Bullet.h"
 #include <iostream>
 
-Bullet::Bullet(sf::Vector2f _position, sf::Vector2f _direction, float _moveSpeed, Player* _target)
+Bullet::Bullet(sf::Vector2f _position, sf::Vector2f _direction, float _moveSpeed, float _bulletRadius, Player* _target) :
+	m_BulletRadius(_bulletRadius), m_Direction(_direction), m_MoveSpeed(_moveSpeed), m_Target(_target) // Set bullet parameters
 {
-	m_Shape = new sf::CircleShape(5);
-	m_Direction = _direction;
-	m_MoveSpeed = _moveSpeed;
-	m_Shape->setOrigin(5, 5);
+	// Create shape
+	m_Shape = new sf::CircleShape(m_BulletRadius);
+	// set origin in middle
+	m_Shape->setOrigin(m_BulletRadius, m_BulletRadius);
+	// Set the bullet position
 	m_Shape->setPosition(_position);
-	m_Target = _target;
 }
 
 Bullet::~Bullet()
 {
-}
-
-Player* Bullet::GetTarget() const
-{
-	return m_Target;
+	delete m_Shape;
 }
 
 sf::Shape* Bullet::GetShape()
 {
 	return m_Shape;
 }
-
 
 void Bullet::Update()
 {
