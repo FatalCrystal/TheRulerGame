@@ -99,9 +99,6 @@ void GameManager::ChangeGameState()
 
 void GameManager::Update()
 {
-    dt = deltaClock.restart();
-    deltaTimeFloat = dt.asSeconds();
-
     std::string WinnerText;
     if (m_GameState == GameState::Gameplay)
     {
@@ -112,11 +109,6 @@ void GameManager::Update()
         m_PlayerTwo->PlayerInput(&m_Projectiles, sf::Keyboard::RControl, sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right);
 
         PickUps.SpawnPickups(); 
-
-        for (GameObject* Object : m_Objects)
-        {
-            Object->Update(m_DeltaTime);
-        }
 
         for (Bullet* Projectile : m_Projectiles)
         {

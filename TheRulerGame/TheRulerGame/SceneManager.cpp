@@ -2,14 +2,6 @@
 #include <ctime>
 #include <iostream>
 
-SceneManager::SceneManager()
-{
-}
-
-SceneManager::~SceneManager()
-{
-}
-
 // Handles random scene assignment
 void SceneManager::LoadRandomScene()
 {
@@ -132,14 +124,4 @@ void SceneManager::ClearTiles()
 	// Empty vectors
 	levelWallTiles.clear();
 	levelGroundTiles.clear();
-}
-
-std::vector<Tile*> SceneManager::GetWalls() const
-{
-	return levelWallTiles;
-}
-
-std::vector<Tile*> SceneManager::GetGround() const
-{
-	return levelGroundTiles;
 }

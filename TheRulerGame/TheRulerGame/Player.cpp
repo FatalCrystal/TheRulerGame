@@ -1,37 +1,50 @@
 #include "Player.h"
 
-Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _name)
+Player::Player(std::string _spritePath, sf::Vector2f _position, std::string _name) :
+	m_Name(_name) // Set player name
 {
+	// Load player texture
 	m_Texture.loadFromFile("Resources/Textures/" + _spritePath);
+	// Set player sprite
 	SetSprite(new sf::Sprite(m_Texture));
 
+	// Load texture for crown
 	m_CrownTexture.loadFromFile("Resources/Textures/Crown.png");
+	//Create sprite for crown
 	m_CrownSprite = new sf::Sprite(m_CrownTexture);
+	// Assign sprite origin
 	m_CrownSprite->setOrigin(m_CrownSprite->getGlobalBounds().width / 2, m_CrownSprite->getGlobalBounds().height / 2);
 
+	// Set the player audio parameters
 	SetAudio();
+	// Set player initial position
 	SetPosition(_position);
-	m_Name = _name;
 	
+	// Create player bounding box shape
 	m_BoundingBoxShape = new sf::RectangleShape();
 }
 
 Player::~Player()
 {
 	delete m_BoundingBoxShape;
+	delete m_CrownSprite;
+	delete m_Sprite;
 }
 
+// Set players enemy
 void Player::SetEnemy(Player* _enemy)
 {
 	m_Enemy = _enemy;
 }
 
+// Set player sprite and its origin 
 void Player::SetSprite(sf::Sprite* _sprite)
 {
 	m_Sprite = _sprite;
 	m_Sprite->setOrigin(m_Sprite->getGlobalBounds().width / 2, m_Sprite->getGlobalBounds().height / 2);
 }
 
+// Set player position 
 void Player::SetPosition(sf::Vector2f _position)
 {
 	m_Position = _position;
@@ -42,32 +55,38 @@ void Player::SetPosition(sf::Vector2f _position)
 	}
 }
 
+// Set the direction of the player
 void Player::SetDirection(sf::Vector2f _direction)
 {
 	m_Direction = _direction;
 }
 
+// Set the player movespeed
 void Player::SetMoveSpeed(float _moveSpeed)
 {
 	m_MoveSpeed = _moveSpeed;
 }
 
+// Set attack cool down
 void Player::SetAttackCooldown(float _attackCooldown)
 {
 	m_AttackCooldownDuration = _attackCooldown;
 }
 
+// Set the speed at which the player rotates in game
 void Player::SetRotationSpeed(float _rotationSpeed)
 {
 	m_RotationSpeed = _rotationSpeed;
 }
 
+// Set pickup
 void Player::SetPickup(PickupType _pickup)
 {
 	m_CurrentPickup = _pickup;
 	m_PickupTimer.restart();
 }
 
+// Set whether the player has the crown
 void Player::SetCrown(bool _hasCrown)
 {
 	m_HasCrown = _hasCrown;
@@ -82,8 +101,10 @@ void Player::SetCrown(bool _hasCrown)
 	}*/
 }
 
+// Set audio files for the players to use
 void Player::SetAudio()
 {
+	// Check if sound buffer is loaded
 	if (!m_PlayerShootSB.loadFromFile("Resources/Sounds/Shoot.wav"))
 	{
 		std::cout << "Error Shoot.wav not loaded" << std::endl;
@@ -104,39 +125,48 @@ void Player::SetAudio()
 		std::cout << "Error Powerup.wav not loaded" << std::endl;
 	}
 
+	// Set buffer to sound veriable
 	m_PlayerShootSound.setBuffer(m_PlayerShootSB);
 	m_PlayerHitSound.setBuffer(m_PlayerHitSB);
 	m_PlayerCrownSwitchSound.setBuffer(m_PlayerCrownSwitchSB);
 	m_PlayerPickUpSound.setBuffer(m_PlayerPickUpSB);
 }
 
+// Handles wall collisions
 void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std::vector<Bullet*>* _projectiles)
 {
+	// Bool to check if player is colliding with wall
 	bool colliding = false;
 
+	// Set player bounding box float rect
 	m_PlayerBoundingBox = m_Sprite->getGlobalBounds();
-
+	// Set bounding box shape for nex position to a little bigger the player 
 	m_BoundingBoxShape->setSize(sf::Vector2f(25, 25));
+	// Make shape invis
 	m_BoundingBoxShape->setFillColor(sf::Color::Transparent);
+	// Set shape to player position
 	m_BoundingBoxShape->setPosition(GetPosition().x - m_Sprite->getTextureRect().width / 2, GetPosition().y - m_Sprite->getTextureRect().height / 2);
 
-	
+	// Set float rect to hold bounding box
 	m_PlayerNextPos = m_BoundingBoxShape->getGlobalBounds();
+	// Move float rect to slightly infront of the player
 	m_PlayerNextPos.left += m_Direction.x;
 	m_PlayerNextPos.top += m_Direction.y;
 
-	
-
+	// Loop through the walls
 	for (auto &wall : _scene.GetWalls())
 	{
+		// Float rect for wall bounding box
 		sf::FloatRect wallBounds = wall->GetTile()->getGlobalBounds();
 
+		// If not colliding restrict movement
 		if (!colliding)
 		{
 			m_CanMoveForward = true;
 			m_CanMoveBack = true;
 		}
 
+		// Check if wall bounding box intersects with the players next position bounding box
 		if (wallBounds.intersects(m_PlayerNextPos))
 		{
 			// Bottom Player collision with Top wall collision
@@ -193,9 +223,12 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 			}
 		}
 
+		// Set bullet counter
 		int Counter = 0;
+		// Loop through bullets
 		for (Bullet* Projectile : *_projectiles)
 		{
+			// If bullets intersect with wall remove bullet and play sound
 			if (Projectile->GetShape()->getGlobalBounds().intersects(wallBounds))
 			{
 				m_PlayerHitSound.play();
@@ -209,57 +242,13 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 	}
 }
 
-sf::Sprite* Player::GetSprite() const
-{
-	return m_Sprite;
-}
-
-std::string Player::GetName() const
-{
-	return m_Name;
-}
-
-sf::Vector2f Player::GetDirection() const
-{
-	return m_Direction;
-}
-
-sf::Sound Player::GetPickUpSound() const
-{
-	return m_PlayerPickUpSound;
-}
-
-sf::Sound Player::GetHitSound() const
-{
-	return m_PlayerHitSound;
-}
-
-float Player::GetMoveSpeed() const
-{
-	return m_MoveSpeed;
-}
-
-float Player::GetRotationSpeed() const
-{
-	return m_RotationSpeed;
-}
-
-PickupType Player::GetPickup() const
-{	
-	return m_CurrentPickup;
-}
-
-bool Player::HasCrown() const
-{
-	return m_HasCrown;
-}
-
+// Handles shooting
 void Player::Shoot(std::vector<Bullet*>* _projectiles)
 {
 	if (m_AttackCooldown.getElapsedTime().asSeconds() > m_AttackCooldownDuration)
 	{
 		m_PlayerShootSound.play();
-		_projectiles->push_back(new Bullet(m_Position, m_Direction, 10.0f, m_Enemy));
+		_projectiles->push_back(new Bullet(m_Position, m_Direction, m_BulletSpeed, m_BulletRadius, m_Enemy));
 		m_AttackCooldown.restart();
 	}
 }
@@ -283,17 +272,18 @@ void Player::SpecialAttack()
 	}
 }
 
+// Handles player input and movement
 void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
 {
 	float PlayerAngle = 0.0f;
 
-	// Player one Shoot
+	// Player Shoot
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
 		Shoot(_projectiles);
 	}
 
-	// PLAYER ONE ROTATION AND MOVEMENT
+	// PLAYER ROTATION AND MOVEMENT
 
 	if (sf::Keyboard::isKeyPressed(_left))
 	{
@@ -304,9 +294,12 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 		PlayerAngle += m_RotationSpeed;
 	}
 
+	// Set direction vector
 	SetDirection(Utils::Rotate(m_Direction, PlayerAngle * (float)(3.1415926536 / 180)));
+	// Rotate sprite
 	m_Sprite->rotate(PlayerAngle);
 
+	// If player can move equals true move
 	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(_up))
 	{
 		SetPosition(sf::Vector2f(m_Position + m_Direction * m_MoveSpeed));

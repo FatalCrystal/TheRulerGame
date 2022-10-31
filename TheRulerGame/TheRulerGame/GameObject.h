@@ -12,7 +12,7 @@ protected:
 
 public:
 	// Default constructor
-	GameObject();
+	GameObject() {};
 	// Constructor with vector position
 	GameObject(sf::Shape* _shape, sf::Vector2f _position);
 	// Constructor with X and Y positions
@@ -26,12 +26,10 @@ public:
 	void SetShape(sf::Shape* _shape);
 
 	// Return position
-	sf::Vector2f GetPosition() const;
+	sf::Vector2f GetPosition() const { return m_Position; };
 	// Return shape pointer
-	sf::Shape* GetShape() const;
+	sf::Shape* GetShape() const { return m_Shape; };
 
-	// For per-frame calculations, runs every frame
-	void Update(float _deltaTime);
 	// Renders the object to the window, runs every frame
 	void Render(sf::RenderWindow* _window);
 };

@@ -10,12 +10,15 @@ class Player : public GameObject
 private:
 	// Name of the player (for debug and UI)
 	std::string m_Name = "Player";
-	// Shape color
 	sf::Texture m_Texture;
 	sf::Texture m_CrownTexture;
+	
 	sf::Sprite* m_Sprite;
 	sf::Sprite* m_CrownSprite;
+	
+	// Shape used for player bounding box
 	sf::RectangleShape* m_BoundingBoxShape;
+	
 	// The other player
 	Player* m_Enemy = nullptr;
 	
@@ -24,7 +27,9 @@ private:
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 0.2f;
 
+	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;
+	// Holds player current bounding box
 	sf::FloatRect m_PlayerBoundingBox;
 
 	// Direction the player is facing
@@ -42,8 +47,14 @@ private:
 	float m_PickupTimerDuration = 10.0f;
 	// Whether or not the player is currently holding the crown
 	bool m_HasCrown = false;
+	// Whether or not the player can move
 	bool m_CanMoveForward = true;
 	bool m_CanMoveBack = true;
+
+	// Bullet size
+	float m_BulletRadius = 5.f;
+	// Bullet speed
+	float m_BulletSpeed = 10.f;
 
 	// Load sound data for shooting
 	sf::Sound m_PlayerShootSound;
@@ -86,23 +97,23 @@ public:
 	void WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std::vector<Bullet*>* _projectiles);
 
 	// Return sprite pointer
-	sf::Sprite* GetSprite() const;
+	sf::Sprite* GetSprite() const { return m_Sprite; };
 	// Return name
-	std::string GetName() const;
+	std::string GetName() const { return m_Name; };
 	// Return direction
-	sf::Vector2f GetDirection() const;
+	sf::Vector2f GetDirection() const { return m_Direction; };
 	// Return item pickup sound
-	sf::Sound GetPickUpSound() const;
+	sf::Sound GetPickUpSound() const { return m_PlayerPickUpSound; };
 	// Return Hit sound
-	sf::Sound GetHitSound() const;
+	sf::Sound GetHitSound() const { return m_PlayerHitSound; };
 	// Return movement speed
-	float GetMoveSpeed() const;
+	float GetMoveSpeed() const { return m_MoveSpeed; };
 	// Return rotation speed
-	float GetRotationSpeed() const;
+	float GetRotationSpeed() const { return m_RotationSpeed; };
 	// Return current pickup (can be none)
-	PickupType GetPickup() const;
+	PickupType GetPickup() const { return m_CurrentPickup; };
 	// Return whether or not the player holds the crown
-	bool HasCrown() const;
+	bool HasCrown() const { return m_HasCrown; };
 
 	// Fire a projectile
 	void Shoot(std::vector<Bullet*>* _projectiles);

@@ -3,18 +3,12 @@
 #include <iostream>
 #include <time.h>
 #include "Utils.h" 
-// a spawner that spawns 3 different shapes on the map 
 
-PickupSpawner::PickupSpawner()
+// Pickup spawner
+void PickupSpawner::SpawnPickups() 
 {
-}
-
-PickupSpawner::~PickupSpawner()
-{
-}
-
-void PickupSpawner::SpawnPickups() {
-	if (m_SpawnClock.getElapsedTime().asSeconds() > m_PickupSpawnDelay && m_PickUpVector.size() < 5) {
+	if (m_SpawnClock.getElapsedTime().asSeconds() > m_PickupSpawnDelay && m_PickUpVector.size() < m_MaxPickUps)
+	{
 		Pickup* NewPickUp = new Pickup;
 		srand(time(NULL)); 
 		NewPickUp->Type = (PickupType)(rand() % 2);
@@ -41,9 +35,9 @@ void PickupSpawner::SpawnPickups() {
 	
 void PickupSpawner::RenderPickups(sf::RenderWindow* window)
 {
-	for (Pickup* CurrentPickUp : m_PickUpVector) {
+	for (Pickup* CurrentPickUp : m_PickUpVector) 
+	{
 		window->draw(CurrentPickUp->Shape);
-
 	}
 }
 

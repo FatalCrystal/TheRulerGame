@@ -1,20 +1,33 @@
 #include "Tile.h"
 
+Tile::Tile(TileType _type) :
+	m_TileType(_type)
+{
+	InitializeVaribles();
+	InitializeTileRect();
+}
+
+Tile::~Tile()
+{
+	delete m_TileRect;
+}
+
 void Tile::InitializeVaribles()
 {
 	m_TileRectSize = sf::Vector2f(30.f, 30.f);
 	m_TileRectOrigin = m_TileRectSize / 2.f;
 }
 
-void Tile::InitializeTileRect(TileType _type)
+void Tile::InitializeTileRect()
 {
 	m_TileRect = new sf::RectangleShape();
 	m_TileRect->setSize(m_TileRectSize);
 	m_TileRect->setOrigin(m_TileRectOrigin);
 
+	// Set tile color depending on tile type
 	sf::Color tempColor;
 
-	switch (_type)
+	switch (m_TileType)
 	{
 	case TILE_GROUND:
 		tempColor.r = 207.0f;
@@ -33,27 +46,5 @@ void Tile::InitializeTileRect(TileType _type)
 	default:
 		break;
 	}
-}
-
-Tile::Tile(TileType _type)
-{
-	m_TileType = _type;
-	InitializeVaribles();
-	InitializeTileRect(_type);
-}
-
-Tile::~Tile()
-{
-	delete m_TileRect;
-}
-
-sf::RectangleShape* Tile::GetTile()
-{
-	return m_TileRect;
-}
-
-sf::Vector2f Tile::GetTileRectSize()
-{
-	return m_TileRectSize;
 }
 

@@ -7,13 +7,14 @@ class GameManager
 private:
 	// Main render window
 	sf::RenderWindow* m_Window = nullptr;
-	// UI Manager
+	// UI manager
 	UIManager* m_UIManager = nullptr;
-
+	// Game states
 	GameState m_GameState = GameState::MainMenu;
 	GameState m_PreviousGameState = GameState::None;
+	// Scene manager
 	SceneManager m_SceneManager;
-
+	// Pickup manager
 	PickupSpawner PickUps;
 
 
@@ -22,17 +23,16 @@ private:
 	// Contains all projectiles in the game
 	std::vector<Bullet*> m_Projectiles = {};
 
-	sf::Clock deltaClock;
-	sf::Time dt;
-	float deltaTimeFloat;
-
 	// Player One
 	Player* m_PlayerOne = nullptr;
 	// Player Two
 	Player* m_PlayerTwo = nullptr;
 
+	// Players base move speed 
 	float m_BaseMoveSpeed = 5.0f;
+	// Player delay between shots 
 	float m_BaseFireDelay = 0.2f;
+	
 	// float m_PickupSpawnRate;
 	float m_Volume = 100.0f;
 
@@ -55,6 +55,7 @@ public:
 	// Main SFML game loop
 	void GameLoop();
 
+	// Handles changing of game states
 	void ChangeGameState();
 
 	// Handles all game update function 

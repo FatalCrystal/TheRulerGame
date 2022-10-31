@@ -15,9 +15,9 @@ private:
 
 public:
 	// Constructor
-	SceneManager();
+	SceneManager() {};
 	// Destructor
-	~SceneManager();
+	~SceneManager() {};
 	// Function to load a randomly selected level
 	void LoadRandomScene();
 	// Function to load a selected level
@@ -25,8 +25,9 @@ public:
 	// Function to render level tiles
 	void RenderLevel(sf::RenderTarget* _window);
 	// Getters
-	std::vector<Tile*> GetWalls() const;
-	std::vector<Tile*> GetGround() const;
+	std::vector<Tile*> GetWalls() const { return levelWallTiles; };
+	std::vector<Tile*> GetGround() const { return levelGroundTiles; };
+	// Tile cleanup
 	void ClearTiles();
 };
 

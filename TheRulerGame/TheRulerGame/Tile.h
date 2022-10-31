@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+// Enum for tile type
 enum TileType
 {
 	TILE_GROUND,
@@ -10,21 +11,26 @@ enum TileType
 class Tile
 {
 private:
+	// Tile rect
 	sf::RectangleShape* m_TileRect;
 
+	// Tile rect size
 	sf::Vector2f m_TileRectSize;
+	// Tile rect origin
 	sf::Vector2f m_TileRectOrigin;
 
+	// Hold Enum
 	TileType m_TileType;
 
+	// Initialize variables
 	void InitializeVaribles();
-	void InitializeTileRect(TileType _type);
+	void InitializeTileRect();
 
 public:
 	Tile(TileType _type);
 	virtual ~Tile();
 
-	sf::RectangleShape* GetTile();
-	sf::Vector2f GetTileRectSize();
+	sf::RectangleShape* GetTile() const { return m_TileRect; };
+	sf::Vector2f GetTileRectSize() const { return m_TileRectSize; };
 };
 
