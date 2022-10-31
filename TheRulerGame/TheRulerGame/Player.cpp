@@ -181,6 +181,10 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
+				else
+				{
+					m_CanMoveBack = false;
+				}
 			}
 			// Top Player collision with Bottom wall collision
 			if (m_PlayerBoundingBox.top > wallBounds.top
@@ -193,6 +197,10 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveBack = false;
 				}
 			}
 			// Left Player collision with Right wall collision
@@ -207,6 +215,10 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
+				else
+				{
+					m_CanMoveBack = false;
+				}
 			}
 			// Right Player collision with Left wall collision
 			if (m_PlayerBoundingBox.left > wallBounds.left
@@ -219,6 +231,10 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
+				}
+				else
+				{
+					m_CanMoveBack = false;
 				}
 			}
 		}
