@@ -4,9 +4,9 @@
 namespace Utils
 {
     // Window Width
-    const int WinSizeX = 800;
+    const int WinSizeX = 1280;
     // Window Height
-    const int WinSizeY = 800;
+    const int WinSizeY = 720;
     // Window Center (X Axis)
     const int WinCenterX = WinSizeX / 2;
     // Window Center (Y Axis)

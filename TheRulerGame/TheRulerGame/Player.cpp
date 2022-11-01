@@ -241,7 +241,7 @@ void Player::SpecialAttack()
 
 	case type_AttackSpeed:
 		std::cout << m_Name << " used AttackSpeed!" << std::endl;
-		SetAttackCooldown(m_ModifiedAttackSpeed);
+		SetAttackCooldown(m_ModifiedAttackSpeedCD);
 	default:
 		break;
 	}
@@ -291,6 +291,7 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 	if (m_CurrentPickup != type_None && m_PickupTimer.getElapsedTime().asSeconds() >= m_PickupTimerDuration)
 	{
 		SetPickup(type_None);
+		SetAttackCooldown(m_BaseAttackSpeedCD);
 	}
 
 	for (int i = 0; i < _pickups->size(); i++)
