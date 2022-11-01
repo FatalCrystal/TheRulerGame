@@ -391,21 +391,8 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 	}
 }
 
-
-
-
 void Player::Render(sf::RenderWindow* _window)
 {
-	if (m_Sprite != nullptr)
-	{
-		if (m_HasCrown)
-		{
-			m_CrownSprite->setPosition(m_Position);
-			_window->draw(*m_CrownSprite);
-		}
-		_window->draw(*m_Sprite);
-	}
-
 	if (m_Laser != nullptr)
 	{
 		_window->draw(*m_Laser); 
@@ -418,4 +405,14 @@ void Player::Render(sf::RenderWindow* _window)
 
 	_window->draw(*m_BoundingBoxShape);
 
+	if (m_Sprite != nullptr)
+	{
+		_window->draw(*m_Sprite);
+
+		if (m_HasCrown)
+		{
+			m_CrownSprite->setPosition(m_Position + sf::Vector2f(0, -30));
+			_window->draw(*m_CrownSprite);
+		}
+	}
 }
