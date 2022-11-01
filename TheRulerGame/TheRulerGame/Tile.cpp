@@ -14,7 +14,7 @@ Tile::~Tile()
 
 void Tile::InitializeVaribles()
 {
-	m_TileRectSize = sf::Vector2f(30.f, 30.f);
+	m_TileRectSize = sf::Vector2f(Utils::WinSizeX / 40, Utils::WinSizeY / 40);
 	m_TileRectOrigin = m_TileRectSize / 2.f;
 }
 

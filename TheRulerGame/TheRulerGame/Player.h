@@ -34,7 +34,9 @@ private:
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 1.f;
 	// Attack speed buff
-	float m_ModifiedAttackSpeed = 0.2f;
+	float m_ModifiedAttackSpeedCD = 0.2f;
+
+	float m_BaseAttackSpeedCD = 1.f;
 
 	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;

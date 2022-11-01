@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Utils.h"
 
 // Enum for tile type
 enum TileType

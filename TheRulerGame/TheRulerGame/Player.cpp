@@ -257,7 +257,6 @@ void Player::SpecialAttack()
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
-
 	case type_Bomb:
 
 		for (int i = 0; i < 50; i++)
@@ -277,9 +276,9 @@ void Player::SpecialAttack()
 		}
 
 		break; 
-	//case type_AttackSpeed:
-		//std::cout << m_Name << " used AttackSpeed!" << std::endl;
-		//SetAttackCooldown(m_ModifiedAttackSpeed);
+	case type_AttackSpeed:
+		std::cout << m_Name << " used AttackSpeed!" << std::endl;
+		SetAttackCooldown(m_ModifiedAttackSpeedCD);
 	default:
 		break;
 	}
@@ -307,11 +306,7 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (sf::Keyboard::isKeyPressed(_special))
 	{
 		SpecialAttack();
-
 	}
-
-	
-
 
 	// PLAYER ROTATION AND MOVEMENT
 
@@ -343,6 +338,7 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 		SetPickup(type_None);
 		delete m_Laser; 
 		m_Laser = nullptr; 
+		SetAttackCooldown(m_BaseAttackSpeedCD);
 	}
 
 	for (int i = 0; i < _pickups->size(); i++)
