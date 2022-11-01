@@ -36,7 +36,7 @@ void PickupSpawner::SpawnPickups()
 		m_PickUpVector.push_back(NewPickUp);
 	};
 } 
-	
+
 void PickupSpawner::RenderPickups(sf::RenderWindow* window)
 {
 	for (Pickup* CurrentPickUp : m_PickUpVector) 

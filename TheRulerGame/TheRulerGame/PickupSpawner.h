@@ -23,6 +23,7 @@ class PickupSpawner {
 private:
 	// How many pickups allowed on screen
 	int m_MaxPickUps = 5;
+
 	sf::Clock m_SpawnClock = sf::Clock();
 
 public:
@@ -36,6 +37,5 @@ public:
 
 	void SpawnPickups(); 
 	void SetSpawnAmount(float _spawnAmount) { m_MaxPickUps = _spawnAmount; };
-	void AttackSppedBuffOnPickup();
 	void RenderPickups(sf::RenderWindow* Window);
 };

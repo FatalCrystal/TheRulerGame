@@ -55,30 +55,6 @@ void Player::SetPosition(sf::Vector2f _position)
 	}
 }
 
-// Set the direction of the player
-void Player::SetDirection(sf::Vector2f _direction)
-{
-	m_Direction = _direction;
-}
-
-// Set the player movespeed
-void Player::SetMoveSpeed(float _moveSpeed)
-{
-	m_MoveSpeed = _moveSpeed;
-}
-
-// Set attack cool down
-void Player::SetAttackCooldown(float _attackCooldown)
-{
-	m_AttackCooldownDuration = _attackCooldown;
-}
-
-// Set the speed at which the player rotates in game
-void Player::SetRotationSpeed(float _rotationSpeed)
-{
-	m_RotationSpeed = _rotationSpeed;
-}
-
 // Set pickup
 void Player::SetPickup(PickupType _pickup)
 {
@@ -263,6 +239,9 @@ void Player::SpecialAttack()
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
+	case type_AttackSpeed:
+		std::cout << m_Name << " used AttackSpeed!" << std::endl;
+		SetAttackCooldown(m_ModifiedAttackSpeed);
 	default:
 		break;
 	}

@@ -26,6 +26,8 @@ private:
 	sf::Clock m_AttackCooldown;
 	// Duration of attack cooldown
 	float m_AttackCooldownDuration = 1.f;
+	// Attack speed buff
+	float m_ModifiedAttackSpeed = 0.2f;
 
 	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;
@@ -80,13 +82,13 @@ public:
 	// Set position
 	void SetPosition(sf::Vector2f _position);
 	// Set direction
-	void SetDirection(sf::Vector2f _direction);
+	void SetDirection(sf::Vector2f _direction) { m_Direction = _direction; };
 	// Set movement speed
-	void SetMoveSpeed(float _moveSpeed);
+	void SetMoveSpeed(float _moveSpeed) { m_MoveSpeed = _moveSpeed; };
 	// Set attack cooldown duration
-	void SetAttackCooldown(float _attackCooldown);
+	void SetAttackCooldown(float _attackCooldown) { m_AttackCooldownDuration = _attackCooldown; };
 	// Set rotation speed
-	void SetRotationSpeed(float _rotationSpeed);
+	void SetRotationSpeed(float _rotationSpeed) { m_RotationSpeed = _rotationSpeed; };
 	// Set the current pickup held by the player (can be none)
 	void SetPickup(PickupType _pickup);
 	// Set whether or not the player holds the crown
