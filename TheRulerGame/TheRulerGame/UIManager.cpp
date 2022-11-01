@@ -87,70 +87,70 @@ void UIManager::UpdateDisplayState(GameState* _state, UIManager::GameData _gameD
 		// Buttons and text for the options screen
 
 		// Increase Movement Speed
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 600, 200, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 800, 200, [=]()
 			{
 				*_gameData.BaseMoveSpeed += 0.5f;
 				std::cout << "Increased base movement speed from " << *_gameData.BaseMoveSpeed - 0.5f << " to " << *_gameData.BaseMoveSpeed << std::endl;
 			}));
 
 		// Decrease Movement Speed
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 200, 200, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 400, 200, [=]()
 			{
 				*_gameData.BaseMoveSpeed -= 0.5f;
 				std::cout << "Decreased base movement speed from " << *_gameData.BaseMoveSpeed + 0.5f << " to " << *_gameData.BaseMoveSpeed << std::endl;
 			}));
 
 		// Increase Fire Rate (Decrease Fire Delay)
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 300, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 770, 300, [=]()
 			{
 				*_gameData.BaseFireDelay -= 0.05f;
 				std::cout << "Increased base fire rate from " << 1.0f / (* _gameData.BaseFireDelay + 0.5f) << " to " << 1.0f / *_gameData.BaseFireDelay << std::endl;
 			}));
 
 		// Decrease Fire Rate (Increase Fire Delay)
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 300, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 430, 300, [=]()
 			{
 				*_gameData.BaseFireDelay += 0.05f;
 				std::cout << "Decreased base fire rate from " << 1.0f / (*_gameData.BaseFireDelay - 0.5f) << " to " << 1.0f / *_gameData.BaseFireDelay << std::endl;
 			}));
 
 		// Increase Spawn Rate (Decrease Spawn Delay)
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 400, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 770, 400, [=]()
 			{
 				*_gameData.PickupSpawnDelay -= 1.0f;
 				std::cout << "Increased pickup spawn rate" << std::endl;
 			}));
 
 		// Decrease Spawn Rate (Increase Spawn Delay)
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 400, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 430, 400, [=]()
 			{
 				*_gameData.PickupSpawnDelay += 1.0f;
 				std::cout << "Decreased pickup spawn rate" << std::endl;
 			}));
 
 		// Increase Timer Duration
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 500, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 770, 500, [=]()
 			{
 				*_gameData.TimerLength += 1.0f;
 				std::cout << "Increased timer duration from " << *_gameData.TimerLength - 1.0f << " to " << *_gameData.TimerLength << std::endl;
 			}));
 
 		// Decrease Timer Duration
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 500, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 430, 500, [=]()
 			{
 				*_gameData.TimerLength -= 1.0f;
 				std::cout << "Decreased timer duration from " << *_gameData.TimerLength + 1.0f << " to " << *_gameData.TimerLength << std::endl;
 			}));
 
 		// Increase Volume
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 570, 600, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[1]), 770, 600, [=]()
 			{
 				*_gameData.Volume += 5.0f;
 				std::cout << "Increased audio volume from " << *_gameData.Volume - 5.0f << " to " << *_gameData.Volume << std::endl;
 			}));
 
 		// Decrease Volume
-		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 230, 600, [=]()
+		m_Buttons.push_back(new Button(new sf::Sprite(m_Textures[2]), 430, 600, [=]()
 			{
 				*_gameData.Volume -= 5.0f;
 				std::cout << "Decreased audio volume from " << *_gameData.Volume + 5.0f << " to " << *_gameData.Volume << std::endl;

@@ -144,10 +144,8 @@ void GameManager::Update()
 
 void GameManager::Render()
 {
-
 	m_Window->clear();
     
-
     m_SceneManager.RenderLevel(m_Window);
 
     PickUps.RenderPickups(m_Window); 

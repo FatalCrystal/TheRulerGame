@@ -31,7 +31,7 @@ private:
 	// Players base move speed 
 	float m_BaseMoveSpeed = 5.0f;
 	// Player delay between shots 
-	float m_BaseFireDelay = 0.2f;
+	float m_BaseFireDelay = 0.5f;
 	
 	// float m_PickupSpawnRate;
 	float m_Volume = 100.0f;

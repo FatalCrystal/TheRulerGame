@@ -6,6 +6,7 @@ enum PickupType
  {
 	type_Laser,
 	type_Knockback,
+	type_AttackSpeed,
 	type_None
 };
 
@@ -35,5 +36,6 @@ public:
 
 	void SpawnPickups(); 
 	void SetSpawnAmount(float _spawnAmount) { m_MaxPickUps = _spawnAmount; };
+	void AttackSppedBuffOnPickup();
 	void RenderPickups(sf::RenderWindow* Window);
 };

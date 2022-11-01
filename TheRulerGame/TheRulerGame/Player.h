@@ -23,9 +23,9 @@ private:
 	Player* m_Enemy = nullptr;
 	
 	// Clock to track attack cooldown
-	sf::Clock m_AttackCooldown = sf::Clock();
+	sf::Clock m_AttackCooldown;
 	// Duration of attack cooldown
-	float m_AttackCooldownDuration = 0.2f;
+	float m_AttackCooldownDuration = 1.f;
 
 	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;
