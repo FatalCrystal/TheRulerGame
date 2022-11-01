@@ -6,6 +6,7 @@ enum PickupType
  {
 	type_Laser,
 	type_Knockback,
+	type_AttackSpeed,
 	type_None
 };
 
@@ -22,6 +23,7 @@ class PickupSpawner {
 private:
 	// How many pickups allowed on screen
 	int m_MaxPickUps = 5;
+
 	sf::Clock m_SpawnClock = sf::Clock();
 
 public:

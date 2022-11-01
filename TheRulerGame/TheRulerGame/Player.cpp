@@ -56,30 +56,6 @@ void Player::SetPosition(sf::Vector2f _position)
 	}
 }
 
-// Set the direction of the player
-void Player::SetDirection(sf::Vector2f _direction)
-{
-	m_Direction = _direction;
-}
-
-// Set the player movespeed
-void Player::SetMoveSpeed(float _moveSpeed)
-{
-	m_MoveSpeed = _moveSpeed;
-}
-
-// Set attack cool down
-void Player::SetAttackCooldown(float _attackCooldown)
-{
-	m_AttackCooldownDuration = _attackCooldown;
-}
-
-// Set the speed at which the player rotates in game
-void Player::SetRotationSpeed(float _rotationSpeed)
-{
-	m_RotationSpeed = _rotationSpeed;
-}
-
 // Set pickup
 void Player::SetPickup(PickupType _pickup)
 {
@@ -180,7 +156,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() > 90.f && m_Sprite->getRotation() < 270.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Top Player collision with Bottom wall collision
@@ -193,7 +168,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 90.f || m_Sprite->getRotation() > 270.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Left Player collision with Right wall collision
@@ -206,7 +180,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 180.f && m_Sprite->getRotation() > 0.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Right Player collision with Left wall collision
@@ -219,7 +192,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 360.f && m_Sprite->getRotation() > 180.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 		}
@@ -270,13 +242,16 @@ void Player::SpecialAttack()
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
+	case type_AttackSpeed:
+		std::cout << m_Name << " used AttackSpeed!" << std::endl;
+		SetAttackCooldown(m_ModifiedAttackSpeed);
 	default:
 		break;
 	}
 }
 
 // Handles player input and movement
-void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
+void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _special, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
 {
 	float PlayerAngle = 0.0f;
 
@@ -284,6 +259,11 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
 		Shoot(_projectiles);
+	}
+
+	if (sf::Keyboard::isKeyPressed(_special))
+	{
+		SpecialAttack();
 	}
 
 	// PLAYER ROTATION AND MOVEMENT
@@ -306,10 +286,6 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(_up))
 	{
 		SetPosition(sf::Vector2f(m_Position + m_Direction * m_MoveSpeed));
-	}
-	if (m_CanMoveBack == true && sf::Keyboard::isKeyPressed(_down))
-	{
-		SetPosition(sf::Vector2f(m_Position + m_Direction * -m_MoveSpeed));
 	}
 }
 

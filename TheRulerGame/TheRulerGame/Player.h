@@ -23,9 +23,11 @@ private:
 	Player* m_Enemy = nullptr;
 	
 	// Clock to track attack cooldown
-	sf::Clock m_AttackCooldown = sf::Clock();
+	sf::Clock m_AttackCooldown;
 	// Duration of attack cooldown
-	float m_AttackCooldownDuration = 0.2f;
+	float m_AttackCooldownDuration = 1.f;
+	// Attack speed buff
+	float m_ModifiedAttackSpeed = 0.2f;
 
 	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;
@@ -80,13 +82,13 @@ public:
 	// Set position
 	void SetPosition(sf::Vector2f _position);
 	// Set direction
-	void SetDirection(sf::Vector2f _direction);
+	void SetDirection(sf::Vector2f _direction) { m_Direction = _direction; };
 	// Set movement speed
-	void SetMoveSpeed(float _moveSpeed);
+	void SetMoveSpeed(float _moveSpeed) { m_MoveSpeed = _moveSpeed; };
 	// Set attack cooldown duration
-	void SetAttackCooldown(float _attackCooldown);
+	void SetAttackCooldown(float _attackCooldown) { m_AttackCooldownDuration = _attackCooldown; };
 	// Set rotation speed
-	void SetRotationSpeed(float _rotationSpeed);
+	void SetRotationSpeed(float _rotationSpeed) { m_RotationSpeed = _rotationSpeed; };
 	// Set the current pickup held by the player (can be none)
 	void SetPickup(PickupType _pickup);
 	// Set whether or not the player holds the crown
@@ -120,7 +122,7 @@ public:
 	
 	// Use special attack
 	void SpecialAttack();
-	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
+	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _special, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame

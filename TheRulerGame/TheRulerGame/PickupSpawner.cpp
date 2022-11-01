@@ -11,7 +11,7 @@ void PickupSpawner::SpawnPickups()
 	{
 		Pickup* NewPickUp = new Pickup;
 		srand(time(NULL)); 
-		NewPickUp->Type = (PickupType)(rand() % 2);
+		NewPickUp->Type = (PickupType)(rand() % 3);
 		m_SpawnClock.restart();
 
 		switch (NewPickUp->Type)
@@ -26,13 +26,17 @@ void PickupSpawner::SpawnPickups()
 			NewPickUp->Shape = sf::CircleShape(15);
 			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 50)); //green
 			break;
+
+		case type_AttackSpeed:
+			NewPickUp->Shape = sf::CircleShape(15);
+			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 200)); //green
 		}
 
 		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
 		m_PickUpVector.push_back(NewPickUp);
 	};
 } 
-	
+
 void PickupSpawner::RenderPickups(sf::RenderWindow* window)
 {
 	for (Pickup* CurrentPickUp : m_PickUpVector) 
