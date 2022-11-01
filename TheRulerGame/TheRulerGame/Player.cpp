@@ -223,8 +223,30 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 		m_PlayerShootSound.play();
 		_projectiles->push_back(new Bullet(m_Position, m_Direction, m_BulletSpeed, m_BulletRadius, m_Enemy));
 		m_AttackCooldown.restart();
+
+
+		//m_Enemy->SetDirection(sf::Vector2f(-m_Direction));
+		m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * m_MoveSpeed));
 	}
 }
+
+//Same as shoot but adds setposition to move back
+
+/*
+void Player::KBprojectile(std::vector<Bullet*>* _KBprojectiles)
+{
+	if (m_AttackCooldown.getElapsedTime().asSeconds() > m_AttackCooldownDuration)
+	{
+		m_PlayerShootSound.play();
+		_KBprojectiles->push_back(new Bullet(m_Position, m_Direction, m_BulletSpeed, m_BulletRadius, m_Enemy));
+		m_AttackCooldown.restart();
+
+		
+		SetPosition(sf::Vector2f(m_Position + -m_Direction * m_MoveSpeed));
+	}
+}
+*/
+
 
 void Player::SpecialAttack()
 {
@@ -252,7 +274,12 @@ void Player::SpecialAttack()
 
 	case type_Knockback:
 		// Knockback attack code goes here
+
+
+		//KBprojectile(_KBprojectiles);
 		
+		//bool to set the knockback?
+		Knockback = true;
 
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
@@ -292,7 +319,8 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	// Player Shoot
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
-		Shoot(_projectiles);
+			Shoot(_projectiles);
+		
 	}
 
 
