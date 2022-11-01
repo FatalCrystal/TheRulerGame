@@ -181,10 +181,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
-				else
-				{
-					m_CanMoveBack = false;
-				}
 			}
 			// Top Player collision with Bottom wall collision
 			if (m_PlayerBoundingBox.top > wallBounds.top
@@ -197,10 +193,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
-				}
-				else
-				{
-					m_CanMoveBack = false;
 				}
 			}
 			// Left Player collision with Right wall collision
@@ -215,10 +207,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
 				}
-				else
-				{
-					m_CanMoveBack = false;
-				}
 			}
 			// Right Player collision with Left wall collision
 			if (m_PlayerBoundingBox.left > wallBounds.left
@@ -231,10 +219,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				{
 					m_CanMoveForward = false;
 					m_CanMoveBack = true;
-				}
-				else
-				{
-					m_CanMoveBack = false;
 				}
 			}
 		}
@@ -319,10 +303,6 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (m_CanMoveForward == true && sf::Keyboard::isKeyPressed(_up))
 	{
 		SetPosition(sf::Vector2f(m_Position + m_Direction * m_MoveSpeed));
-	}
-	if (m_CanMoveBack == true && sf::Keyboard::isKeyPressed(_down))
-	{
-		SetPosition(sf::Vector2f(m_Position + m_Direction * -m_MoveSpeed));
 	}
 }
 

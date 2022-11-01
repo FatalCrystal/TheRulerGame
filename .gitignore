@@ -386,3 +386,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+TheRulerGame/TheRulerGame/x64/Debug/vc142.idb
+*.idb
