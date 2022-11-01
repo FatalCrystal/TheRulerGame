@@ -141,6 +141,6 @@ public:
 
 
 	void KBprojectile(std::vector<Bullet*>* _KBprojectiles);
-	bool Knockback = false;
+	
 };
 

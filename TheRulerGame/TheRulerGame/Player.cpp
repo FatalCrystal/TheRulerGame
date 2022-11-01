@@ -274,14 +274,9 @@ void Player::SpecialAttack()
 
 	case type_Knockback:
 		// Knockback attack code goes here
-		
-			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 25.0f));
-		
 
-		//KBprojectile(_KBprojectiles);
-		
-		//bool to set the knockback?
-		Knockback = true;
+			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
+			
 
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
