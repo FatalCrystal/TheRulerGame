@@ -22,6 +22,8 @@ private:
 	// bomb 
 
 	sf::CircleShape* m_Bomb; 
+
+	sf::Clock m_BombTimer; 
 	
 	// Shape used for player bounding box
 	sf::RectangleShape* m_BoundingBoxShape;

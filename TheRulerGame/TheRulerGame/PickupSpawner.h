@@ -1,4 +1,4 @@
-#include "SFML/Graphics.hpp"
+#include "SceneManager.h"
 #include <vector>
 
 // Enum to hold different pickup states
@@ -36,7 +36,8 @@ public:
 	PickupSpawner() {};
 	~PickupSpawner() {};
 
-	void SpawnPickups(); 
+	void SpawnPickups(std::vector<Tile*>Walls); 
+	bool IntersectsWalls(std::vector<Tile*>Walls, sf::Vector2f Position);
 	void SetSpawnAmount(float _spawnAmount) { m_MaxPickUps = _spawnAmount; };
 	void RenderPickups(sf::RenderWindow* Window);
 

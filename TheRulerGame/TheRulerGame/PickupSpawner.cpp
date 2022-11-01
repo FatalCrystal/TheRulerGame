@@ -5,7 +5,7 @@
 #include "Utils.h" 
 
 // Pickup spawner
-void PickupSpawner::SpawnPickups() 
+void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 {
 	if (m_SpawnClock.getElapsedTime().asSeconds() > m_PickupSpawnDelay && m_PickUpVector.size() < m_MaxPickUps)
 	{
@@ -40,10 +40,30 @@ void PickupSpawner::SpawnPickups()
 		default: 
 			break; 
 		} 
+
+		NewPickUp->Shape.setOrigin(NewPickUp->Shape.getRadius() / 2, NewPickUp->Shape.getRadius() / 2); 
+		sf::Vector2f Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
+		while (IntersectsWalls(Walls, Position)) {
+			Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
+		}
 		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
 		m_PickUpVector.push_back(NewPickUp);
 	};
-} 
+}
+bool PickupSpawner::IntersectsWalls(std::vector<Tile*> Walls, sf::Vector2f Position)
+{
+	for (int i = 0; i < Walls.size(); i++)
+	{
+		if (Walls[i]->GetTile()->getGlobalBounds().contains(Position)) {
+
+			return true; 
+		}
+	}
+
+	return false;
+}
+
+
 
 void PickupSpawner::RenderPickups(sf::RenderWindow* window)
 {

@@ -259,17 +259,12 @@ void Player::SpecialAttack()
 
 	case type_Bomb:
 
-		for (int i = 0; i < 50; i++)
-        {
-
-		}
 
 		if (m_Bomb == nullptr) {
 			m_Bomb = new sf::CircleShape(20);
 			m_Bomb->setFillColor(sf::Color::Red);
 			m_Bomb->setPosition(m_Position);
-
-			
+			m_BombTimer.restart(); 
 
 			std::cout << m_Name << " used Bomb!" << std::endl;
 
@@ -354,11 +349,33 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 
 			break;
 
+
 		}
 
 
+
 	}
-	
+
+	if (m_Bomb != nullptr && m_BombTimer.getElapsedTime().asSeconds() > 3.0f) {
+		float BulletCount = 50;
+		for (int i = 0; i < BulletCount; i++)
+		{
+
+			float Degrees = i * (360 / 30);
+			float Radians = Degrees * 3.14159 / 180;
+
+			float BulletX = m_Bomb->getPosition().x + m_Bomb->getRadius() * cos(Radians);
+			float BulletY = m_Bomb->getPosition().y + m_Bomb->getRadius() * sin(Radians);
+
+			sf::Vector2f Direction = Utils::Normalize(sf::Vector2f(BulletX, BulletY) - m_Bomb->getPosition());
+			_projectiles->push_back(new Bullet(sf::Vector2f(BulletX, BulletY), Direction, 10.0f, 5.0f, m_Enemy));
+		 }
+
+
+		delete m_Bomb;
+		m_Bomb = nullptr;
+
+	} 
 
 	if (m_Laser != nullptr && m_Laser->getGlobalBounds().intersects(m_Enemy->GetSprite()->getGlobalBounds()))
 	{
