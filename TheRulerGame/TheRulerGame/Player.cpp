@@ -227,10 +227,25 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 
 void Player::SpecialAttack()
 {
+
 	switch (m_CurrentPickup)
 	{
 	case type_Laser:
 		// Laser attack code goes here
+		
+		m_Laser = new sf::RectangleShape; 
+		m_Laser->setSize(sf::Vector2f(2000, 50)); 
+		m_Laser->setFillColor(sf::Color::Green); 
+		m_Laser->setOrigin(m_Laser->getSize().x / 2, m_Laser->getSize().y / 2); 
+        m_Laser->setRotation(m_Sprite->getRotation() - 90); 
+		m_Laser->setOrigin(0, m_Laser->getSize().y / 2); 
+		m_Laser->setPosition(m_Position); 
+
+	    
+
+		// Rotate 
+		// size 
+
 		std::cout << m_Name << " used Laser!" << std::endl;
 		break;
 
@@ -239,9 +254,29 @@ void Player::SpecialAttack()
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
-	case type_AttackSpeed:
-		std::cout << m_Name << " used AttackSpeed!" << std::endl;
-		SetAttackCooldown(m_ModifiedAttackSpeed);
+
+	case type_Bomb:
+
+		for (int i = 0; i < 50; i++)
+        {
+
+		}
+
+		if (m_Bomb == nullptr) {
+			m_Bomb = new sf::CircleShape(20);
+			m_Bomb->setFillColor(sf::Color::Red);
+			m_Bomb->setPosition(m_Position);
+
+			
+
+			std::cout << m_Name << " used Bomb!" << std::endl;
+
+		}
+
+		break; 
+	//case type_AttackSpeed:
+		//std::cout << m_Name << " used AttackSpeed!" << std::endl;
+		//SetAttackCooldown(m_ModifiedAttackSpeed);
 	default:
 		break;
 	}
@@ -258,10 +293,22 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 		Shoot(_projectiles);
 	}
 
+
+	if (m_Laser != nullptr && sf::Keyboard::isKeyPressed(_special) == false)
+
+	{
+		delete m_Laser; 
+		m_Laser = nullptr; 
+	}
+
 	if (sf::Keyboard::isKeyPressed(_special))
 	{
 		SpecialAttack();
+
 	}
+
+	
+
 
 	// PLAYER ROTATION AND MOVEMENT
 
@@ -291,6 +338,8 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 	if (m_CurrentPickup != type_None && m_PickupTimer.getElapsedTime().asSeconds() >= m_PickupTimerDuration)
 	{
 		SetPickup(type_None);
+		delete m_Laser; 
+		m_Laser = nullptr; 
 	}
 
 	for (int i = 0; i < _pickups->size(); i++)
@@ -305,7 +354,18 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 			i -= 1;
 
 			break;
+
 		}
+
+
+	}
+	
+
+	if (m_Laser != nullptr && m_Laser->getGlobalBounds().intersects(m_Enemy->GetSprite()->getGlobalBounds()))
+	{
+		SetCrown(true);
+		m_Enemy->SetCrown(false); 
+
 	}
 	
 	int Counter = 0;
@@ -344,5 +404,16 @@ void Player::Render(sf::RenderWindow* _window)
 		_window->draw(*m_Sprite);
 	}
 
+	if (m_Laser != nullptr)
+	{
+		_window->draw(*m_Laser); 
+	}
+
+	if (m_Bomb != nullptr)
+	{
+		_window->draw(*m_Bomb);
+	}
+
 	_window->draw(*m_BoundingBoxShape);
+
 }
