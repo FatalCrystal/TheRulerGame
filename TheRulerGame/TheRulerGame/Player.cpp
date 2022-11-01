@@ -67,15 +67,6 @@ void Player::SetPickup(PickupType _pickup)
 void Player::SetCrown(bool _hasCrown)
 {
 	m_HasCrown = _hasCrown;
-
-	/*if (m_HasCrown)
-	{
-		m_Shape->setOutlineColor(sf::Color::Yellow);
-	}
-	else
-	{
-		m_Shape->setOutlineColor(m_Color);
-	}*/
 }
 
 // Set audio files for the players to use
@@ -250,7 +241,7 @@ void Player::KBprojectile(std::vector<Bullet*>* _KBprojectiles)
 
 void Player::SpecialAttack()
 {
-
+	int ammo = 3;
 	switch (m_CurrentPickup)
 	{
 	case type_Laser:
@@ -274,10 +265,10 @@ void Player::SpecialAttack()
 
 	case type_Knockback:
 		// Knockback attack code goes here
-
+		
 			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
-			
 
+		
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
