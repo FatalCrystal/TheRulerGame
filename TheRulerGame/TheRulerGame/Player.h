@@ -15,6 +15,13 @@ private:
 	
 	sf::Sprite* m_Sprite;
 	sf::Sprite* m_CrownSprite;
+
+	// pointer 4 ma lsaer 
+	sf::RectangleShape* m_Laser; 
+
+	// bomb 
+
+	sf::CircleShape* m_Bomb; 
 	
 	// Shape used for player bounding box
 	sf::RectangleShape* m_BoundingBoxShape;
