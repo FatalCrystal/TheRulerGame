@@ -136,5 +136,11 @@ public:
 	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame
 	void Render(sf::RenderWindow* _window);
+
+
+
+
+	void KBprojectile(std::vector<Bullet*>* _KBprojectiles);
+	
 };
 

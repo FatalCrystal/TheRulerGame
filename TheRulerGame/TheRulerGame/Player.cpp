@@ -67,15 +67,6 @@ void Player::SetPickup(PickupType _pickup)
 void Player::SetCrown(bool _hasCrown)
 {
 	m_HasCrown = _hasCrown;
-
-	/*if (m_HasCrown)
-	{
-		m_Shape->setOutlineColor(sf::Color::Yellow);
-	}
-	else
-	{
-		m_Shape->setOutlineColor(m_Color);
-	}*/
 }
 
 // Set audio files for the players to use
@@ -223,12 +214,34 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 		m_PlayerShootSound.play();
 		_projectiles->push_back(new Bullet(m_Position, m_Direction, m_BulletSpeed, m_BulletRadius, m_Enemy));
 		m_AttackCooldown.restart();
+
+
+		//m_Enemy->SetDirection(sf::Vector2f(-m_Direction));
+		//m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 50.0f));
 	}
 }
 
+//Same as shoot but adds setposition to move back
+
+/*
+void Player::KBprojectile(std::vector<Bullet*>* _KBprojectiles)
+{
+	if (m_AttackCooldown.getElapsedTime().asSeconds() > m_AttackCooldownDuration)
+	{
+		m_PlayerShootSound.play();
+		_KBprojectiles->push_back(new Bullet(m_Position, m_Direction, m_BulletSpeed, m_BulletRadius, m_Enemy));
+		m_AttackCooldown.restart();
+
+		
+		SetPosition(sf::Vector2f(m_Position + -m_Direction * m_MoveSpeed));
+	}
+}
+*/
+
+
 void Player::SpecialAttack()
 {
-
+	int ammo = 3;
 	switch (m_CurrentPickup)
 	{
 	case type_Laser:
@@ -253,7 +266,9 @@ void Player::SpecialAttack()
 	case type_Knockback:
 		// Knockback attack code goes here
 		
+			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
 
+		
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
@@ -292,7 +307,8 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	// Player Shoot
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
-		Shoot(_projectiles);
+			Shoot(_projectiles);
+		
 	}
 
 
