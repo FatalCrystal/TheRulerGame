@@ -265,6 +265,8 @@ void Player::SpecialAttack()
 
 	case type_Knockback:
 		// Knockback attack code goes here
+		
+
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
@@ -357,55 +359,8 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 	}
 }
 
-void Player::XCollision(sf::FloatRect _objA, sf::FloatRect _objB)
-{
 
-}
 
-void Player::MovePlayer(sf::Vector2f _velocity, std::vector<Tile*> _wallColl)
-{
-	// Current rect before movement
-	sf::FloatRect CurrentRect = m_Sprite->getGlobalBounds();
-
-	// Future rect IF movement was applied (Both X and Y)
-	sf::FloatRect PredictedRect = sf::FloatRect(CurrentRect.left + _velocity.x, CurrentRect.top, CurrentRect.width, CurrentRect.height);
-
-	while (CheckCollisionsPredictive(PredictedRect, _wallColl))
-	{
-		_velocity.x -= 0.1;
-		PredictedRect = sf::FloatRect(CurrentRect.left + _velocity.x, CurrentRect.top, CurrentRect.width, CurrentRect.height);
-	}
-	
-	PredictedRect = sf::FloatRect(CurrentRect.left, CurrentRect.top + _velocity.y, CurrentRect.width, CurrentRect.height);
-
-	while (CheckCollisionsPredictive(PredictedRect, _wallColl))
-	{
-		_velocity.y -= 0.1;
-		PredictedRect = sf::FloatRect(CurrentRect.left, CurrentRect.top + _velocity.y, CurrentRect.width, CurrentRect.height);
-	}
-
-	SetPosition(m_Position + _velocity);
-}
-
-bool Player::CheckCollisionsPredictive(sf::FloatRect _objA, std::vector<Tile*> _wallColl)
-{
-	for (auto i = 0; i < _wallColl.size(); i++)
-	{
-		if (_objA.intersects(_wallColl[i]->GetTile()->getGlobalBounds()))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-void Player::YCollision(sf::FloatRect _objA, sf::FloatRect _objB)
-{
-	if (_objA.intersects(_objB))
-	{
-		
-	}
-}
 
 void Player::Render(sf::RenderWindow* _window)
 {

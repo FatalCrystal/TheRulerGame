@@ -36,4 +36,7 @@ public:
 	void SpawnPickups(); 
 	void SetSpawnAmount(float _spawnAmount) { m_MaxPickUps = _spawnAmount; };
 	void RenderPickups(sf::RenderWindow* Window);
+
+	void fKnockback();
+
 };

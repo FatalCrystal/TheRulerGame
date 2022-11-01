@@ -9,7 +9,7 @@ void SceneManager::LoadRandomScene()
 	srand((unsigned)time(0));
 
 	// Generate number based on how many scenes we have
-	int loadedLevel = std::rand() % 4;
+	int loadedLevel = std::rand() % 5;
 	
 	// Show level loaded in console
 	std::cout << loadedLevel;
@@ -27,13 +27,13 @@ void SceneManager::LoadRandomScene()
 		loadFilePath = "Resources/Levels/Level2.txt";
 		break;
 	case 2:
-		loadFilePath = "Resources\LevelsLevel3.txt";
+		loadFilePath = "Resources/Levels/Level3.txt";
 		break;
 	case 3:
-		loadFilePath = "Resources\LevelsLevel4.txt";
+		loadFilePath = "Resources/Levels/Level4.txt";
 		break;
 	case 4:
-		loadFilePath = "Resources\LevelsLevel5.txt";
+		loadFilePath = "Resources/Levels/Level5.txt";
 		break;
 	default:
 		break;
