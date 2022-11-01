@@ -179,7 +179,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() > 90.f && m_Sprite->getRotation() < 270.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Top Player collision with Bottom wall collision
@@ -192,7 +191,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 90.f || m_Sprite->getRotation() > 270.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Left Player collision with Right wall collision
@@ -205,7 +203,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 180.f && m_Sprite->getRotation() > 0.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 			// Right Player collision with Left wall collision
@@ -218,7 +215,6 @@ void Player::WallCollisions(SceneManager _scene, sf::RenderWindow* _window, std:
 				if (m_Sprite->getRotation() < 360.f && m_Sprite->getRotation() > 180.f)
 				{
 					m_CanMoveForward = false;
-					m_CanMoveBack = true;
 				}
 			}
 		}
@@ -273,7 +269,7 @@ void Player::SpecialAttack()
 }
 
 // Handles player input and movement
-void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
+void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _special, sf::Keyboard::Key _left, sf::Keyboard::Key _right)
 {
 	float PlayerAngle = 0.0f;
 
@@ -281,6 +277,11 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
 		Shoot(_projectiles);
+	}
+
+	if (sf::Keyboard::isKeyPressed(_special))
+	{
+		SpecialAttack();
 	}
 
 	// PLAYER ROTATION AND MOVEMENT

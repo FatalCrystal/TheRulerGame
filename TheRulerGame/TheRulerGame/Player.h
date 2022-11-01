@@ -120,7 +120,7 @@ public:
 	
 	// Use special attack
 	void SpecialAttack();
-	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _down, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
+	void PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _shoot, sf::Keyboard::Key _up, sf::Keyboard::Key _special, sf::Keyboard::Key _left, sf::Keyboard::Key _right);
 	// Per-frame processing, runs every frame (after object update)
 	void Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _pickups);
 	// Renders the object to the window, runs every frame
