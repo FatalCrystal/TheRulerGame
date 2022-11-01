@@ -226,7 +226,7 @@ void Player::Shoot(std::vector<Bullet*>* _projectiles)
 
 
 		//m_Enemy->SetDirection(sf::Vector2f(-m_Direction));
-		m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * m_MoveSpeed));
+		m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 50.0f));
 	}
 }
 
