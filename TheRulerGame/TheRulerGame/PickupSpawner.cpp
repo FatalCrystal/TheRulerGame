@@ -11,7 +11,7 @@ void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 	{
 		Pickup* NewPickUp = new Pickup;
 		srand(time(NULL)); 
-		NewPickUp->Type = (PickupType)(rand() % 4);
+		NewPickUp->Type = (PickupType)(rand() % 3);
 		m_SpawnClock.restart();
 
 		switch (NewPickUp->Type)
@@ -22,11 +22,6 @@ void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 			NewPickUp->Shape.setFillColor(sf::Color(250, 150, 100)); //ORANGE
 			break;
 
-		case type_Knockback:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 50)); //green
-			break;
-
 		case type_Bomb:
 			NewPickUp->Shape = sf::CircleShape(15);
 			NewPickUp->Shape.setFillColor(sf::Color::Red); //red 
@@ -35,8 +30,12 @@ void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 		case type_AttackSpeed:
 			NewPickUp->Shape = sf::CircleShape(15);
 			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 20)); //green
+			break;
+		case type_Knockback:
+			NewPickUp->Shape = sf::CircleShape(15);
+			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 50)); //green
+			break;
 
-			break; 
 		default: 
 			break; 
 		} 

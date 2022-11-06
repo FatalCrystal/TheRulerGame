@@ -5,9 +5,9 @@
 enum PickupType
  {
 	type_Laser,
-	type_Knockback,
 	type_AttackSpeed,
-	type_Bomb, 
+	type_Bomb,
+	type_Knockback,
 	type_None
 };
 

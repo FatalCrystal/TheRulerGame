@@ -347,8 +347,8 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 	if (m_CurrentPickup != type_None && m_PickupTimer.getElapsedTime().asSeconds() >= m_PickupTimerDuration)
 	{
 		SetPickup(type_None);
-		delete m_Laser; 
-		m_Laser = nullptr; 
+		delete m_Laser;
+		m_Laser = nullptr;
 		SetAttackCooldown(m_BaseAttackSpeedCD);
 	}
 
@@ -357,7 +357,7 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 		if (m_Sprite->getGlobalBounds().intersects(_pickups->at(i)->Shape.getGlobalBounds()))
 		{
 			SetPickup(_pickups->at(i)->Type);
-			std::cout << _pickups->at(i)->Type; 
+			std::cout << _pickups->at(i)->Type;
 
 			delete _pickups->at(i);
 			_pickups->erase(_pickups->begin() + i);
@@ -385,21 +385,21 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 
 			sf::Vector2f Direction = Utils::Normalize(sf::Vector2f(BulletX, BulletY) - m_Bomb->getPosition());
 			_projectiles->push_back(new Bullet(sf::Vector2f(BulletX, BulletY), Direction, 10.0f, 5.0f, m_Enemy));
-		 }
+		}
 
 
 		delete m_Bomb;
 		m_Bomb = nullptr;
 
-	} 
+	}
 
 	if (m_Laser != nullptr && m_Laser->getGlobalBounds().intersects(m_Enemy->GetSprite()->getGlobalBounds()))
 	{
 		SetCrown(true);
-		m_Enemy->SetCrown(false); 
+		m_Enemy->SetCrown(false);
 
 	}
-	
+
 	int Counter = 0;
 	for (Bullet* Projectile : *_projectiles)
 	{
