@@ -93,11 +93,17 @@ void Player::SetAudio()
 		std::cout << "Error Powerup.wav not loaded" << std::endl;
 	}
 
+	if (!m_PlayerLaserSB.loadFromFile("Resources/Sounds/Powerup.wav"))
+	{
+		std::cout << "Error Laser.wav not loaded" << std::endl;
+	}
+
 	// Set buffer to sound veriable
 	m_PlayerShootSound.setBuffer(m_PlayerShootSB);
 	m_PlayerHitSound.setBuffer(m_PlayerHitSB);
 	m_PlayerCrownSwitchSound.setBuffer(m_PlayerCrownSwitchSB);
 	m_PlayerPickUpSound.setBuffer(m_PlayerPickUpSB);
+	m_PlayerLaserSound.setBuffer(m_PlayerLaserSB);
 }
 
 // Handles wall collisions
@@ -255,21 +261,18 @@ void Player::SpecialAttack()
 		m_Laser->setOrigin(0, m_Laser->getSize().y / 2); 
 		m_Laser->setPosition(m_Position); 
 
-	    
+		m_PlayerLaserSound.setVolume(20);
+		m_PlayerLaserSound.play();
 
 		// Rotate 
 		// size 
-
-		std::cout << m_Name << " used Laser!" << std::endl;
 		break;
 
 	case type_Knockback:
 		// Knockback attack code goes here
 		
-			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
+		m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
 
-		
-		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
 	case type_Bomb:
@@ -281,13 +284,10 @@ void Player::SpecialAttack()
 			m_Bomb->setPosition(m_Position);
 			m_BombTimer.restart(); 
 
-			std::cout << m_Name << " used Bomb!" << std::endl;
-
 		}
 
 		break; 
 	case type_AttackSpeed:
-		std::cout << m_Name << " used AttackSpeed!" << std::endl;
 		SetAttackCooldown(m_ModifiedAttackSpeedCD);
 	default:
 		break;
@@ -317,6 +317,10 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	if (sf::Keyboard::isKeyPressed(_special))
 	{
 		SpecialAttack();
+	}
+	if (!sf::Keyboard::isKeyPressed(_special))
+	{
+		m_PlayerLaserSound.stop();
 	}
 
 	// PLAYER ROTATION AND MOVEMENT
@@ -362,14 +366,9 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 			delete _pickups->at(i);
 			_pickups->erase(_pickups->begin() + i);
 			i -= 1;
-
+			m_PlayerPickUpSound.play();
 			break;
-
-
 		}
-
-
-
 	}
 
 	if (m_Bomb != nullptr && m_BombTimer.getElapsedTime().asSeconds() > 3.0f) {

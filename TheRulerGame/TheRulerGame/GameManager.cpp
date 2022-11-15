@@ -90,6 +90,7 @@ void GameManager::ChangeGameState()
 
         m_Objects.clear();
         m_Projectiles.clear();
+        PickUps.m_PickUpVector.clear();
         m_PlayerOne = nullptr;
         m_PlayerTwo = nullptr;
     }

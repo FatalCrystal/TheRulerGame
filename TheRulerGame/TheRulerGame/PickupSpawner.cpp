@@ -42,23 +42,31 @@ void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 
 		NewPickUp->Shape.setOrigin(NewPickUp->Shape.getRadius() / 2, NewPickUp->Shape.getRadius() / 2); 
 		sf::Vector2f Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
-		while (IntersectsWalls(Walls, Position)) {
+		while (IntersectsWalls(Walls, Position, NewPickUp)) {
 			Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
 		}
-		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
+		NewPickUp->Shape.setPosition(Position);
 		m_PickUpVector.push_back(NewPickUp);
 	};
 }
-bool PickupSpawner::IntersectsWalls(std::vector<Tile*> Walls, sf::Vector2f Position)
+
+bool PickupSpawner::IntersectsWalls(std::vector<Tile*> Walls, sf::Vector2f Position, Pickup* pickup)
 {
 	for (int i = 0; i < Walls.size(); i++)
 	{
-		if (Walls[i]->GetTile()->getGlobalBounds().contains(Position)) {
-
+		if (Walls[i]->GetTile()->getGlobalBounds().contains(Position) || 
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x + pickup->Shape.getGlobalBounds().width, Position.y) ||
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x - pickup->Shape.getGlobalBounds().width, Position.y) ||
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x + pickup->Shape.getGlobalBounds().width, Position.y - pickup->Shape.getGlobalBounds().height) ||
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x - pickup->Shape.getGlobalBounds().width, Position.y + pickup->Shape.getGlobalBounds().height) ||
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x, Position.y + pickup->Shape.getGlobalBounds().height) ||
+			Walls[i]->GetTile()->getGlobalBounds().contains(Position.x, Position.y - pickup->Shape.getGlobalBounds().height)) {
+			
+			printf("true");
 			return true; 
 		}
 	}
-
+	printf("false");
 	return false;
 }
 
