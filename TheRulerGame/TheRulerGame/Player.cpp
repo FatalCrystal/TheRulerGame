@@ -248,33 +248,23 @@ void Player::SpecialAttack()
 		// Laser attack code goes here
 		
 		m_Laser = new sf::RectangleShape; 
-		m_Laser->setSize(sf::Vector2f(2000, 50)); 
+		m_Laser->setSize(sf::Vector2f(2000, 15)); 
 		m_Laser->setFillColor(sf::Color::Green); 
 		m_Laser->setOrigin(m_Laser->getSize().x / 2, m_Laser->getSize().y / 2); 
         m_Laser->setRotation(m_Sprite->getRotation() - 90); 
 		m_Laser->setOrigin(0, m_Laser->getSize().y / 2); 
-		m_Laser->setPosition(m_Position); 
-
-	    
-
-		// Rotate 
-		// size 
+		m_Laser->setPosition(m_Position);
 
 		std::cout << m_Name << " used Laser!" << std::endl;
 		break;
 
 	case type_Knockback:
 		// Knockback attack code goes here
-		
-			m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
-
-		
+		m_Enemy->SetPosition(sf::Vector2f(m_Enemy->m_Position + -m_Direction * 5.0f));
 		std::cout << m_Name << " used Knockback!" << std::endl;
 		break;
 
 	case type_Bomb:
-
-
 		if (m_Bomb == nullptr) {
 			m_Bomb = new sf::CircleShape(20);
 			m_Bomb->setFillColor(sf::Color::Red);
@@ -284,11 +274,12 @@ void Player::SpecialAttack()
 			std::cout << m_Name << " used Bomb!" << std::endl;
 
 		}
+		break;
 
-		break; 
 	case type_AttackSpeed:
 		std::cout << m_Name << " used AttackSpeed!" << std::endl;
 		SetAttackCooldown(m_ModifiedAttackSpeedCD);
+		break;
 	default:
 		break;
 	}
@@ -302,8 +293,7 @@ void Player::PlayerInput(std::vector<Bullet*>* _projectiles, sf::Keyboard::Key _
 	// Player Shoot
 	if (sf::Keyboard::isKeyPressed(_shoot))
 	{
-			Shoot(_projectiles);
-		
+		Shoot(_projectiles);
 	}
 
 
@@ -354,7 +344,7 @@ void Player::Update(std::vector<Bullet*>* _projectiles, std::vector<Pickup*>* _p
 
 	for (int i = 0; i < _pickups->size(); i++)
 	{
-		if (m_Sprite->getGlobalBounds().intersects(_pickups->at(i)->Shape.getGlobalBounds()))
+		if (m_Sprite->getGlobalBounds().intersects(_pickups->at(i)->Sprite.getGlobalBounds()))
 		{
 			SetPickup(_pickups->at(i)->Type);
 			std::cout << _pickups->at(i)->Type;

@@ -29,9 +29,9 @@ private:
 	Player* m_PlayerTwo = nullptr;
 
 	// Players base move speed 
-	float m_BaseMoveSpeed = 5.0f;
+	float m_BaseMoveSpeed = 3.5f;
 	// Player delay between shots 
-	float m_BaseFireDelay = 0.5f;
+	float m_BaseFireDelay = 0.4f;
 	
 	// float m_PickupSpawnRate;
 	float m_Volume = 100.0f;

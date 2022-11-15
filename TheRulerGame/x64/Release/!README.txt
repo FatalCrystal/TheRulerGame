@@ -1,3 +1,7 @@
+2 PLAYERS REQUIRED
+
+Hit the enemy player to obtain the crown! Hold the crown when the timer runs out to win the game!
+
 
 CONTROLS
 -------------------

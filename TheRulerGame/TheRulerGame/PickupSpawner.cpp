@@ -4,6 +4,14 @@
 #include <time.h>
 #include "Utils.h" 
 
+PickupSpawner::PickupSpawner()
+{
+	m_AttackSpeedTexture.loadFromFile("Resources/Textures/AttackSpeed.png");
+	m_LaserTexture.loadFromFile("Resources/Textures/Laser.png");
+	m_KnockbackTexture.loadFromFile("Resources/Textures/Knockback.png");
+	m_BombTexture.loadFromFile("Resources/Textures/Bomb.png");
+}
+
 // Pickup spawner
 void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 {
@@ -18,34 +26,33 @@ void PickupSpawner::SpawnPickups(std::vector<Tile*>Walls)
 		{
 
 		case type_Laser:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color(250, 150, 100)); //ORANGE
+			NewPickUp->Sprite = sf::Sprite(m_LaserTexture);
+			NewPickUp->Sprite.setOrigin(0.5f, 0.5f);
 			break;
 
 		case type_Bomb:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color::Red); //red 
+			NewPickUp->Sprite = sf::Sprite(m_BombTexture);
+			NewPickUp->Sprite.setOrigin(0.5f, 0.5f);
 			break;
 
 		case type_AttackSpeed:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 20)); //green
+			NewPickUp->Sprite = sf::Sprite(m_AttackSpeedTexture);
+			NewPickUp->Sprite.setOrigin(0.5f, 0.5f);
 			break;
 		case type_Knockback:
-			NewPickUp->Shape = sf::CircleShape(15);
-			NewPickUp->Shape.setFillColor(sf::Color(100, 250, 50)); //green
+			NewPickUp->Sprite = sf::Sprite(m_KnockbackTexture);
+			NewPickUp->Sprite.setOrigin(0.5f, 0.5f);
 			break;
 
 		default: 
 			break; 
 		} 
 
-		NewPickUp->Shape.setOrigin(NewPickUp->Shape.getRadius() / 2, NewPickUp->Shape.getRadius() / 2); 
 		sf::Vector2f Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
 		while (IntersectsWalls(Walls, Position)) {
 			Position = sf::Vector2f(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1);
 		}
-		NewPickUp->Shape.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
+		NewPickUp->Sprite.setPosition(rand() % Utils::WinSizeX + 1, rand() % Utils::WinSizeY + 1); 
 		m_PickUpVector.push_back(NewPickUp);
 	};
 }
@@ -68,9 +75,6 @@ void PickupSpawner::RenderPickups(sf::RenderWindow* window)
 {
 	for (Pickup* CurrentPickUp : m_PickUpVector) 
 	{
-		window->draw(CurrentPickUp->Shape);
+		window->draw(CurrentPickUp->Sprite);
 	}
 }
-
-
-

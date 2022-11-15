@@ -15,7 +15,7 @@ enum PickupType
 struct Pickup
 {
 	// Pickup shape
-	sf::CircleShape Shape;
+	sf::Sprite Sprite;
 	// Pickup type
 	PickupType Type; 
 };
@@ -27,13 +27,18 @@ private:
 
 	sf::Clock m_SpawnClock = sf::Clock();
 
+	sf::Texture m_AttackSpeedTexture;
+	sf::Texture m_KnockbackTexture;
+	sf::Texture m_LaserTexture;
+	sf::Texture m_BombTexture;
+
 public:
 	// Vector to hold spawned pickups
 	std::vector<Pickup*> m_PickUpVector = {};
 	// Delay between pickup spawn
 	float m_PickupSpawnDelay = 10;
 
-	PickupSpawner() {};
+	PickupSpawner();
 	~PickupSpawner() {};
 
 	void SpawnPickups(std::vector<Tile*>Walls); 

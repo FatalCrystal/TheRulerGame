@@ -17,10 +17,12 @@ public:
 		float* TimerLength;
 		float* Volume;
 		float* PickupSpawnDelay;
+		PickupType PlayerOnePickup;
+		PickupType PlayerTwoPickup;
 		std::string WinnerText;
 
 		// Constructor
-		GameData(float* _baseMoveSpeed, float* _baseFireDelay, float* _pickupSpawnRate, float* _timerLength, float* _volume, float* _pickupSpawnDelay, std::string _winnerText)
+		GameData(float* _baseMoveSpeed, float* _baseFireDelay, float* _pickupSpawnRate, float* _timerLength, float* _volume, float* _pickupSpawnDelay, PickupType _playerOnePickup, PickupType _playerTwoPickup, std::string _winnerText)
 		{
 			BaseMoveSpeed = _baseMoveSpeed;
 			BaseFireDelay = _baseFireDelay;
@@ -28,6 +30,8 @@ public:
 			TimerLength = _timerLength;
 			Volume = _volume;
 			PickupSpawnDelay = _pickupSpawnDelay;
+			PlayerOnePickup = _playerOnePickup;
+			PlayerTwoPickup = _playerTwoPickup;
 			WinnerText = _winnerText;
 		};
 	};
@@ -54,6 +58,9 @@ public:
 
 	// Set current UI display mode
 	void UpdateDisplayState(GameState* _state, UIManager::GameData _gameData);
+
+	// Convert pickup type to the name of the type as a string
+	std::string PickupTypeToName(PickupType _pickupType);
 
 	// Populate m_Textures with textures loaded from image files
 	void LoadTextures();

@@ -100,6 +100,9 @@ void GameManager::ChangeGameState()
 void GameManager::Update()
 {
     std::string WinnerText;
+    PickupType PlayerOnePickup = PickupType::type_None;
+    PickupType PlayerTwoPickup = PickupType::type_None;
+
     if (m_GameState == GameState::Gameplay)
     {
         m_PlayerOne->WallCollisions(m_SceneManager, m_Window, &m_Projectiles);
@@ -136,10 +139,14 @@ void GameManager::Update()
             m_GameState = GameState::EndScreen;
             ChangeGameState();
         }
+
+        PlayerOnePickup = m_PlayerOne->GetPickup();
+        PlayerTwoPickup = m_PlayerTwo->GetPickup();
     }
 
     float TimeRemaining = m_TimerLength - m_GameClock.getElapsedTime().asSeconds();
-    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, &PickUps.m_PickupSpawnDelay, WinnerText), TimeRemaining);
+
+    m_UIManager->Update(&m_GameState, UIManager::GameData(&m_BaseMoveSpeed, &m_BaseFireDelay, nullptr, &m_TimerLength, &m_Volume, &PickUps.m_PickupSpawnDelay, PlayerOnePickup, PlayerTwoPickup, WinnerText), TimeRemaining);
 }
 
 void GameManager::Render()

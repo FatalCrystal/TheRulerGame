@@ -17,7 +17,7 @@ private:
 	sf::Sprite* m_CrownSprite;
 
 	// pointer 4 ma lsaer 
-	sf::RectangleShape* m_Laser; 
+	sf::RectangleShape* m_Laser;
 
 	// bomb 
 
@@ -34,11 +34,11 @@ private:
 	// Clock to track attack cooldown
 	sf::Clock m_AttackCooldown;
 	// Duration of attack cooldown
-	float m_AttackCooldownDuration = 1.f;
+	float m_AttackCooldownDuration = 0.4f;
 	// Attack speed buff
-	float m_ModifiedAttackSpeedCD = 0.2f;
+	float m_ModifiedAttackSpeedCD = 0.1f;
 
-	float m_BaseAttackSpeedCD = 1.f;
+	float m_BaseAttackSpeedCD = 0.4f;
 
 	// Hold player next position bounding box
 	sf::FloatRect m_PlayerNextPos;
@@ -48,9 +48,9 @@ private:
 	// Direction the player is facing
 	sf::Vector2f m_Direction = sf::Vector2f(0.0f, -1.0f);
 	// Player movement velocity
-	float m_MoveSpeed = 5.0f;
+	float m_MoveSpeed = 3.5f;
 	// Player rotation speed
-	float m_RotationSpeed = 3.0f;
+	float m_RotationSpeed = 2.5f;
 
 	// Pickup currently held by the player (can be none)
 	PickupType m_CurrentPickup = type_None; 
