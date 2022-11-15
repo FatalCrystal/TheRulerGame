@@ -42,7 +42,7 @@ public:
 	~PickupSpawner() {};
 
 	void SpawnPickups(std::vector<Tile*>Walls); 
-	bool IntersectsWalls(std::vector<Tile*>Walls, sf::Vector2f Position);
+	bool IntersectsWalls(std::vector<Tile*>Walls, sf::Vector2f Position, Pickup* pickup);
 	void SetSpawnAmount(float _spawnAmount) { m_MaxPickUps = _spawnAmount; };
 	void RenderPickups(sf::RenderWindow* Window);
 

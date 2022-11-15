@@ -74,11 +74,13 @@ private:
 	sf::Sound m_PlayerHitSound;
 	sf::Sound m_PlayerCrownSwitchSound;
 	sf::Sound m_PlayerPickUpSound;
+	sf::Sound m_PlayerLaserSound;
 
 	sf::SoundBuffer m_PlayerShootSB;
 	sf::SoundBuffer m_PlayerHitSB;
 	sf::SoundBuffer m_PlayerCrownSwitchSB;
 	sf::SoundBuffer m_PlayerPickUpSB;
+	sf::SoundBuffer m_PlayerLaserSB;
 
 public:
 	// Constructor with vector position
